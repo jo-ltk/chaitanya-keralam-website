@@ -60,11 +60,11 @@ export default class About extends React.Component<any, any> {
 </section>
 <div className={"wrap"} style={css("padding-bottom:var(--sec)")}>
 <div className={"a-mosaic"} aria-label={"Photos of Kerala"}>
-<div className={"ph m1 p1"}>[Photo 1]</div>
-<div className={"ph m2 p2"}>[Photo 2]</div>
-<div className={"ph m3 p4"}>[Photo 4]</div>
-<div className={"ph m4 p3"}>[Feature photo]</div>
-<div className={"ph m5 p5"}>[Photo 5]</div>
+<div className={"m1"} style={{borderRadius:'16px',overflow:'hidden'}}><img src={"https://images.unsplash.com/photo-1593693411515-c20261bcad6e?w=800&q=80"} alt={"Kerala backwaters"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
+<div className={"m2"} style={{borderRadius:'16px',overflow:'hidden'}}><img src={"https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=800&q=80"} alt={"Kerala temple and culture"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
+<div className={"m3"} style={{borderRadius:'16px',overflow:'hidden'}}><img src={"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80"} alt={"Kerala hill landscapes"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
+<div className={"m4"} style={{borderRadius:'16px',overflow:'hidden'}}><img src={"https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=800&q=80"} alt={"Traditional Kerala home"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
+<div className={"m5"} style={{borderRadius:'16px',overflow:'hidden'}}><img src={"https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&q=80"} alt={"Young people in training"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
 </div>
 </div>
 

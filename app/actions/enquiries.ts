@@ -1,4 +1,4 @@
-﻿'use server';
+'use server';
 
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
@@ -38,7 +38,7 @@ const BaseEnquirySchema = z.object({
   email: z.string().email('Please enter a valid email address'),
   phone: z.string().max(30).optional(),
   message: z.string().max(2000).optional(),
-  consent: z.literal(true, { errorMap: () => ({ message: 'You must consent to continue' }) }),
+  consent: z.literal(true, { message: 'You must consent to continue' }),
   turnstileToken: z.string().min(1, 'Security check required'),
 });
 

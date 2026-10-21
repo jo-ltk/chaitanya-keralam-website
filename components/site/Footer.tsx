@@ -1,6 +1,7 @@
 'use client';
 /* Converted from the Chaitanya Keralam design canvas (Footer). */
 import React from 'react';
+import Map from '@/components/site/Map';
 import { css, str } from '@/lib/dc';
 
 export default class Footer extends React.Component<any, any> {
@@ -17,7 +18,7 @@ export default class Footer extends React.Component<any, any> {
 <div className={"wrap"} style={css("display:flex;flex-direction:column;gap:clamp(48px,5vw,96px)")}>
 <div className={"g2"} style={css("align-items:end")}>
 <h2 className={"h-sec"} style={css("color:#f7f3e8")}>Visit us, or simply <em style={css("color:#c5a15a")}>write</em>.</h2>
-<div className={"map"}>[Map — Edex Edupark, Kochi]</div>
+<div className={"map"}><Map /></div>
 </div>
 <div className={"foot-grid"}>
 <div style={css("display:flex;flex-direction:column;gap:12px")}>

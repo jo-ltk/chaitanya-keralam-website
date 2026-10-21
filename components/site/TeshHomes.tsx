@@ -70,11 +70,11 @@ export default class TeshHomes extends React.Component<any, any> {
 </div>
 </div>
 <div className={"h-collage"} aria-label={"Photos of Kerala homes"}>
-<div className={"ph c1 p3"}>[Feature photo]</div>
-<div className={"ph c2 p1"}>[Photo 1]</div>
-<div className={"ph c3 p2"}>[Photo 2]</div>
-<div className={"ph c4 p4"}>[Photo 4]</div>
-<div className={"ph c5 p5"}>[Photo 5]</div>
+<div className={"c1"} style={{borderRadius:'18px',overflow:'hidden'}}><img src={"https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=900&q=80"} alt={"Traditional Kerala heritage home"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
+<div className={"c2"} style={{borderRadius:'18px',overflow:'hidden'}}><img src={"https://images.unsplash.com/photo-1593693411515-c20261bcad6e?w=800&q=80"} alt={"Kerala backwaters"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
+<div className={"c3"} style={{borderRadius:'18px',overflow:'hidden'}}><img src={"https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&q=80"} alt={"Young people in training"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
+<div className={"c4"} style={{borderRadius:'18px',overflow:'hidden'}}><img src={"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80"} alt={"Kerala hill landscape"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
+<div className={"c5"} style={{borderRadius:'18px',overflow:'hidden'}}><img src={"https://images.unsplash.com/photo-1545389336-cf090694435e?w=800&q=80"} alt={"Wellness and meditation"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
 </div>
 </section>
 
