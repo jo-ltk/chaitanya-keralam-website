@@ -1,0 +1,28 @@
+/* Kerala Nature Editorial Design System (KNEDS) — generated from tokens.json */
+:root, [data-theme="light"] {
+  --forest: #123d32;
+  --forest-deep: #0c2b23;
+  --natural-green: #2f6b50;
+  --green-soft: #dde8df;
+  --ivory: #f7f3e8;
+  --ivory-deep: #eee7d5;
+  --white: #ffffff;
+  --gold: #c5a15a;
+  --gold-soft: #f2e7cd;
+  --earth: #80664b;
+  --ink: var(--forest);
+  --ink-muted: #5d5b4d;
+  --on-dark: var(--ivory);
+  --line: #dcd3bf;
+  --error: #a23b26;
+  --shadow-sm: 0 1px 2px #123d3214, 0 1px 3px #123d320f;
+  --shadow-card: 0 2px 6px #123d320d, 0 12px 32px -8px #123d321f;
+  --focus-ring: 0 0 0 2px #f7f3e8, 0 0 0 4px #2f6b50;
+}
+:root {
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-6: 24px;
+  --space-8: 32px; --space-12: 48px; --space-16: 64px; --space-24: 96px;
+  --radius-none: 0px; --radius-sm: 6px; --radius-md: 12px; --radius-lg: 24px; --radius-full: 9999px;
+  --font-serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}

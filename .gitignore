@@ -1,0 +1,12 @@
+node_modules/
+.next/
+out/
+build/
+*.tsbuildinfo
+.env*.local
+.env
+.DS_Store
+npm-debug.log*
+.vercel
+*.txt
+.admin_tmpl.txt

@@ -1,0 +1,462 @@
+'use client';
+/* Converted from the Chaitanya Keralam design canvas (Home). */
+import React from 'react';
+import { Button, NavBar, StoryPanel, Tag, TextField } from '@/components/kneds';
+import Footer from '@/components/site/Footer';
+import { css, str } from '@/lib/dc';
+
+export default class Home extends React.Component<any, any> {
+  [key: string]: any;
+
+  constructor(props) { super(props); this.state = { prog: '3m', sent: false, why: 0, menu: false, fc: 0, fcDir: 'fwd', fcFlip: false, fcHover: false, fcPaused: false }; this._dur = 6000; this._rem = 6000; }
+  componentDidMount() {
+    var rm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (rm) { this.setState({ fcPaused: true }); return; }
+    this._sched(this._dur);
+  }
+  componentWillUnmount() { clearTimeout(this._t); }
+  _sched(ms) {
+    var self = this; clearTimeout(this._t);
+    this._rem = ms; this._start = Date.now();
+    this._t = setTimeout(function () {
+      if (document.hidden) { self._sched(1500); return; }
+      self._go(self.state.fc + 1, 'fwd');
+    }, ms);
+  }
+  _halt() { clearTimeout(this._t); this._rem = Math.max(400, this._rem - (Date.now() - this._start)); }
+  _go(i, dir) {
+    var n = 5;
+    this.setState({ fc: (i + n) % n, fcDir: dir, fcFlip: !this.state.fcFlip });
+    if (!this.state.fcPaused && !this.state.fcHover) this._sched(this._dur); else this._rem = this._dur;
+  }
+  nav(cur) {
+    var self = this;
+    var L = [['Home', '/'], ['About', '/about'], ['Tourism', '/eco-spiritual-tourism'], ['Programmes', '/programmes'], ['TESH Homes', '/tesh-homes'], ['Admissions', '/programmes#admissions'], ['Contact', '#contact']];
+    return {
+      navLinks: L.map(function (l) { return { label: l[0], href: l[1], active: l[0] === cur, cls: l[0] === cur ? 'on' : '' }; }),
+      menuOpen: this.state.menu,
+      menuLabel: this.state.menu ? 'Close menu' : 'Open menu',
+      menuIcon: this.state.menu ? 'M5 5l10 10M15 5 5 15' : 'M3 6h14M3 10h14M3 14h14',
+      toggleMenu: function () { self.setState({ menu: !self.state.menu }); },
+      closeMenu: function () { self.setState({ menu: false }); }
+    };
+  }
+  renderVals() {
+    var h = React.createElement;
+    var data = {
+      '3m': { title: '3-Month Foundation Programme', href: '/programmes/3-month-foundation', summary: 'Introduces the basic concepts and practical skills of tourism, hospitality, basic caregiving, entrepreneurship, personal leadership and digital skills.', duration: '3 months · 4 hours a day, 5 days a week', hours: '240 training hours', elig: 'Plus Two / Higher Secondary or equivalent',
+        items: ['Tourism & travel and eco-spiritual peace tourism', 'Hospitality and eco-hospitality', 'Basic caregiving', 'Entrepreneurship and personal leadership', 'Digital skills', 'Outcome: foundational skills and practical awareness to begin assisting in tourism, hospitality, caregiving and TESH-related activities'] },
+      '6m': { title: '6-Month Professional Programme', href: '/programmes/6-month-professional', summary: 'Develops stronger operational skills in eco-spiritual tourism, destination development, tour and itinerary planning, sustainable tourism, hospitality operations, international caregiving and team leadership.', duration: '6 months · 4 hours a day, 5 days a week', hours: '480 training hours', elig: 'Plus Two / Higher Secondary or equivalent',
+        items: ['Eco-spiritual tourism, destination development and sustainable tourism', 'Tour and itinerary planning', 'Hospitality operations and international caregiving', 'Entrepreneurship, business development and team leadership', 'TESH Home practical training', 'Outcome: professional-level practical skills and greater responsibility'] },
+      '12m': { title: '1-Year Advanced Programme', href: '/programmes/1-year-advanced', summary: 'Develops higher-level capabilities in tourism and destination management, tour operations, tourism experience design, advanced hospitality, eco-resort and wellness management, advanced caregiving and business management.', duration: '12 months · 4 hours a day, 5 days a week', hours: '960 training hours', elig: 'To be confirmed',
+        items: ['Tourism management, destination management and tour operations', 'Tourism experience design and advanced hospitality management', 'Eco-resort and wellness management; advanced caregiving', 'Entrepreneurship, business management, financial skills and digital marketing', 'Leadership and supervision; TESH Home management', 'Business and management projects'] }
+    };
+    var self = this;
+    var progs = [['3m', '3 months'], ['6m', '6 months'], ['12m', '1 year']].map(function (p) {
+      return { label: p[1], active: self.state.prog === p[0], pick: function () { self.setState({ prog: p[0] }); } };
+    });
+    var whyData = [
+      ['01', 'Eco-Spiritual Peace Tourism & Travel', 'Tourism experiences, travel planning, destination development, interpretation and responsible tourism.', 'p1'],
+      ['02', 'Eco-Spiritual Hospitality', 'Guest relations, front office, housekeeping, food & beverage service, guest experience, wellness, retreat and eco-hospitality.', 'p2'],
+      ['03', 'International Caregiving', 'Personal care, daily living support, elderly and vulnerable-person care, mobility, nutrition, wellbeing, communication, first aid awareness and care documentation — a specialised skill area within the wider programme.', 'p4'],
+      ['04', 'Global Entrepreneurship & Leadership', 'Entrepreneurial mindset, opportunity identification, market research, business models and planning, costing and pricing, digital marketing, team management, leadership and project development.', 'p1']
+    ];
+    var whyRows = whyData.map(function (r, i) {
+      var open = self.state.why === i;
+      return { n: r[0], title: r[1], text: r[2], tone: r[3], open: open, closed: !open, cls: open ? 'why-row' : 'why-row off', pick: function () { self.setState({ why: i }); } };
+    });
+    var fcData = [
+      ['Nature & ecology', 'Backwaters, forests and hills', 'Backwaters and green landscapes of Kerala', "Kerala's rivers, forests, hill ranges and biodiversity are the foundation of eco-spiritual peace tourism.", 'Learners explore responsible travel that protects the natural environments guests come to experience.', '/eco-spiritual-tourism', 'Explore eco-spiritual tourism', 'p1'],
+      ['Culture & heritage', 'Living traditions', 'Kerala heritage and cultural traditions', 'A heritage shaped by ancient trade and cultural exchange — from Muziris to the traditions alive today.', "Interpretation skills help young people share Kerala's stories with travellers respectfully.", '/eco-spiritual-tourism#why-kerala', 'Why Kerala', 'p2'],
+      ['Hospitality', 'A culture of welcome', 'Kerala hospitality and community living', "Kerala's traditions of hospitality and community living shape how guests are welcomed.", 'Guest relations, front office, housekeeping and eco-hospitality are part of TESH training.', '/programmes#areas', 'See the learning areas', 'p3'],
+      ['Wellness & peace', 'Space to reflect', 'Meditation, wellness and quiet places', "Meditation, wellness and Kerala's Ayurvedic and spiritual traditions invite slower, reflective travel.", 'Wellness and retreat hospitality are included in the Eco-Spiritual Hospitality area.', '/about#approach', 'Our approach', 'p4'],
+      ['Youth & opportunity', 'Learning into livelihoods', 'Young people learning practical skills', 'Practical training that connects learning with livelihoods, leadership and enterprise.', 'An intended pathway from training to proposed TESH Home roles and youth entrepreneurship.', '/programmes', 'Explore programmes', 'p6']
+    ];
+    var fi = this.state.fc, fn = fcData.length;
+    var fcSlides = fcData.map(function (r, k) {
+      var pos = k === fi ? 'on' : (k === (fi - 1 + fn) % fn ? 'prev' : 'next');
+      return { n: '0' + (k + 1), kicker: r[0], title: r[1], caption: r[2], left: r[3], right: r[4], href: r[5], cta: r[6], tone: r[7],
+        label: (k + 1) + ' of ' + fn + ': ' + r[1], cls: 'fc-slide ' + pos, hidden: k !== fi, current: k === fi ? 'true' : 'false',
+        dot: k === fi ? 'fc-dot on' : 'fc-dot', go: function () { if (k !== fi) self._go(k, k > fi ? 'fwd' : 'back'); } };
+    });
+    var held = this.state.fcPaused || this.state.fcHover;
+    return Object.assign(this.nav('Home'), {
+      fcSlides: fcSlides, fcCur: fcSlides[fi], fcTotal: '0' + fn,
+      fcState: 'fc' + (held ? ' held' : ''),
+      fcAnim: (this.state.fcFlip ? 'fc-in-a ' : 'fc-in-b ') + this.state.fcDir,
+      fcPrev: function () { self._go(fi - 1, 'back'); },
+      fcNext: function () { self._go(fi + 1, 'fwd'); },
+      fcKey: function (e) { if (e.key === 'ArrowLeft') { e.preventDefault(); self._go(fi - 1, 'back'); } else if (e.key === 'ArrowRight') { e.preventDefault(); self._go(fi + 1, 'fwd'); } },
+      fcHold: function (e) { if (e && e.pointerType && e.pointerType !== 'mouse') return; if (e && e.type === 'focus' && e.target.matches && !e.target.matches(':focus-visible')) return; if (self.state.fcHover) return; if (!self.state.fcPaused) self._halt(); self.setState({ fcHover: true }); },
+      fcRelease: function (e) { if (e && e.relatedTarget && e.currentTarget.contains(e.relatedTarget)) return; if (!self.state.fcHover) return; self.setState({ fcHover: false }); if (!self.state.fcPaused) self._sched(self._rem); },
+      fcToggle: function () { if (self.state.fcPaused) { self.setState({ fcPaused: false }); if (!self.state.fcHover) self._sched(self._rem); } else { self._halt(); self.setState({ fcPaused: true }); } },
+      fcPlayLabel: this.state.fcPaused ? 'Play slideshow' : 'Pause slideshow',
+      fcPlayIcon: this.state.fcPaused ? 'M6 4l10 6-10 6Z' : 'M5 4h3.5v12H5ZM11.5 4H15v12h-3.5Z',
+      fcTStart: function (e) { var t = e.touches[0]; self._tx = t.clientX; self._ty = t.clientY; },
+      fcTEnd: function (e) { if (self._tx == null) return; var t = e.changedTouches[0], dx = t.clientX - self._tx, dy = t.clientY - self._ty; self._tx = null; if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) self._go(fi + (dx < 0 ? 1 : -1), dx < 0 ? 'fwd' : 'back'); },
+      whyRows: whyRows,
+      vTitle: h(React.Fragment, null, 'Our ', h('em', null, 'Vision')),
+      mTitle: h(React.Fragment, null, 'Our ', h('em', null, 'Mission')),
+      p3Title: h(React.Fragment, null, 'The ', h('em', null, 'Foundation'), ' Level'),
+      p6Title: h(React.Fragment, null, 'The ', h('em', null, 'Professional'), ' Level'),
+      p12Title: h(React.Fragment, null, 'The ', h('em', null, 'Advanced'), ' Level'),
+      progs: progs,
+      sel: data[this.state.prog],
+      sent: this.state.sent,
+      submit: function () { self.setState({ sent: true }); }
+    });
+  }
+
+  render() {
+    const $v: any = this.renderVals();
+    return (
+<>
+
+
+
+<div className={"navbar"}>
+<a className={"nav-logo"} href={"/"} tabIndex={-1}><img src={"/images/chaitanya-keralam-logo.png"} alt={"Chaitanya Keralam logo"} width={"335"} height={"320"} /></a>
+<NavBar brand={"Chaitanya Keralam"} brandHref={"/"} links={$v?.navLinks} />
+<div className={"nav-cta"}><Button variant={"primary"} size={"sm"} href={"/programmes#admissions"}>Apply now</Button></div>
+<button className={"menu-btn"} aria-label={$v?.menuLabel} aria-expanded={$v?.menuOpen} onClick={$v?.toggleMenu}><svg width={"20"} height={"20"} viewBox={"0 0 20 20"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.6"} strokeLinecap={"round"} aria-hidden={"true"}><path d={$v?.menuIcon} /></svg></button>
+</div>
+{!!($v?.menuOpen) && (<>
+<nav className={"mnav"} aria-label={"Mobile"}>
+{($v?.navLinks || []).map((l: any, $index: number) => (<React.Fragment key={$index}><a href={l?.href} className={l?.cls} onClick={$v?.closeMenu}>{l?.label}</a></React.Fragment>))}
+<div className={"cta"}><Button variant={"primary"} href={"/programmes#admissions"}>Apply now</Button></div>
+</nav>
+</>)}
+
+
+<section id={"home"} className={"wrap hero"}>
+<div className={"hero-copy"}>
+<p className={"eyebrow r1"}>Chaitanya Keralam · Eco-Spiritual Peace Tourism</p>
+<h1 className={"h-display r2"}>Transforming Kerala into a Global <em>Eco-Spiritual</em> Peace Tourism Destination.</h1>
+<p className={"lede r3"}>Connecting nature, culture, spirituality, hospitality and sustainable livelihoods to create meaningful opportunities for youth and communities.</p>
+<div className={"cta r4"}>
+<Button variant={"primary"} href={"/programmes"}>Explore Programmes</Button>
+<Button variant={"secondary"} href={"#vision"}>Discover Our Vision</Button>
+</div>
+<p className={"announce r4"}><span className={"announce-dot"} aria-hidden={"true"}></span><span><b>Programmes begin December 2026</b> · 3-month, 6-month and 1-year options</span></p>
+</div>
+<img className={"hero-img"} src={"/images/home-hero-illustration.webp"} width={"1774"} height={"887"} alt={"Illustration: a group of smiling young students in green and ivory, taking a selfie together and pointing upward"} />
+</section>
+
+
+<section id={"about"} className={"ab"}>
+<div className={"wrap"}>
+<div className={"ab-head"}>
+<p className={"eyebrow"}>Introduction</p>
+<h2 className={"ab-title"}>A new approach to <em>tourism</em>, learning and <em>livelihoods</em>.</h2>
+</div>
+</div>
+<div className={"wrap"}>
+<div className={$v?.fcState} role={"region"} aria-roledescription={"carousel"} aria-label={"Kerala highlights"} onPointerEnter={$v?.fcHold} onPointerLeave={$v?.fcRelease} onFocus={$v?.fcHold} onBlur={$v?.fcRelease} onKeyDown={$v?.fcKey}>
+<div className={"fc-grid"}>
+<div className={`fc-side fc-left ${str($v?.fcAnim)}`} aria-live={"polite"}>
+<p className={"fc-count"}><b>{$v?.fcCur?.n}</b> / {$v?.fcTotal}</p>
+<p className={"eyebrow plain"}>{$v?.fcCur?.kicker}</p>
+<h3 className={"fc-title"}>{$v?.fcCur?.title}</h3>
+<p className={"small"}>{$v?.fcCur?.left}</p>
+</div>
+<div className={"fc-stage"} onTouchStart={$v?.fcTStart} onTouchEnd={$v?.fcTEnd}>
+{($v?.fcSlides || []).map((s: any, $index: number) => (<React.Fragment key={$index}>
+<figure className={s?.cls} aria-hidden={s?.hidden} role={"group"} aria-roledescription={"slide"} aria-label={s?.label}>
+<div className={`ph fc-img ${str(s?.tone)}`}><svg width={"32"} height={"32"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.5"} aria-hidden={"true"}><rect x={"3"} y={"5"} width={"18"} height={"14"} rx={"1"} /><circle cx={"9"} cy={"10"} r={"2"} /><path d={"m3 17 5-4 4 3 3-2 6 5"} /></svg><span className={"fc-ph"}>[Photo — {s?.title}]</span></div>
+<figcaption className={"fc-cap"}><span>{s?.n}</span>{s?.caption}</figcaption>
+</figure>
+</React.Fragment>))}
+</div>
+<div className={`fc-side fc-right ${str($v?.fcAnim)}`}>
+<p className={"body"}>{$v?.fcCur?.right}</p>
+<a className={"fc-link"} href={$v?.fcCur?.href}>{$v?.fcCur?.cta} <span aria-hidden={"true"}>→</span></a>
+</div>
+</div>
+<div className={"fc-ctrl"}>
+<button className={"fc-btn"} aria-label={"Previous image"} onClick={$v?.fcPrev}><svg width={"18"} height={"18"} viewBox={"0 0 20 20"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"} strokeLinecap={"round"} strokeLinejoin={"round"} aria-hidden={"true"}><path d={"M12 4 6 10l6 6"} /></svg></button>
+<div className={"fc-dots"} role={"group"} aria-label={"Choose an image"}>
+{($v?.fcSlides || []).map((s: any, $index: number) => (<React.Fragment key={$index}><button className={s?.dot} aria-label={s?.label} aria-current={s?.current} onClick={s?.go}><i></i></button></React.Fragment>))}
+</div>
+<button className={"fc-btn"} aria-label={"Next image"} onClick={$v?.fcNext}><svg width={"18"} height={"18"} viewBox={"0 0 20 20"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"} strokeLinecap={"round"} strokeLinejoin={"round"} aria-hidden={"true"}><path d={"m8 4 6 6-6 6"} /></svg></button>
+<button className={"fc-play"} aria-label={$v?.fcPlayLabel} onClick={$v?.fcToggle}><svg width={"14"} height={"14"} viewBox={"0 0 20 20"} fill={"currentColor"} aria-hidden={"true"}><path d={$v?.fcPlayIcon} /></svg></button>
+</div>
+</div>
+</div>
+<div className={"wrap"}>
+<div className={"ab-body"}>
+<h3 className={"ab-sub"}>Kerala's nature, heritage and hospitality — connected to <em>opportunity</em></h3>
+<p className={"small"}>Chaitanya Keralam brings together nature, culture, spirituality, peace, wellness, responsible tourism, hospitality, caregiving and entrepreneurship to create meaningful opportunities for youth and communities.</p>
+<p className={"small"}>Through TESH Skill Development Programmes and the proposed TESH Homes ecosystem, the initiative aims to connect practical learning with employment opportunities, leadership and youth entrepreneurship.</p>
+<div className={"cta"}><Button variant={"quiet"} href={"/about"}>More about Chaitanya Keralam</Button></div>
+</div>
+</div>
+</section>
+
+
+<section id={"why"} className={"why"}>
+<div className={"wrap"}>
+<div className={"ab-head"}>
+<p className={"eyebrow"}>Four programme areas</p>
+<h2 className={"ab-title"}>Learning that connects <em>tourism</em>, care and <em>enterprise</em></h2>
+</div>
+</div>
+<ul className={"why-list"}>
+{($v?.whyRows || []).map((w: any, $index: number) => (<React.Fragment key={$index}>
+<li className={w?.cls}>
+<button className={"why-btn"} aria-expanded={w?.open} onClick={w?.pick}>
+<span className={"why-l"}><span className={"why-n"}>{w?.n}</span><span className={"why-t"}>{w?.title}</span></span>
+{!!(w?.open) && (<><span className={"why-d"}>{w?.text}</span></>)}
+{!!(w?.closed) && (<><span className={`ph why-img ${str(w?.tone)}`}>[Image]</span></>)}
+</button>
+</li>
+</React.Fragment>))}
+</ul>
+</section>
+
+
+<section id={"vision"} className={"sec"}>
+<div className={"wrap"}>
+<div className={"head"}><p className={"eyebrow"}>Vision &amp; Mission</p><h2 className={"h-sec"}>Why we <em>exist</em></h2><p className={"body"} style={css("color:#5d5b4d")}>A mission by the youth, for the youth and of the youth — to transform suitable unutilized and underutilized homes into proposed TSB and TESH Homes and to build a team of 1,000 independent global youth entrepreneurs in Kerala's eco-spiritual peace tourism industry.</p></div>
+<div className={"vm"}>
+<StoryPanel tone={"forest"} nav={"Chaitanya Keralam"} navEnd={"§ Vision"} title={$v?.vTitle} deck={"Transforming Kerala into a Global Eco-Spiritual Peace Tourism Destination."}>
+<svg width={"96"} height={"96"} viewBox={"0 0 96 96"} aria-hidden={"true"}><path d={"M48 16c10 14 16 26 16 38a16 16 0 0 1-32 0c0-12 6-24 16-38Z"} fill={"#c5a15a"} /><path d={"M48 70v-20"} stroke={"#f7f3e8"} strokeWidth={"2"} /><path d={"M30 82h36M38 76h20"} stroke={"#f7f3e8"} strokeWidth={"2"} strokeLinecap={"round"} /></svg>
+</StoryPanel>
+<StoryPanel tone={"gold"} nav={"Chaitanya Keralam"} navEnd={"§ Mission"} title={$v?.mTitle} deck={"Transforming luxury homes · Empowering youth · Creating entrepreneurs · Utilizing free land holding for income generation · Global e-commerce opportunities."}>
+<svg width={"96"} height={"96"} viewBox={"0 0 96 96"} aria-hidden={"true"}><path d={"M20 70 Q48 84 76 70 L70 80 Q48 90 26 80 Z"} fill={"#123d32"} /><path d={"M30 70 Q36 46 48 44 Q60 46 66 70 Z"} fill={"#f2e7cd"} stroke={"#123d32"} strokeWidth={"2"} /><path d={"M14 88 q8 -4 16 0 t16 0 t16 0 t16 0"} fill={"none"} stroke={"#123d32"} strokeWidth={"2"} strokeLinecap={"round"} /></svg>
+</StoryPanel>
+</div>
+</div>
+</section>
+
+
+<section id={"programmes"} className={"sec band"}>
+<div className={"wrap"}>
+<div className={"head"}><p className={"eyebrow"}>TESH Skill Development Programmes</p><h2 className={"h-sec"}>Three course options, one <em>grounding</em></h2><p className={"lede"}>Entrepreneurship &amp; Leadership in Eco-Spiritual Peace Tourism &amp; Hospitality — three progressive levels, 4 hours a day, 5 days a week.</p></div>
+<div className={"progs"}>
+<div id={"programme-3-month"} className={"prog-cell"}><StoryPanel tone={"green"} nav={"3 months"} navEnd={"240 hours"} title={$v?.p3Title} deck={"Basic concepts and practical skills in tourism, eco-spiritual peace tourism, hospitality, basic caregiving, entrepreneurship, personal leadership and digital skills."}>
+<svg width={"80"} height={"80"} viewBox={"0 0 80 80"} aria-hidden={"true"}><path d={"M14 66c0-28 18-46 52-52-4 34-22 52-52 52Z"} fill={"#c5a15a"} stroke={"#f7f3e8"} strokeWidth={"2"} /><path d={"M14 66 48 32"} stroke={"#f7f3e8"} strokeWidth={"2"} /></svg>
+</StoryPanel><div className={"cta"}><Button variant={"secondary"} href={"/programmes/3-month-foundation"}>View Programme</Button></div></div>
+<div id={"programme-6-month"} className={"prog-cell"}><StoryPanel tone={"gold"} nav={"6 months"} navEnd={"480 hours"} title={$v?.p6Title} deck={"Stronger operational skills in eco-spiritual tourism, destination development, hospitality operations, international caregiving, team leadership and TESH Home practical training."}>
+<svg width={"80"} height={"80"} viewBox={"0 0 80 80"} aria-hidden={"true"}><path d={"M40 10c6 8 8 14 0 22-8-8-6-14 0-22Z"} fill={"#123d32"} /><path d={"M26 38h28l-4 10H30Z"} fill={"#80664b"} stroke={"#123d32"} strokeWidth={"2"} /><path d={"M40 48v16M28 70h24M32 64h16"} stroke={"#123d32"} strokeWidth={"3"} strokeLinecap={"round"} /></svg>
+</StoryPanel><div className={"cta"}><Button variant={"secondary"} href={"/programmes/6-month-professional"}>View Programme</Button></div></div>
+<div id={"programme-1-year"} className={"prog-cell"}><StoryPanel tone={"forest"} nav={"1 year"} navEnd={"960 hours"} title={$v?.p12Title} deck={"Higher-level capabilities in tourism and destination management, advanced hospitality, eco-resort and wellness management, business management and TESH Home management."}>
+<svg width={"80"} height={"80"} viewBox={"0 0 80 80"} aria-hidden={"true"}><path d={"M10 50 Q40 64 70 50 L64 60 Q40 72 16 60 Z"} fill={"#c5a15a"} /><path d={"M20 50 Q28 30 40 28 Q52 30 60 50 Z"} fill={"#f2e7cd"} /><path d={"M8 70 q8 -4 16 0 t16 0 t16 0 t16 0"} fill={"none"} stroke={"#f7f3e8"} strokeWidth={"2"} strokeLinecap={"round"} /></svg>
+</StoryPanel><div className={"cta"}><Button variant={"secondary"} href={"/programmes/1-year-advanced"}>View Programme</Button></div></div>
+</div>
+
+<div className={"detail"} data-swap>
+<div style={css("display:flex;flex-direction:column;gap:20px")}>
+<div className={"chips"}>
+{($v?.progs || []).map((p: any, $index: number) => (<React.Fragment key={$index}>
+<Tag active={p?.active} onClick={p?.pick}>{p?.label}</Tag>
+</React.Fragment>))}
+</div>
+<h3 className={"h-sec"} style={css("font-size:clamp(28px,2.4vw,44px)")}>{$v?.sel?.title}</h3>
+<p className={"body"} style={css("color:#5d5b4d")}>{$v?.sel?.summary}</p>
+<dl className={"dl"}>
+<div><dt>Duration</dt><dd>{$v?.sel?.duration}</dd></div>
+<div><dt>Learning hours</dt><dd>{$v?.sel?.hours}</dd></div>
+<div><dt>Mode</dt><dd>Offline</dd></div>
+<div><dt>Eligibility</dt><dd>{$v?.sel?.elig}</dd></div>
+</dl>
+<div className={"cta"}><Button variant={"primary"} href={$v?.sel?.href}>View Programme</Button><Button variant={"quiet"} href={"#admissions"}>Enquire about admission</Button></div>
+</div>
+<div style={css("display:flex;flex-direction:column;gap:16px")}>
+<p className={"eyebrow"}>What the programme covers</p>
+<ul className={"ticks"}>
+{($v?.sel?.items || []).map((it: any, $index: number) => (<React.Fragment key={$index}>
+<li><svg width={"20"} height={"20"} viewBox={"0 0 20 20"} fill={"none"} stroke={"#2f6b50"} strokeWidth={"1.8"} strokeLinecap={"round"} aria-hidden={"true"}><path d={"M4 10.5 8 14l8-8"} /></svg><span>{it}</span></li>
+</React.Fragment>))}
+</ul>
+</div>
+</div>
+</div>
+</section>
+
+
+<section id={"curriculum"} className={"sec"}>
+<div className={"wrap"}>
+<div className={"head"}><p className={"eyebrow"}>Practical learning</p><h2 className={"h-sec"}>Learn by <em>doing</em>.</h2><p className={"body"} style={css("color:#5d5b4d")}>TESH programmes are designed around practical and experiential learning. Training may include:</p></div>
+<div className={"g3"} style={css("row-gap:clamp(32px,3vw,56px)")}>
+<div className={"mod"}><span className={"mod-n"}>01</span><h3 className={"h-card"}>Classroom learning</h3><p className={"small"}>Understanding concepts, principles and professional knowledge.</p></div>
+<div className={"mod"}><span className={"mod-n"}>02</span><h3 className={"h-card"}>Practical training</h3><p className={"small"}>Developing hands-on skills through demonstrations and supervised practice.</p></div>
+<div className={"mod"}><span className={"mod-n"}>03</span><h3 className={"h-card"}>Role play &amp; simulation</h3><p className={"small"}>Practising guest service, communication, caregiving and workplace situations.</p></div>
+<div className={"mod"}><span className={"mod-n"}>04</span><h3 className={"h-card"}>Field &amp; experience-based learning</h3><p className={"small"}>Understanding tourism destinations, hospitality environments, communities and nature-based experiences.</p></div>
+<div className={"mod"}><span className={"mod-n"}>05</span><h3 className={"h-card"}>TESH Home practical exposure</h3><p className={"small"}>Students may receive practical exposure through TESH Home activities according to their level and programme requirements.</p><div className={"incl"}><span className={"off"}>According to level</span><span className={"off"}>Where available</span></div></div>
+<div className={"mod"}><span className={"mod-n"}>06</span><h3 className={"h-card"}>Project-based learning</h3><p className={"small"}>Students work on tourism, hospitality, caregiving or entrepreneurship-related projects.</p></div>
+<div className={"mod"}><span className={"mod-n"}>07</span><h3 className={"h-card"}>Leadership practice</h3><p className={"small"}>Students progressively take responsibility for activities, teams and projects.</p></div>
+<div className={"mod prog-model"}><p className={"eyebrow"}>Our progression model</p><div className={"pm-cols"}><div><b>Foundation</b><span>Learn · Practise · Assist</span></div><div><b>Professional</b><span>Learn · Practise · Operate · Take responsibility</span></div><div><b>Advanced</b><span>Supervise · Lead · Manage · Create</span></div></div></div>
+</div>
+</div>
+</section>
+
+
+<section id={"tesh"} className={"sec"} style={css("background:#ffffff")}>
+<div className={"wrap split"}>
+<div className={"panel-art"} style={css("min-height:clamp(320px,34vw,560px)")}>
+<svg className={"art"} viewBox={"0 0 600 520"} preserveAspectRatio={"xMidYMid slice"} role={"img"} aria-label={"Illustration: a student in an apron serving tea to guests on a veranda overlooking green hills"}>
+<rect width={"600"} height={"520"} fill={"#123d32"} />
+<path d={"M0 250 C120 200 220 236 320 210 C440 180 520 220 600 200 V520 H0 Z"} fill={"#2f6b50"} />
+<path d={"M0 300 C160 270 320 300 600 280 V520 H0 Z"} fill={"#2f6b50"} opacity={".6"} />
+<circle cx={"470"} cy={"110"} r={"40"} fill={"#c5a15a"} />
+<rect x={"0"} y={"380"} width={"600"} height={"140"} fill={"#80664b"} />
+<path d={"M0 380 H600"} stroke={"#c5a15a"} strokeWidth={"3"} />
+<rect x={"40"} y={"200"} width={"14"} height={"180"} fill={"#f2e7cd"} /><rect x={"546"} y={"200"} width={"14"} height={"180"} fill={"#f2e7cd"} />
+<path d={"M20 200 H580 L540 160 H60 Z"} fill={"#80664b"} stroke={"#0c2b23"} strokeWidth={"2"} />
+
+<ellipse cx={"300"} cy={"400"} rx={"120"} ry={"20"} fill={"#f7f3e8"} stroke={"#0c2b23"} strokeWidth={"2"} />
+<rect x={"292"} y={"410"} width={"16"} height={"60"} fill={"#0c2b23"} />
+<path d={"M260 392 h24 v-10 h-24 Z M318 392 h24 v-10 h-24 Z"} fill={"#c5a15a"} stroke={"#0c2b23"} strokeWidth={"1.5"} />
+
+<g stroke={"#0c2b23"} strokeWidth={"2"}><circle cx={"150"} cy={"300"} r={"16"} fill={"#c08a68"} /><path d={"M128 330 Q150 316 172 330 L176 392 H124 Z"} fill={"#dde8df"} /><path d={"M134 296 Q140 278 156 282 Q168 288 164 300 Q154 290 140 300 Z"} fill={"#80664b"} /></g>
+
+<g stroke={"#0c2b23"} strokeWidth={"2"}><circle cx={"430"} cy={"280"} r={"16"} fill={"#8a5a3c"} /><path d={"M414 276 Q418 258 434 262 Q448 266 444 282 Q434 270 420 280 Z"} fill={"#0c2b23"} /><path d={"M406 310 Q430 298 454 310 L460 400 H400 Z"} fill={"#f7f3e8"} /><path d={"M412 330 H448 L452 396 H408 Z"} fill={"#c5a15a"} /><path d={"M410 320 L362 352"} stroke={"#8a5a3c"} strokeWidth={"8"} strokeLinecap={"round"} /><path d={"M340 348 h30 v6 h-30 Z"} fill={"#f7f3e8"} /><rect x={"414"} y={"400"} width={"12"} height={"40"} fill={"#123d32"} /><rect x={"434"} y={"400"} width={"12"} height={"40"} fill={"#123d32"} /></g>
+</svg>
+</div>
+<div style={css("display:flex;flex-direction:column;gap:24px")}>
+<p className={"eyebrow"}>TESH Homes <span className={"tbc"}>Proposed</span></p>
+<h2 className={"h-sec"}>Turning existing homes into <em>opportunities</em>.</h2>
+<p className={"body"} style={css("color:#5d5b4d")}>Kerala has around 1.4 million unutilized or underutilized houses. The proposed TESH Homes initiative aims to transform suitable existing homes into TSB and TESH Homes — a distributed network of international guest houses, training centres and activity centres.</p>
+<ul className={"ticks"}>
+<li><svg width={"20"} height={"20"} viewBox={"0 0 20 20"} fill={"none"} stroke={"#2f6b50"} strokeWidth={"1.8"} strokeLinecap={"round"} aria-hidden={"true"}><path d={"M4 10.5 8 14l8-8"} /></svg><span><b>Guest houses</b> welcoming local, national and international travellers.</span></li>
+<li><svg width={"20"} height={"20"} viewBox={"0 0 20 20"} fill={"none"} stroke={"#2f6b50"} strokeWidth={"1.8"} strokeLinecap={"round"} aria-hidden={"true"}><path d={"M4 10.5 8 14l8-8"} /></svg><span><b>Training centres</b> for practical tourism, hospitality, caregiving and enterprise learning.</span></li>
+<li><svg width={"20"} height={"20"} viewBox={"0 0 20 20"} fill={"none"} stroke={"#2f6b50"} strokeWidth={"1.8"} strokeLinecap={"round"} aria-hidden={"true"}><path d={"M4 10.5 8 14l8-8"} /></svg><span><b>Activity centres</b> for meditation, cultural, agricultural and community activities.</span></li>
+<li><svg width={"20"} height={"20"} viewBox={"0 0 20 20"} fill={"none"} stroke={"#2f6b50"} strokeWidth={"1.8"} strokeLinecap={"round"} aria-hidden={"true"}><path d={"M4 10.5 8 14l8-8"} /></svg><span><b>Youth entrepreneurship</b> — spaces where trained young people can learn to manage and grow enterprises.</span></li>
+</ul>
+<div className={"cta"}><Button variant={"secondary"} href={"/tesh-homes"}>Explore TESH Homes</Button></div>
+</div>
+</div>
+</section>
+
+
+<section id={"outcomes"} className={"sec band"}>
+<div className={"wrap"}>
+<div className={"g2"} style={css("align-items:start")}>
+<div className={"head"} style={css("margin-bottom:0;position:sticky;top:96px")}>
+<p className={"eyebrow"}>Career pathway</p>
+<h2 className={"h-sec"}>From training to <em>enterprise</em></h2>
+<p className={"lede"}>Global citizenship through global entrepreneurship and e-commerce.</p><p className={"small"}>An intended pathway — not a guaranteed placement or income.</p>
+</div>
+<div>
+<div className={"out"}><span className={"out-n"}>i.</span><div style={css("display:flex;flex-direction:column;gap:6px")}><h3 className={"h-card"} style={css("font-size:24px")}>Training</h3><p className={"body"}>Youth receive practical training through the Eco-Spiritual Peace Tourism Programme in tourism, hospitality, caregiving and global entrepreneurship.</p></div></div>
+<div className={"out"}><span className={"out-n"}>ii.</span><div style={css("display:flex;flex-direction:column;gap:6px")}><h3 className={"h-card"} style={css("font-size:24px")}>Practical Experience</h3><p className={"body"}>Hands-on experience through TESH Homes, training centres and community-based activities, as these become available.</p></div></div>
+<div className={"out"}><span className={"out-n"}>iii.</span><div style={css("display:flex;flex-direction:column;gap:6px")}><h3 className={"h-card"} style={css("font-size:24px")}>TESH Home Management</h3><p className={"body"}>Trained youth may take up roles in managing TESH Homes — guest services, hospitality, tourism, caregiving, wellness, facility management, sustainable agriculture and digital activities — as the proposed network develops.</p></div></div>
+<div className={"out"} style={css("border-bottom:0")}><span className={"out-n"}>iv.</span><div style={css("display:flex;flex-direction:column;gap:6px")}><h3 className={"h-card"} style={css("font-size:24px")}>Youth Entrepreneurship</h3><p className={"body"}>Experienced youth can move beyond employment and create their own sustainable enterprises connected to the TESH ecosystem.</p></div></div>
+</div>
+</div>
+</div>
+</section>
+
+
+<section id={"careers"} className={"sec"}>
+<div className={"wrap"}>
+<div className={"head"}><p className={"eyebrow"}>Career &amp; enterprise areas</p><h2 className={"h-sec"}>Where this could <em>lead</em></h2><p className={"small"}>Intended career and enterprise pathways — not guaranteed placements or earnings.</p></div>
+<div className={"g4"}>
+<div className={"role"}><h3 className={"h-card"} style={css("font-size:22px")}>Guest services &amp; hospitality</h3><p className={"small"}>Guest services, hospitality operations, and house and facility management.</p></div>
+<div className={"role"}><h3 className={"h-card"} style={css("font-size:22px")}>Tourism &amp; tour services</h3><p className={"small"}>Tourism activities, eco-tourism experiences and tour &amp; travel services.</p></div>
+<div className={"role"}><h3 className={"h-card"} style={css("font-size:22px")}>TESH Home management</h3><p className={"small"}>Roles within the proposed TESH Homes network, and homestay / guesthouse enterprises.</p></div>
+<div className={"role"}><h3 className={"h-card"} style={css("font-size:22px")}>Wellness &amp; spiritual tourism</h3><p className={"small"}>Wellness and meditation activities; wellness and spiritual tourism services.</p></div>
+<div className={"role"}><h3 className={"h-card"} style={css("font-size:22px")}>Caregiving services</h3><p className={"small"}>Subject to the relevant requirements.</p></div>
+<div className={"role"}><h3 className={"h-card"} style={css("font-size:22px")}>Agriculture, digital &amp; community</h3><p className={"small"}>Sustainable / AI-enabled agriculture, local products and community enterprises, and digital tourism and service businesses.</p></div>
+<div className={"founder"}><p className={"eyebrow"} style={css("color:#123d32")}>Youth entrepreneurship</p><h3 className={"h-card"} style={css("font-size:clamp(24px,2vw,32px)")}>Move beyond employment and create your own sustainable enterprise connected to the TESH ecosystem.</h3><div className={"cta"}><Button variant={"primary"} href={"/tesh-homes#careers"}>See career pathways</Button></div></div>
+</div>
+</div>
+</section>
+
+
+<section id={"certification"} className={"sec"} style={css("background:#ffffff")}>
+<div className={"wrap split"}>
+<div style={css("display:flex;flex-direction:column;gap:24px")}>
+<p className={"eyebrow"}>Certification</p>
+<h2 className={"h-sec"}>Recognising what you <em>learn</em> and practise</h2>
+<p className={"body"} style={css("color:#5d5b4d")}>Participants who successfully complete the applicable training requirements receive a TESH Skill Development Experience Certificate, subject to programme completion and assessment requirements.</p>
+<ul className={"ticks"}>
+<li><svg width={"20"} height={"20"} viewBox={"0 0 20 20"} fill={"none"} stroke={"#2f6b50"} strokeWidth={"1.8"} strokeLinecap={"round"} aria-hidden={"true"}><path d={"M4 10.5 8 14l8-8"} /></svg><span>Awarded on completing training and assessment requirements</span></li>
+<li><svg width={"20"} height={"20"} viewBox={"0 0 20 20"} fill={"none"} stroke={"#2f6b50"} strokeWidth={"1.8"} strokeLinecap={"round"} aria-hidden={"true"}><path d={"M4 10.5 8 14l8-8"} /></svg><span>Available for the 3-month, 6-month and 1-year programmes</span></li>
+<li><svg width={"20"} height={"20"} viewBox={"0 0 20 20"} fill={"none"} stroke={"#2f6b50"} strokeWidth={"1.8"} strokeLinecap={"round"} aria-hidden={"true"}><path d={"M4 10.5 8 14l8-8"} /></svg><span>Award title for each level <span className={"tbc"}>To be confirmed</span></span></li>
+</ul>
+</div>
+<div className={"cert"}>
+<svg width={"56"} height={"56"} viewBox={"0 0 56 56"} aria-hidden={"true"}><circle cx={"28"} cy={"28"} r={"26"} fill={"#c5a15a"} /><path d={"M18 36c0-12 8-20 20-22-2 12-8 20-20 22Z"} fill={"#123d32"} /></svg>
+<p className={"eyebrow"} style={css("color:#80664b")}>Chaitanya Keralam</p>
+<p style={css("margin:0;font-family:var(--font-serif);font-weight:300;font-size:clamp(28px,2.6vw,44px);line-height:1.1")}>TESH Skill Development <em>Experience</em> Certificate</p>
+<p className={"small"}>awarded to</p>
+<p style={css("margin:0;font-family:var(--font-serif);font-style:italic;font-size:26px;border-bottom:1px solid #c5a15a;padding:0 24px 6px")}>[Participant name]</p>
+<p className={"small"}>[Programme level] · [Date] · [Issuing organisation]</p>
+</div>
+</div>
+</section>
+
+
+<section id={"gallery"} className={"sec"}>
+<div className={"wrap"}>
+<div className={"head"}><p className={"eyebrow"}>Gallery</p><h2 className={"h-sec"}>Glimpses of <em>Kerala</em></h2></div>
+<div className={"gal"}>
+<figure className={"tile t-wide t-tall"}><svg viewBox={"0 0 400 400"} preserveAspectRatio={"xMidYMid slice"} role={"img"} aria-label={"Illustration: backwaters at dusk"}><rect width={"400"} height={"400"} fill={"#c5a15a"} /><circle cx={"290"} cy={"150"} r={"46"} fill={"#f2e7cd"} /><path d={"M0 230 C100 200 220 240 400 210 V400 H0Z"} fill={"#2f6b50"} /><rect y={"270"} width={"400"} height={"130"} fill={"#123d32"} /><path d={"M130 300 Q200 320 270 300 L260 314 Q200 330 140 314Z"} fill={"#80664b"} /><path d={"M150 300 Q166 274 200 272 Q234 274 250 300Z"} fill={"#f2e7cd"} /><path d={"M40 350 q12 -5 24 0 t24 0 M260 360 q12 -5 24 0 t24 0"} stroke={"#c5a15a"} strokeWidth={"2"} fill={"none"} /></svg><figcaption>Backwaters</figcaption></figure>
+<figure className={"tile"}><svg viewBox={"0 0 400 300"} preserveAspectRatio={"xMidYMid slice"} role={"img"} aria-label={"Illustration: training kitchen"}><rect width={"400"} height={"300"} fill={"#dde8df"} /><rect x={"0"} y={"200"} width={"400"} height={"100"} fill={"#80664b"} /><ellipse cx={"200"} cy={"200"} rx={"90"} ry={"14"} fill={"#f7f3e8"} stroke={"#123d32"} strokeWidth={"2"} /><path d={"M150 190 h100 l-10 -40 h-80Z"} fill={"#123d32"} /><path d={"M180 140 q6 -16 0 -30 M210 140 q6 -16 0 -30"} stroke={"#2f6b50"} strokeWidth={"3"} fill={"none"} strokeLinecap={"round"} /></svg><figcaption>Hospitality practice</figcaption></figure>
+<figure className={"tile"}><svg viewBox={"0 0 400 300"} preserveAspectRatio={"xMidYMid slice"} role={"img"} aria-label={"Illustration: tea estate hills"}><rect width={"400"} height={"300"} fill={"#f2e7cd"} /><path d={"M0 160 C80 110 160 150 240 120 C320 90 360 130 400 110 V300 H0Z"} fill={"#2f6b50"} /><path d={"M0 200 C120 170 240 210 400 180 M0 230 C120 200 240 240 400 210 M0 260 C120 230 240 270 400 240"} stroke={"#123d32"} strokeWidth={"3"} fill={"none"} /></svg><figcaption>Hill landscapes</figcaption></figure>
+<figure className={"tile"}><svg viewBox={"0 0 400 300"} preserveAspectRatio={"xMidYMid slice"} role={"img"} aria-label={"Illustration: traditional lamp"}><rect width={"400"} height={"300"} fill={"#123d32"} /><path d={"M200 60c10 14 12 24 0 36-12-12-10-22 0-36Z"} fill={"#c5a15a"} /><path d={"M168 104h64l-8 18h-48Z"} fill={"#c5a15a"} /><path d={"M200 122v90M168 236h64M180 222h40"} stroke={"#c5a15a"} strokeWidth={"6"} strokeLinecap={"round"} /></svg><figcaption>Heritage &amp; culture</figcaption></figure>
+<figure className={"tile t-wide"}><svg viewBox={"0 0 600 300"} preserveAspectRatio={"xMidYMid slice"} role={"img"} aria-label={"Illustration: students in a circle under a tree"}><rect width={"600"} height={"300"} fill={"#eee7d5"} /><path d={"M300 240 V130"} stroke={"#80664b"} strokeWidth={"14"} /><ellipse cx={"300"} cy={"110"} rx={"130"} ry={"70"} fill={"#2f6b50"} /><g fill={"#c5a15a"} stroke={"#123d32"} strokeWidth={"2"}><circle cx={"200"} cy={"230"} r={"14"} /><circle cx={"250"} cy={"246"} r={"14"} /><circle cx={"350"} cy={"246"} r={"14"} /><circle cx={"400"} cy={"230"} r={"14"} /></g><g fill={"#123d32"}><path d={"M186 248 h28 v40 h-28Z"} /><path d={"M236 264 h28 v30 h-28Z"} /><path d={"M336 264 h28 v30 h-28Z"} /><path d={"M386 248 h28 v40 h-28Z"} /></g></svg><figcaption>Learning together</figcaption></figure>
+<figure className={"tile t-wide"}><svg viewBox={"0 0 600 300"} preserveAspectRatio={"xMidYMid slice"} role={"img"} aria-label={"Illustration: spice garden"}><rect width={"600"} height={"300"} fill={"#2f6b50"} /><g fill={"#123d32"}><path d={"M60 300c0-80 30-130 80-150-10 70-40 120-80 150Z"} /><path d={"M200 300c0-90 40-140 90-160-10 80-50 130-90 160Z"} /><path d={"M380 300c0-80 30-130 80-150-10 70-40 120-80 150Z"} /></g><g fill={"#c5a15a"}><circle cx={"150"} cy={"210"} r={"8"} /><circle cx={"168"} cy={"226"} r={"8"} /><circle cx={"320"} cy={"200"} r={"8"} /><circle cx={"500"} cy={"220"} r={"8"} /><circle cx={"516"} cy={"238"} r={"8"} /></g></svg><figcaption>Spice gardens</figcaption></figure>
+</div>
+<p className={"small"} style={css("margin-top:16px")}>Illustrated placeholders — replace with approved Kerala tourism, heritage, hospitality and training photographs.</p>
+</div>
+</section>
+
+
+<section id={"admissions"} className={"sec band"}>
+<div className={"wrap g2"} style={css("align-items:start")}>
+<div style={css("display:flex;flex-direction:column;gap:24px")}>
+<p className={"eyebrow"}>Admissions</p>
+<h2 className={"h-sec"}>Begin your journey with <em>Chaitanya Keralam</em>.</h2>
+<p className={"body"} style={css("color:#5d5b4d")}>Programmes begin <b>December 2026</b>. The programmes are for youth aged <b>18–29 years</b>; the 3-month and 6-month curricula state Plus Two / Higher Secondary or equivalent eligibility. Selection is through credentials, an aptitude test, an interview and a group discussion.</p>
+<ol className={"steps"}>
+<li className={"step"}><span className={"step-n"}>1</span><div><h3 className={"h-card"} style={css("font-size:22px")}>Enquire</h3><p className={"small"}>Send the enquiry form to register your interest.</p></div></li>
+<li className={"step"}><span className={"step-n"}>2</span><div><h3 className={"h-card"} style={css("font-size:22px")}>Credentials</h3><p className={"small"}>Share your academic and extracurricular credentials.</p></div></li>
+<li className={"step"}><span className={"step-n"}>3</span><div><h3 className={"h-card"} style={css("font-size:22px")}>Aptitude test</h3><p className={"small"}>A short test of aptitude for the programme.</p></div></li>
+<li className={"step"} style={css("border-bottom:0")}><span className={"step-n"}>4</span><div><h3 className={"h-card"} style={css("font-size:22px")}>Interview &amp; group discussion</h3><p className={"small"}>Meet the team and take part in a group discussion.</p></div></li>
+</ol>
+<div className={"cta"}><Button variant={"quiet"} href={"/programmes#admissions"}>Full eligibility &amp; selection details</Button></div>
+</div>
+<div className={"form"}>
+<h3 className={"h-card"}>Admission enquiry</h3>
+<div className={"frow"}>
+<TextField label={"Full name"} placeholder={"Your name"} autocomplete={"name"} />
+<TextField label={"Age"} type={"number"} placeholder={"18–29"} min={"18"} max={"29"} />
+</div>
+<TextField label={"Email"} type={"email"} placeholder={"you@example.com"} autocomplete={"email"} />
+<TextField label={"Phone"} type={"tel"} placeholder={"+91"} autocomplete={"tel"} />
+<div style={css("display:flex;flex-direction:column;gap:8px")}>
+<label className={"kn-field-label"} htmlFor={"prog"}>Programme</label>
+<select id={"prog"} className={"sel"}><option>3-Month Foundation</option><option>6-Month Professional</option><option>1-Year Advanced</option><option>Not sure yet</option></select>
+</div>
+{!!($v?.sent) && (<>
+<p className={"thanks"}>Thank you — our admissions team will be in touch soon.</p>
+</>)}
+<Button variant={"primary"} onClick={$v?.submit}>Enquire About Admission</Button>
+<p className={"small"}>We use your details only to respond to your enquiry.</p>
+</div>
+</div>
+</section>
+
+
+<section id={"next-chapter"} className={"ab"}>
+<div className={"wrap"}>
+<div className={"ab-head"}>
+<p className={"eyebrow"}>Join us</p>
+<h2 className={"ab-title"}>Be part of Kerala's next <em>chapter</em>.</h2>
+<p className={"body"} style={css("color:#5d5b4d;max-width:620px")}>Connect responsible tourism, practical learning, community development and sustainable livelihoods.</p>
+<div className={"cta"}>
+<Button variant={"primary"} href={"/programmes"}>Explore Programmes</Button>
+<Button variant={"secondary"} href={"/tesh-homes#partner"}>Partner With Us</Button>
+</div>
+</div>
+</div>
+</section>
+
+
+<Footer />
+</>
+    );
+  }
+}
