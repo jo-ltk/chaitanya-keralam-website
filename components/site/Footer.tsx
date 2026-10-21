@@ -35,7 +35,12 @@ export default class Footer extends React.Component<any, any> {
 </div>
 <div className={"foot-bar"}>
 <p className={"small"}>© [Year] Chaitanya Keralam. All rights reserved.</p>
-<ul><li><a href={"#privacy"}>Privacy Policy</a></li><li><a href={"#terms"}>Terms of Use</a></li></ul>
+<ul style={css("display:flex;align-items:center;gap:16px;list-style:none;margin:0;padding:0")}>
+<li><a href={"#privacy"}>Privacy Policy</a></li>
+<li><a href={"#terms"}>Terms of Use</a></li>
+<li><span style={css("opacity:0.3;color:#f7f3e8")}>•</span></li>
+<li><a href={"/admin/login"} style={css("display:inline-flex;align-items:center;gap:5px;opacity:0.75;transition:opacity 0.2s;font-weight:500;color:#c5a15a")} title={"Staff & Admin Portal"}><svg width={"13"} height={"13"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"} strokeLinecap={"round"} strokeLinejoin={"round"} aria-hidden={"true"}><rect x={"3"} y={"11"} width={"18"} height={"11"} rx={"2"} ry={"2"}></rect><path d={"M7 11V7a5 5 0 0 1 10 0v4"}></path></svg> Admin Portal</a></li>
+</ul>
 </div>
 </div>
 </footer>

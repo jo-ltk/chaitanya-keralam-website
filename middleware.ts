@@ -1,4 +1,4 @@
-﻿import { createServerClient, type CookieOptions } from '@supabase/ssr';
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
 const PUBLIC_AUTH_PATHS = [
@@ -128,34 +128,9 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/admin', request.url));
   }
 
-  // 4. MFA check for Super Admins
-  if (role === 'super') {
-    const { data: aalData } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
-    const currentAal = aalData?.currentLevel;
-
-    if (currentAal === 'aal1') {
-      const { data: factors } = await supabase.auth.mfa.listFactors();
-      const hasTotp = (factors?.totp?.length || 0) > 0;
-
-      if (!hasTotp && pathname !== '/admin/two-factor/setup') {
-        return NextResponse.redirect(new URL('/admin/two-factor/setup', request.url));
-      }
-      if (hasTotp && pathname !== '/admin/two-factor') {
-        return NextResponse.redirect(new URL('/admin/two-factor', request.url));
-      }
-      // If already on the required MFA route, allow access
-      if (isMfaPath) return response;
-    } else {
-      // Already aal2 (verified MFA), don't stay on MFA pages
-      if (isMfaPath) {
-        return NextResponse.redirect(new URL('/admin', request.url));
-      }
-    }
-  } else {
-    // Non-super admin visiting MFA setup/challenge without need
-    if (isMfaPath) {
-      return NextResponse.redirect(new URL('/admin', request.url));
-    }
+  // 4. If visiting any MFA path directly, send straight to /admin
+  if (isMfaPath) {
+    return NextResponse.redirect(new URL('/admin', request.url));
   }
 
   // 5. If this is another public screen (like access-denied or error), allow it

@@ -203,30 +203,39 @@ export default class AdminApp extends React.Component<{
     };
   }
 
+  componentDidMount() {
+    this.loadAll();
+  }
+
   private async loadAll() {
     const self = this;
     const role = this.state.role;
-    const [pagesRes, slidesRes, mediaRes, annRes, enqRes, activities] = await Promise.all([
-      getPagesAction(),
-      getCarouselSlidesAction(),
-      getMediaAction(),
-      getAnnouncementsAction(),
-      getEnquiriesAction(),
-      getActivityLogAction(),
-    ]);
-    const programmesRes = await getProgrammesAction();
-    if (pagesRes.success) self.setState({ pages: pagesRes.pages, pstat: Object.fromEntries(pagesRes.pages.map((p: PageRow) => [p.id, p.status])) });
-    if (slidesRes.success) self.setState({ slides: slidesRes.slides });
-    if (mediaRes.success) self.setState({ media: mediaRes.media });
-    if (annRes.success) self.setState({ ann: annRes.announcements });
-    if (programmesRes.success) self.setState({ programmes: programmesRes.programmes });
-    if (enqRes.success) self.setState({ enq: enqRes.enquiries });
-    if (activities.success) self.setState({ activity: activities.log });
-    if (role === 'super') {
-      const usersRes = await getUsersAction();
-      if (usersRes.success) self.setState({ users: usersRes.profiles, invitations: usersRes.invitations as InvitationRow[] });
+    try {
+      const [pagesRes, slidesRes, mediaRes, annRes, enqRes, activities] = await Promise.all([
+        getPagesAction(),
+        getCarouselSlidesAction(),
+        getMediaAction(),
+        getAnnouncementsAction(),
+        getEnquiriesAction(),
+        getActivityLogAction(),
+      ]);
+      const programmesRes = await getProgrammesAction();
+      if (pagesRes.success) self.setState({ pages: pagesRes.pages, pstat: Object.fromEntries(pagesRes.pages.map((p: PageRow) => [p.id, p.status])) });
+      if (slidesRes.success) self.setState({ slides: slidesRes.slides });
+      if (mediaRes.success) self.setState({ media: mediaRes.media });
+      if (annRes.success) self.setState({ ann: annRes.announcements });
+      if (programmesRes.success) self.setState({ programmes: programmesRes.programmes });
+      if (enqRes.success) self.setState({ enq: enqRes.enquiries });
+      if (activities.success) self.setState({ activity: activities.log });
+      if (role === 'super') {
+        const usersRes = await getUsersAction();
+        if (usersRes.success) self.setState({ users: usersRes.profiles, invitations: usersRes.invitations as InvitationRow[] });
+      }
+    } catch (e) {
+      console.error('Error loading admin data:', e);
+    } finally {
+      self.setState({ loading: false });
     }
-    self.setState({ loading: false });
   }
 
   private toast(msg: string, sub?: string, kind?: string) {
@@ -714,129 +723,303 @@ export default class AdminApp extends React.Component<{
   render() {
     const $v = this.renderVals();
     const s = this.state;
-    const is = (v: string) => !this.allowed(s.view, s.role) && !s.loading && s.view === v;
+    const is = (v: string) => this.allowed(s.view, s.role) && s.view === v;
     return (
-      <div className={$v.appCls} style={css("font-family: var(--font-ui); color: #123d32;")}>
-        <div className={"topbar" + (s.nav ? ' nav-open' : '')}>
-          <button className={"tgl"} onClick={s.nav ? $v.closeNav : $v.toggleNav} aria-label="Toggle navigation">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 12h18M3 6h18M3 18h18" /></svg>
-          </button>
-          <div className={"brand"}>
-            <span className={"brand-name"}>Chaitanya Keralam · Admin</span>
-          </div>
-          <div className={"brand-spacer"} />
-          <div className={"user-mini"}>
-            <span className={"user-mini-n"}>{$v.me.name.split(' ').map((w) => w[0]).join('')}</span>
-            <span className={"user-mini-l"}>{$v.roleLabels[s.role]}</span>
-          </div>
-        </div>
+      <div className={"app" + (s.nav ? " nav-open" : "")}>
+        <aside className={"side"} aria-label="Admin navigation">
+          <a className={"brand"} href={"/admin"}>
+            <img src={"/images/chaitanya-keralam-logo.png"} alt={"Chaitanya Keralam"} width={"40"} height={"38"} />
+            <div>
+              <b>Chaitanya Keralam</b>
+              <span>Admin Portal</span>
+            </div>
+          </a>
 
-        <div className={"body"}>
-          <aside className={"side" + (s.nav ? ' nav-open' : '')} aria-label="Admin navigation">
-            <div className={"side-h"}>
-              <div className={"side-brand"}>Chaitanya Keralam</div>
-              <div className={"side-sub"}>Content &amp; audience management</div>
+          <div className={"nav-g"}>Manage</div>
+          <button className={"nav-i" + ($v.isDash ? " on" : "")} onClick={$v.go.dashboard}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg>
+            <span>Dashboard</span>
+          </button>
+          <button className={"nav-i" + ($v.isPages ? " on" : "")} onClick={$v.go.pages}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+            <span>Pages</span>
+          </button>
+          <button className={"nav-i" + ($v.isCar ? " on" : "")} onClick={$v.go.carousel}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect width="18" height="14" x="3" y="5" rx="2"></rect><circle cx="9" cy="10" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>
+            <span>Carousel</span>
+          </button>
+          <button className={"nav-i" + ($v.isMedia ? " on" : "")} onClick={$v.go.media}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 22h14a2 2 0 0 0 2-2V7.5L14.5 2H6a2 2 0 0 0-2 2v4"></path><polyline points="14 2 14 8 20 8"></polyline><path d="m2 15 3-3 3 3"></path><path d="m5 12v9"></path></svg>
+            <span>Media</span>
+          </button>
+
+          <div className={"nav-g"}>Audience</div>
+          <button className={"nav-i" + ($v.isEnq ? " on" : "")} onClick={$v.go.enquiries}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+            <span>Enquiries</span>
+            {$v.enqNewAll > 0 && <span className={"cnt"}>{$v.enqNewAll}</span>}
+          </button>
+          {s.role === 'super' && (
+            <button className={"nav-i" + ($v.isUsers ? " on" : "")} onClick={$v.go.users}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              <span>Users &amp; roles</span>
+            </button>
+          )}
+
+          <div className={"nav-g"}>Publish</div>
+          <button className={"nav-i" + ($v.isProg ? " on" : "")} onClick={$v.go.programmes}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+            <span>Programmes</span>
+          </button>
+          <button className={"nav-i" + ($v.isAnn ? " on" : "")} onClick={$v.go.announcements}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m3 11 18-5v12L3 14v-3z"></path><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"></path></svg>
+            <span>Announcements</span>
+          </button>
+          <button className={"nav-i" + ($v.isAct ? " on" : "")} onClick={$v.go.activity}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span>Activity log</span>
+          </button>
+
+          <div className={"nav-g"}>System</div>
+          <button className={"nav-i" + ($v.isSet ? " on" : "")} onClick={$v.go.settings}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            <span>Settings</span>
+          </button>
+
+          <div className={"side-foot"}>
+            <div>
+              <b style={css("color: #fff;")}>{$v.me.name}</b>
+              <div style={css("color: #a9c2b4; font-size: 11px;")}>{$v.roleLabels[s.role]}</div>
             </div>
-            <div className={"side-groups"}>
-              <div className={"side-group"}>
-                <div className={"side-group-label"}>Manage</div>
-                <div className={"side-list"}>
-                  <button className={"side-item" + ($v.isDash ? ' on' : '')} onClick={$v.go.dashboard}><span className={"side-ic"}>📊</span><span className={"side-lbl"}>Dashboard</span></button>
-                  <button className={"side-item" + ($v.isPages ? ' on' : '')} onClick={$v.go.pages}><span className={"side-ic"}>📄</span><span className={"side-lbl"}>Pages</span></button>
-                  <button className={"side-item" + ($v.isCar ? ' on' : '')} onClick={$v.go.carousel}><span className={"side-ic"}>🖼️</span><span className={"side-lbl"}>Carousel</span></button>
-                  <button className={"side-item" + ($v.isMedia ? ' on' : '')} onClick={$v.go.media}><span className={"side-ic"}>🖼️</span><span className={"side-lbl"}>Media</span></button>
-                </div>
-              </div>
-              <div className={"side-group"}>
-                <div className={"side-group-label"}>Audience</div>
-                <div className={"side-list"}>
-                  <button className={"side-item" + ($v.isEnq ? ' on' : '')} onClick={$v.go.enquiries}><span className={"side-ic"}>✉️</span><span className={"side-lbl"}>Enquiries</span></button>
-                  <button className={"side-item" + ($v.isUsers ? ' on' : '')} onClick={$v.go.users}><span className={"side-ic"}>👥</span><span className={"side-lbl"}>Users &amp; roles</span></button>
-                </div>
-              </div>
-              <div className={"side-group"}>
-                <div className={"side-group-label"}>Publish</div>
-                <div className={"side-list"}>
-                  <button className={"side-item" + ($v.isProg ? ' on' : '')} onClick={$v.go.programmes}><span className={"side-ic"}>🎓</span><span className={"side-lbl"}>Programmes</span></button>
-                  <button className={"side-item" + ($v.isAnn ? ' on' : '')} onClick={$v.go.announcements}><span className={"side-ic"}>📢</span><span className={"side-lbl"}>Announcements</span></button>
-                  <button className={"side-item" + ($v.isAct ? ' on' : '')} onClick={$v.go.activity}><span className={"side-ic"}>⏱️</span><span className={"side-lbl"}>Activity log</span></button>
-                </div>
-              </div>
-              <div className={"side-group"}>
-                <div className={"side-group-label"}>Setup</div>
-                <div className={"side-list"}>
-                  <button className={"side-item" + ($v.isSet ? ' on' : '')} onClick={$v.go.settings}><span className={"side-ic"}>⚙️</span><span className={"side-lbl"}>Settings</span></button>
-                </div>
-              </div>
+            <a href={"/"} target={"_blank"} rel={"noreferrer"} style={css("color: #c5a15a; text-decoration: none; font-size: 11px; display: inline-flex; align-items: center; gap: 4px;")}>
+              <span>Public website</span>
+              <span>↗</span>
+            </a>
+          </div>
+        </aside>
+
+        <div className={"main"}>
+          <header className={"top"}>
+            <button className={"ib menu-btn"} onClick={$v.toggleNav} aria-label="Toggle navigation">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+            <div className={"crumb"}>
+              <button onClick={$v.go.dashboard}>Admin</button>
+              <span>/</span>
+              <span>{s.view.charAt(0).toUpperCase() + s.view.slice(1)}</span>
             </div>
-            <div className={"side-foot"}>
-              <div className={"side-ft-label"}>Signed in as</div>
-              <div className={"side-ft-name"}>{$v.me.name}</div>
-              <div className={"side-ft-role"}>{$v.roleLabels[s.role]}</div>
+            <div className={"top-r"}>
+              <a href={"/"} target={"_blank"} rel={"noreferrer"} className={"btn sm q"}>View live site ↗</a>
+              <div className={"prof"}>
+                <span className={"av"}>{$v.me.name.charAt(0)}</span>
+                <div className={"prof-t"}>
+                  <b>{$v.me.name}</b>
+                  <span>{$v.roleLabels[s.role]}</span>
+                </div>
+              </div>
+              <a href={"/admin/signed-out"} className={"ib bd sm"} title="Sign out">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              </a>
             </div>
-          </aside>
+          </header>
 
           <main className={"content"}>
             {/*
               Dashboard overview
             */}
             {is('dashboard') && (
-              <div className={"card-grid"}>
-                <div className={"card"}>
-                  <div className={"card-h"}>Pages</div>
-                  <div className={"card-n"}>{$v.total}</div>
-                  <div className={"card-s"}>{$v.pubN} live · {$v.draftN} draft · {$v.revN} in review · {$v.unpubN} unpublished</div>
+              <div className={"stack"} style={css("gap: 24px;")}>
+                <div className={"ph"}>
+                  <div className={"ph-t"}>
+                    <p className={"eyb"}>Overview</p>
+                    <h1 className={"h1"}>Administration Dashboard</h1>
+                    <p className={"sub"}>Welcome back, {$v.me.name}. Here is a summary of your website contents and audience enquiries.</p>
+                  </div>
+                  <div className={"acts"}>
+                    <button className={"btn"} onClick={$v.go.pages}>Manage Pages</button>
+                    <button className={"btn pri"} onClick={$v.go.enquiries}>View Enquiries ({$v.enqNewAll})</button>
+                  </div>
                 </div>
-                <div className={"card"}>
-                  <div className={"card-h"}>Enquiries</div>
-                  <div className={"card-n"}>{$v.enqNewAll}</div>
-                  <div className={"card-s"}>{$v.enqNewAll === 1 ? 'new enquiry' : 'new enquiries'} needing a reply</div>
+
+                <div className={"stats"}>
+                  <div className={"stat"} onClick={$v.go.pages}>
+                    <span className={"k"}><span className={"ic"}>📄</span> Total Pages</span>
+                    <span className={"v"}>{$v.total}</span>
+                    <span className={"s"}>{$v.pubN} live · {$v.draftN} draft · {$v.revN} review</span>
+                  </div>
+                  <div className={"stat alert"} onClick={$v.go.enquiries}>
+                    <span className={"k"}><span className={"ic"}>✉️</span> New Enquiries</span>
+                    <span className={"v"}>{$v.enqNewAll}</span>
+                    <span className={"s"}>{$v.enqNewAll === 1 ? 'Needs reply' : 'Needing replies'}</span>
+                  </div>
+                  <div className={"stat"} onClick={$v.go.programmes}>
+                    <span className={"k"}><span className={"ic"}>🎓</span> Programmes</span>
+                    <span className={"v"}>{$v.progs.length}</span>
+                    <span className={"s"}>{$v.progDrafts} drafts in progress</span>
+                  </div>
+                  <div className={"stat"} onClick={$v.go.announcements}>
+                    <span className={"k"}><span className={"ic"}>📢</span> Announcements</span>
+                    <span className={"v"}>{$v.ann ? $v.ann.length : 0}</span>
+                    <span className={"s"}>{$v.annDrafts} draft items</span>
+                  </div>
                 </div>
-                <div className={"card"}>
-                  <div className={"card-h"}>Programmes</div>
-                  <div className={"card-n"}>{$v.progs.length}</div>
-                  <div className={"card-s"}>{$v.progDrafts} needing review</div>
+
+                <div className={"grid2"}>
+                  <div className={"card"}>
+                    <div className={"card-h"}>
+                      <h2 className={"h2"}>Quick Actions</h2>
+                    </div>
+                    <div className={"qa"}>
+                      <button onClick={$v.go.pages}><span>📄</span> Edit Site Pages</button>
+                      <button onClick={$v.go.enquiries}><span>✉️</span> Respond to Inquiries</button>
+                      <button onClick={$v.go.programmes}><span>🎓</span> Update Programmes</button>
+                      <button onClick={$v.go.media}><span>🖼️</span> Upload Media Files</button>
+                    </div>
+                  </div>
+
+                  <div className={"card"}>
+                    <div className={"card-h"}>
+                      <h2 className={"h2"}>Publishing Mix</h2>
+                    </div>
+                    <div className={"card-b"}>
+                      <p className={"small muted"} style={css("margin-bottom: 12px;")}>{$v.mix.label}</p>
+                      <div className={"bar"}>
+                        <i style={css($v.mix.pub)}></i>
+                        <i style={css($v.mix.draft)}></i>
+                        <i style={css($v.mix.rev)}></i>
+                      </div>
+                      <div className={"legend"} style={css("margin-top: 14px;")}>
+                        <span><i style={css("background: #2f6b50;")}></i> Published ({$v.pubN})</span>
+                        <span><i style={css("background: #c5a15a;")}></i> Draft ({$v.draftN})</span>
+                        <span><i style={css("background: #1f4a6b;")}></i> Review ({$v.revN})</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+
                 <div className={"card"}>
-                  <div className={"card-h"}>Announcements</div>
-                  <div className={"card-n"}>{$v.ann ? $v.ann.length : 0}</div>
-                  <div className={"card-s"}>{$v.annDrafts} drafts</div>
+                  <div className={"card-h"}>
+                    <div>
+                      <h2 className={"h2"}>All Website Pages ({$v.pages.length})</h2>
+                      <p className={"small muted"}>Manage content, sections, and publication status for all pages on the site.</p>
+                    </div>
+                    <button className={"btn sm"} onClick={$v.go.pages}>View Full Page Manager →</button>
+                  </div>
+                  <div className={"tw"}>
+                    <div className={"tbl"} style={css("--cols: 2.5fr 2fr 1fr 1.5fr auto; --minw: 700px;")}>
+                      <div className={"tr th"}>
+                        <div className={"td"}>Page Name</div>
+                        <div className={"td"}>Public URL</div>
+                        <div className={"td"}>Status</div>
+                        <div className={"td"}>Last Updated</div>
+                        <div className={"td"} style={css("text-align: right;")}>Actions</div>
+                      </div>
+                      {$v.pages.map((p) => {
+                        const isPub = p.stKey === 'pub';
+                        const isDraft = p.stKey === 'draft';
+                        const stClass = isPub ? 'st-pub' : isDraft ? 'st-draft' : 'st-unpub';
+                        return (
+                          <div key={p.id} className={"tr"}>
+                            <div className={"td"}>
+                              <span className={"t-main"}>{p.name}</span>
+                            </div>
+                            <div className={"td"}>
+                              <a href={p.path} target={"_blank"} rel={"noreferrer"} style={css("color: #2f6b50; text-decoration: none; font-size: 13px; font-family: monospace;")}>
+                                {p.path} ↗
+                              </a>
+                            </div>
+                            <div className={"td"}>
+                              <span className={"st " + stClass}>{p.stLabel}</span>
+                            </div>
+                            <div className={"td"}>
+                              <span className={"t-sub"}>Super Admin</span>
+                            </div>
+                            <div className={"td"} style={css("text-align: right; display: flex; gap: 6px; justify-content: flex-end;")}>
+                              <button className={"btn sm"} onClick={() => $v.go.pageEdit(p.id)}>Edit</button>
+                              <a href={p.path} target={"_blank"} rel={"noreferrer"} className={"btn sm q"}>Preview</a>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
 
             {/*
-              Pages
+              Pages Manager
             */}
             {is('pages') && (
-              <div className={"card-list"}>
-                <div className={"card-f"}>
-                  <div className={"row"} style={css("justify-content: space-between; align-items: center;")}>
-                    <h2 id="pages-h">Pages</h2>
-                    <div className={"filter"}>
-                      {$v.pTabs.map((t) => (
-                        <button key={t.label} className={t.cls} onClick={t.pick}>{t.label}</button>
-                      ))}
-                    </div>
+              <div className={"stack"} style={css("gap: 20px;")}>
+                <div className={"ph"}>
+                  <div className={"ph-t"}>
+                    <p className={"eyb"}>Content</p>
+                    <h1 className={"h1"}>Website Pages ({$v.pages.length})</h1>
+                    <p className={"sub"}>Manage pages, page metadata, section content, and visibility on the public site.</p>
                   </div>
-                  <p className={"hint"}>{$v.pRows.length === 0 ? 'No pages found.' : 'Manage pages and their sections.'}</p>
+                  <div className={"acts"}>
+                    <button className={"btn"} onClick={$v.go.dashboard}>← Back to Dashboard</button>
+                    <a href={"/"} target={"_blank"} rel={"noreferrer"} className={"btn pri"}>Visit Website ↗</a>
+                  </div>
                 </div>
-                {$v.pRows.map((p) => (
-                  <div key={p.id} className={"card row"}>
-                    <div className={"row"} style={css("flex: 1; align-items: center; gap: 10px;")}>
-                      <span className={"tag"}>{p.stLabel}</span>
-                      <span className={"pg-name"}>{p.name}</span>
-                      <span className={"pg-path"}>{p.path}</span>
-                    </div>
-                    <div className={"card-f"} style={css("align-items: center; gap: 6px;")}>
-                      <button className={"btn sm"} onClick={() => $v.go.pageEdit(p.id)}>Edit</button>
-                      <button className={"btn sm"} onClick={$v.previewPage}>Preview</button>
-                      {p.canUnpub && <button className={"btn sm"} onClick={$v.askUnpublish}>Unpublish</button>}
-                      {p.dirty && <button className={"btn sm"} onClick={$v.askDiscard}>Discard</button>}
+
+                <div className={"tabs"}>
+                  {$v.pTabs.map((t) => (
+                    <button key={t.label} className={t.cls} onClick={t.pick}>
+                      {t.label} {t.count > 0 && <span style={css("opacity: 0.7; font-size: 12px;")}>({t.count})</span>}
+                    </button>
+                  ))}
+                </div>
+
+                <div className={"card"}>
+                  <div className={"tw"}>
+                    <div className={"tbl"} style={css("--cols: 2.5fr 2fr 1.2fr 1.5fr auto; --minw: 750px;")}>
+                      <div className={"tr th"}>
+                        <div className={"td"}>Page Name &amp; Key</div>
+                        <div className={"td"}>Live Route</div>
+                        <div className={"td"}>Publication Status</div>
+                        <div className={"td"}>Last Editor</div>
+                        <div className={"td"} style={css("text-align: right;")}>Actions</div>
+                      </div>
+                      {$v.pRows.map((p) => {
+                        const isPub = p.stKey === 'pub';
+                        const isDraft = p.stKey === 'draft';
+                        const stClass = isPub ? 'st-pub' : isDraft ? 'st-draft' : 'st-unpub';
+                        return (
+                          <div key={p.id} className={"tr"}>
+                            <div className={"td"}>
+                              <div className={"t-main"}>{p.name}</div>
+                              <span className={"t-sub"} style={css("font-family: monospace; font-size: 11px;")}>id: {p.id}</span>
+                            </div>
+                            <div className={"td"}>
+                              <a href={p.path} target={"_blank"} rel={"noreferrer"} style={css("color: #2f6b50; text-decoration: underline; font-family: monospace; font-size: 13px;")}>
+                                {p.path}
+                              </a>
+                            </div>
+                            <div className={"td"}>
+                              <span className={"st " + stClass}>{p.stLabel}</span>
+                            </div>
+                            <div className={"td"}>
+                              <span className={"t-sub"}>Super Admin</span>
+                            </div>
+                            <div className={"td"} style={css("text-align: right; display: flex; gap: 6px; justify-content: flex-end;")}>
+                              <button className={"btn sm pri"} onClick={() => $v.go.pageEdit(p.id)}>Edit Page</button>
+                              <a href={p.path} target={"_blank"} rel={"noreferrer"} className={"btn sm"}>View Live ↗</a>
+                              {p.canUnpub && <button className={"btn sm q"} onClick={$v.askUnpublish}>Unpublish</button>}
+                            </div>
+                          </div>
+                        );
+                      })}
+                      {$v.pRows.length === 0 && (
+                        <div className={"empty"}>
+                          <b>No pages match the selected filter.</b>
+                          <p>Click "All pages" to view the full list.</p>
+                        </div>
+                      )}
                     </div>
                   </div>
-                ))}
-                {$v.pRows.length === 0 && <div className={"empty"}>No pages match the current filter.</div>}
+                </div>
               </div>
             )}
 

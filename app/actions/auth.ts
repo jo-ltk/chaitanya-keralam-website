@@ -1,4 +1,4 @@
-﻿'use server';
+'use server';
 
 import crypto from 'crypto';
 import { createClient } from '@/lib/supabase/server';
@@ -39,23 +39,8 @@ export async function loginAction(data: { email: string; pw: string }) {
       return { success: false, error: 'Your account has been suspended. Please contact a Super Admin.' };
     }
 
-    // Check MFA requirements
+    // Direct login without 2FA requirement
     const role = profile?.role || 'super';
-    const { data: factors } = await supabase.auth.mfa.listFactors();
-    const totpFactors = factors?.totp || [];
-    const hasTotp = totpFactors.length > 0;
-
-    if (role === 'super') {
-      if (!hasTotp) {
-        return { success: true, needsMfaSetup: true, role };
-      }
-      return { success: true, needsMfa: true, factorId: totpFactors[0].id, role };
-    }
-
-    if (hasTotp) {
-      return { success: true, needsMfa: true, factorId: totpFactors[0].id, role };
-    }
-
     return { success: true, role };
   } catch (err: any) {
     return { success: false, error: err.message || 'An unexpected error occurred during sign-in' };

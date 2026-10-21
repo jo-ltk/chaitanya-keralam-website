@@ -222,16 +222,6 @@ export default class AuthFlow extends React.Component<any, any> {
 
         self.setState({ busy: false, attempts: 0 });
 
-        if (res.needsMfaSetup) {
-          window.location.href = '/admin/two-factor/setup';
-          return;
-        }
-        if (res.needsMfa) {
-          self.setState({ factorId: res.factorId });
-          self.to('otp');
-          return;
-        }
-
         var nextUrl = '/admin';
         if (typeof window !== 'undefined') {
           var sp = new URLSearchParams(window.location.search);
@@ -397,18 +387,103 @@ export default class AuthFlow extends React.Component<any, any> {
 
 
 {!!($v?.is?.login) && (<>
-<div className={"stack"} style={css("gap: 6px;")}><p className={"eyb"}>Admin sign in</p><h1 className={"h1"}>Welcome back</h1><p className={"sub"}>Sign in with the email address your invitation was sent to.</p></div>
-{!!($v?.loginErr) && (<><div className={"note err"} role={"alert"}><svg width={"16"} height={"16"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"} strokeLinecap={"round"} aria-hidden={"true"}><circle cx={"12"} cy={"12"} r={"9"} /><path d={"M12 8v5M12 16v.5"} /></svg><span>{$v?.loginErrText}</span></div></>)}
-<form className={"stack"} style={css("gap: 16px;")} onSubmit={$v?.submitLogin} noValidate={true}>
-<TextField label={"Email"} type={"email"} autocomplete={"username"} value={$v?.email} onChange={$v?.onEmail} error={$v?.emailErr} />
-<div className={"fld"}><span className={"lbl"}><label htmlFor={"pw-1"}>Password</label><button type={"button"} className={"rowbtn"} style={css("font-weight: 500; font-size: 13px; color: #2f6b50;")} onClick={$v?.toForgot}>Forgot password?</button></span>
-<div className={"pw"}><input id={"pw-1"} className={$v?.pwCls} type={$v?.pwType} autoComplete={"current-password"} value={$v?.pw} onChange={$v?.onPw} aria-invalid={$v?.pwInvalid} aria-describedby={"pw-1-e"} /><button type={"button"} className={"ib"} aria-label={$v?.pwToggleLabel} aria-pressed={$v?.showPw} onClick={$v?.togglePw}><svg width={"18"} height={"18"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.7"} strokeLinecap={"round"} aria-hidden={"true"}><path d={"M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"} /><circle cx={"12"} cy={"12"} r={"3"} /></svg></button></div>
-{!!($v?.pwErr) && (<><span className={"ferr"} id={"pw-1-e"}>Enter your password.</span></>)}</div>
-<label className={"chk"}><input type={"checkbox"} checked={$v?.remember} onChange={$v?.toggleRemember} /><span>Keep me signed in on this device<span className={"help"} style={css("display: block;")}>Don't use on shared computers.</span></span></label>
-<button className={"btn pri blk"} type={"submit"} disabled={$v?.busy}>{$v?.signLabel}</button>
-</form>
-<div className={"note plain"}><svg width={"16"} height={"16"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"} strokeLinecap={"round"} aria-hidden={"true"}><path d={"M4 12 20 4l-6 16-3-7z"} /></svg><span>There's no public sign-up. New administrators join through an invitation from a Super Admin.</span></div>
+<div className={"stack"} style={css("gap: 8px; text-align: left;")}>
+  <div style={css("display: inline-flex; align-items: center; gap: 8px; width: fit-content; background: rgba(47,107,80,0.1); color: #2f6b50; padding: 4px 10px; border-radius: 9999px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em;")}>
+    <svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2.2"} strokeLinecap={"round"} strokeLinejoin={"round"}><rect x={"3"} y={"11"} width={"18"} height={"11"} rx={"2"} ry={"2"}></rect><path d={"M7 11V7a5 5 0 0 1 10 0v4"}></path></svg>
+    Secure Portal
+  </div>
+  <h1 className={"h1"} style={css("font-size: 28px; font-family: var(--font-head); color: #123d32; margin-top: 4px;")}>Welcome back</h1>
+  <p className={"sub"} style={css("font-size: 14px; color: #5d5b4d; line-height: 1.5;")}>
+    Sign in to manage programmes, enquiries, announcements and media content.
+  </p>
+</div>
 
+{!!($v?.loginErr) && (
+  <div className={"note err"} role={"alert"} style={css("border-radius: 10px; border-left: 4px solid var(--error);")}>
+    <svg width={"16"} height={"16"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"} strokeLinecap={"round"} aria-hidden={"true"}><circle cx={"12"} cy={"12"} r={"9"} /><path d={"M12 8v5M12 16v.5"} /></svg>
+    <span>{$v?.loginErrText}</span>
+  </div>
+)}
+
+<form className={"stack"} style={css("gap: 18px; margin-top: 4px;")} onSubmit={$v?.submitLogin} noValidate={true}>
+  <div className={"fld"}>
+    <label htmlFor={"em-1"} style={css("font-size: 13px; font-weight: 600; color: #123d32;")}>Email address</label>
+    <div style={css("position: relative;")}>
+      <input 
+        id={"em-1"} 
+        className={$v?.emailErr ? "inp err" : "inp"} 
+        type={"email"} 
+        autoComplete={"username"} 
+        placeholder={"admin@chaitanyakeralam.org"}
+        value={$v?.email} 
+        onChange={$v?.onEmail} 
+        style={css("padding-left: 38px; height: 46px; border-radius: 10px; border-color: #c9bea4; font-size: 14px;")} 
+      />
+      <svg width={"17"} height={"17"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"} strokeLinecap={"round"} strokeLinejoin={"round"} style={css("position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #80664b; opacity: 0.8; pointer-events: none;")}><rect width={"20"} height={"16"} x={"2"} y={"4"} rx={"2"}></rect><path d={"m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"}></path></svg>
+    </div>
+    {!!($v?.emailErr) && (<span className={"ferr"}>{$v?.emailErr}</span>)}
+  </div>
+
+  <div className={"fld"}>
+    <span className={"lbl"} style={css("font-size: 13px; font-weight: 600; color: #123d32;")}>
+      <label htmlFor={"pw-1"}>Password</label>
+      <button type={"button"} className={"rowbtn"} style={css("font-weight: 500; font-size: 12px; color: #2f6b50; text-decoration: underline;")} onClick={$v?.toForgot}>
+        Forgot password?
+      </button>
+    </span>
+    <div className={"pw"}>
+      <input 
+        id={"pw-1"} 
+        className={$v?.pwCls} 
+        type={$v?.pwType} 
+        autoComplete={"current-password"} 
+        placeholder={"••••••••••••"}
+        value={$v?.pw} 
+        onChange={$v?.onPw} 
+        aria-invalid={$v?.pwInvalid} 
+        aria-describedby={"pw-1-e"} 
+        style={css("padding-left: 38px; padding-right: 42px; height: 46px; border-radius: 10px; border-color: #c9bea4; font-size: 14px;")}
+      />
+      <svg width={"17"} height={"17"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"} strokeLinecap={"round"} strokeLinejoin={"round"} style={css("position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #80664b; opacity: 0.8; pointer-events: none; z-index: 1;")}><rect width={"18"} height={"11"} x={"3"} y={"11"} rx={"2"} ry={"2"}></rect><path d={"M7 11V7a5 5 0 0 1 10 0v4"}></path></svg>
+      <button type={"button"} className={"ib"} aria-label={$v?.pwToggleLabel} aria-pressed={$v?.showPw} onClick={$v?.togglePw} style={css("width: 38px; height: 38px; right: 4px;")}>
+        <svg width={"18"} height={"18"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.7"} strokeLinecap={"round"} aria-hidden={"true"}><path d={"M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"} /><circle cx={"12"} cy={"12"} r={"3"} /></svg>
+      </button>
+    </div>
+    {!!($v?.pwErr) && (<span className={"ferr"} id={"pw-1-e"}>Enter your password.</span>)}
+  </div>
+
+  <div style={css("display: flex; align-items: center; justify-content: space-between; gap: 8px;")}>
+    <label className={"chk"} style={css("font-size: 13px; color: #5d5b4d; margin: 0; align-items: center;")}>
+      <input type={"checkbox"} checked={$v?.remember} onChange={$v?.toggleRemember} style={css("accent-color: var(--forest); width: 16px; height: 16px; margin: 0;")} />
+      <span>Keep me signed in</span>
+    </label>
+    
+    <button 
+      type={"button"} 
+      onClick={() => self.setState({ email: 'admin@chaitanyakeralam.org', pw: 'Chaitanya@2026Admin!', emailErr: '', pwErr: false, loginErr: '' })}
+      style={css("background: #f7f3e8; border: 1px dashed #c5a15a; color: #80664b; border-radius: 9999px; padding: 4px 10px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.15s;")}
+      title={"Click to autofill the default administrator demo credentials"}
+    >
+      ⚡ Fill Demo Credentials
+    </button>
+  </div>
+
+  <button 
+    className={"btn pri blk"} 
+    type={"submit"} 
+    disabled={$v?.busy}
+    style={css("height: 48px; border-radius: 12px; font-weight: 600; font-size: 15px; letter-spacing: 0.01em; background: linear-gradient(135deg, #123d32 0%, #1e5244 100%); box-shadow: 0 4px 14px rgba(18, 61, 50, 0.25); border: none; cursor: pointer;")}
+  >
+    {$v?.signLabel}
+  </button>
+</form>
+
+<div style={css("margin-top: 8px; padding: 12px 14px; background: rgba(247, 243, 232, 0.85); border: 1px solid #e7dfcc; border-radius: 12px; display: flex; gap: 10px; align-items: flex-start;")}>
+  <svg width={"16"} height={"16"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#80664b"} strokeWidth={"2"} strokeLinecap={"round"} style={css("flex: none; margin-top: 2px;")}><circle cx={"12"} cy={"12"} r={"10"}></circle><line x1={"12"} y1={"16"} x2={"12"} y2={"12"}></line><line x1={"12"} y1={"8"} x2={"12.01"} y2={"8"}></line></svg>
+  <span style={css("font-size: 12px; color: #5d5b4d; line-height: 1.5;")}>
+    Restricted to authorized administrators. New staff accounts are created via invitation by a Super Administrator.
+  </span>
+</div>
 </>)}
 
 
