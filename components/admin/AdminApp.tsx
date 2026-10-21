@@ -34,6 +34,20 @@ import {
   getActivityLogAction,
 } from '@/app/actions/admin';
 import { inviteUserAction } from '@/app/actions/auth';
+import { updateEnquiryStatusAction, addEnquiryNoteAction, getEnquiriesAction } from '@/app/actions/enquiries';
+import type { AdminRole, PublishStatus, EnquiryStatus, Database } from '@/lib/supabase/types';
+
+type ProfileRow = Database['public']['Tables']['profiles']['Row'];
+type PageRow = Database['public']['Tables']['pages']['Row'];
+type SectionRow = Database['public']['Tables']['page_sections']['Row'];
+type CarouselSlideRow = Database['public']['Tables']['carousel_slides']['Row'];
+type MediaRow = Database['public']['Tables']['media']['Row'];
+type ProgrammeRow = Database['public']['Tables']['programmes']['Row'];
+type AnnouncementRow = Database['public']['Tables']['announcements']['Row'];
+type EnquiryRow = Database['public']['Tables']['enquiries']['Row'];
+type InvitationRow = Database['public']['Tables']['invitations']['Row'];
+type ActivityRow = Database['public']['Tables']['activity_log']['Row'];
+
 
 interface AdminAppState {
   view: string;
@@ -210,7 +224,7 @@ export default class AdminApp extends React.Component<{
     if (activities.success) self.setState({ activity: activities.log });
     if (role === 'super') {
       const usersRes = await getUsersAction();
-      if (usersRes.success) self.setState({ users: usersRes.profiles, invitations: usersRes.invitations });
+      if (usersRes.success) self.setState({ users: usersRes.profiles, invitations: usersRes.invitations as InvitationRow[] });
     }
     self.setState({ loading: false });
   }
@@ -220,56 +234,6 @@ export default class AdminApp extends React.Component<{
     clearTimeout(this._tt);
     this._tt = setTimeout(() => this.setState({ toast: null }), 4000);
   }
-  mCat: string;
-  mQ: string;
-  mSel: string | null;
-  mEdits: Record<string, unknown>;
-  upl: any[];
-  hot: boolean;
-  progId: string;
-  progTab: string;
-  pedits: Record<string, unknown>;
-  prst: Record<string, PublishStatus>;
-  prDirty: Record<string, boolean>;
-  programmes: ProgrammeRow[];
-  ann: AnnouncementRow[];
-  annId: string | null;
-  annEdits: Record<string, unknown>;
-  annErr: boolean;
-  enq: EnquiryRow[];
-  enqTab: string;
-  enqSt: string;
-  enqQ: string;
-  enqSel: string | null;
-  note: string;
-  users: ProfileRow[];
-  invitations: InvitationRow[];
-  invEmail: string;
-  invRole: AdminRole;
-  invErr: string;
-  ex: { fmt: string; contact: boolean; notes: boolean };
-  aRows: any[];
-  aType: string;
-  aQ: string;
-  aNone: boolean;
-  set: { req2fa: boolean; timeout: string; invite: string; domains: string };
-  activity: ActivityRow[];
-  crop: any;
-  pickKey: string | null;
-}
-import { updateEnquiryStatusAction, addEnquiryNoteAction, getEnquiriesAction } from '@/app/actions/enquiries';
-import type { AdminRole, PublishStatus, EnquiryStatus, Database } from '@/lib/supabase/types';
-
-type ProfileRow = Database['public']['Tables']['profiles']['Row'];
-type PageRow = Database['public']['Tables']['pages']['Row'];
-type SectionRow = Database['public']['Tables']['page_sections']['Row'];
-type CarouselSlideRow = Database['public']['Tables']['carousel_slides']['Row'];
-type MediaRow = Database['public']['Tables']['media']['Row'];
-type ProgrammeRow = Database['public']['Tables']['programmes']['Row'];
-type AnnouncementRow = Database['public']['Tables']['announcements']['Row'];
-type EnquiryRow = Database['public']['Tables']['enquiries']['Row'];
-type InvitationRow = Database['public']['Tables']['invitations']['Row'];
-type ActivityRow = Database['public']['Tables']['activity_log']['Row'];
 
 
   private confirm(opts: { title: string; body: string; ok: string; act?: string; danger?: boolean; warn?: boolean; needAck?: boolean; ackLabel?: string; list?: string[] }) {
@@ -341,7 +305,7 @@ type ActivityRow = Database['public']['Tables']['activity_log']['Row'];
 
   private syncUrl(view: string, pageId?: string) {
     if (typeof window === 'undefined') return;
-    const slug: Record<string, string> = {
+    const slug: string | undefined = ({
       dashboard: '',
       pages: '/pages',
       pageEdit: '/pages/' + pageId,
@@ -353,7 +317,7 @@ type ActivityRow = Database['public']['Tables']['activity_log']['Row'];
       users: '/users',
       activity: '/activity',
       settings: '/settings',
-    }[view];
+    } as Record<string, string>)[view];
     if (slug != null) window.history.replaceState(null, '', '/admin' + slug);
   }
 
@@ -452,8 +416,8 @@ type ActivityRow = Database['public']['Tables']['activity_log']['Row'];
       });
       const o = Object.assign({}, s.order);
       delete o[pid];
-      const d: Record<string, unknown> = Object.assign({}, s.dirty);
-      (d as Record<string, boolean>)[pid] = false;
+      const d: Record<string, boolean> = Object.assign({}, s.dirty);
+      d[pid] = false;
       this.setState({ edits: e, order: o, dirty: d, dlg: null });
       this.toast('Unsaved changes discarded', 'The last saved draft is shown.');
     }
@@ -572,6 +536,15 @@ type ActivityRow = Database['public']['Tables']['activity_log']['Row'];
     const meIni = me.name.split(' ').map((w) => w.charAt(0)).join('').toUpperCase();
     const showEnqCnt = this.allowed('enquiries', role) && enqNewAll > 0;
     const dlg: any = s.dlg;
+    const rolesList = (['super', 'editor', 'enquiry'] as const).map((r) => ({
+      label: roleLabels[r],
+      on: role === r,
+      cls: role === r ? 'mi on' : 'mi',
+      pick: () => {
+        self.setState({ role: r, prof: false });
+        self.toast('Viewing as ' + roleLabels[r], 'Prototype only: see which sections and actions this role can use.');
+      },
+    }));
 
     const pid = s.pageId;
     const secList = sections;
@@ -628,7 +601,7 @@ type ActivityRow = Database['public']['Tables']['activity_log']['Row'];
       isUsers: is('users'),
       isAct: is('activity'),
       isSet: is('settings'),
-      st: st,
+      st: s.pstat[pid],
       mix: mix,
       dPages: pageRows,
       recent: [],
@@ -670,9 +643,9 @@ type ActivityRow = Database['public']['Tables']['activity_log']['Row'];
       closeHist: () => self.setState({ hist: false }),
       versions: [],
       cmp: null,
-      crop: null,
+      crop: s.crop || {},
       pick: null,
-      slides: [],
+      slides: s.slides || [],
       sl: null,
       car: null,
       saveCar: () => self.setState({ carDirty: false, carSt: s.carSt === 'pub' ? 'pub' : 'draft' }),
@@ -680,12 +653,9 @@ type ActivityRow = Database['public']['Tables']['activity_log']['Row'];
       closeToast: () => self.setState({ toast: null }),
       hasToast: !!s.toast,
       toast: s.toast || {},
-      toastCls: s.toast && s.toast.kind === 'err' ? 'toast err' : 'toast',
-      set: {
-        req2fa: s.set.req2fa,
-        timeout: s.set.timeout,
-        invite: s.set.invite,
-        domains: s.set.domains,
+      toastCls: s.toast && s.toast[2] === 'err' ? 'toast err' : 'toast',
+      set: s.set || {},
+      setActions: {
         toggle2fa: () => self.setState({ set: Object.assign({}, s.set, { req2fa: !s.set.req2fa }) }),
         timeout: (e: any) => self.setState({ set: Object.assign({}, s.set, { timeout: e.target.value }) }),
         invite: (e: any) => self.setState({ set: Object.assign({}, s.set, { invite: e.target.value }) }),
@@ -703,11 +673,9 @@ type ActivityRow = Database['public']['Tables']['activity_log']['Row'];
       progs: progs,
       progDrafts: progDrafts,
       annDrafts: annDrafts,
-      enqNewAll: enqNewAll,
       enq: enq,
       sections: sections,
       pid: pid,
-      slides: s.slides || [],
       mView: s.mView || '',
       mCat: s.mCat || '',
       mQ: s.mQ || '',
@@ -738,57 +706,10 @@ type ActivityRow = Database['public']['Tables']['activity_log']['Row'];
       aType: s.aType || 'all',
       aQ: s.aQ || '',
       aNone: s.aNone || false,
-      set: s.set || {},
       activity: s.activity || [],
-      crop: s.crop || {},
       pickKey: s.pickKey || '',
     };
-
-    const topNav = (
-      <div className={"topnav" + (s.nav ? ' nav-open' : '')}>
-        <div className={"brand"}>
-          <button className={"tgl"} onClick={s.nav ? self.closeNav : self.toggleNav} aria-label="Toggle navigation">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 12h18M3 6h18M3 18h18" /></svg>
-          </button>
-          <span className={"brand-name"}>Chaitanya Keralam · Admin</span>
-        </div>
-        <div className={"user"}>
-          <div className={"user-av"}>{$v.me.name.split(' ').map((w) => w[0]).join('')}</div>
-          <div className={"user-info"}>
-            <div className={"user-name"}>{$v.me.name}</div>
-            <div className={"user-roles"}>{$v.roleLabels[s.role]}</div>
-          </div>
-          <div className={"user-actions"}>
-            <button className={"ib"} onClick={self.toggleProf} aria-label="Profile"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-3.314 3.053-6 7-6s7 2.686 7 6" /></svg></button>
-            <button className={"ib"} onClick={self.askLogout}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><path d="M16 17l5-5-5-5" /><path d="M21 12H9" /></svg></button>
-          </div>
-        </div>
-      </div>
-    );
-
-    const rolesList = (['super', 'editor', 'enquiry'] as const).map((r) => ({
-      label: roleLabels[r],
-      on: role === r,
-      cls: role === r ? 'mi on' : 'mi',
-      pick: () => {
-        self.setState({ role: r, prof: false });
-        self.toast('Viewing as ' + roleLabels[r], 'Prototype only: see which sections and actions this role can use.');
-      },
-    }));
-
-    const dashLinks = (
-      <div className={"dash-links"}>
-        {(['pages', 'carousel', 'media', 'enquiries', 'programmes', 'announcements', 'users', 'activity', 'settings'] as const).map((v) => (
-          <button key={v} className={"dash-link" + (is(v) ? ' on' : '') + (self.allowed(v, role) ? '' : ' dis')} onClick={go[v]}>
-            <span className={"dl-ic"}>{v === 'pages' ? '📄' : v === 'carousel' ? '🖼️' : v === 'media' ? '🖼️' : v === 'enquiries' ? '✉️' : v === 'programmes' ? '🎓' : v === 'announcements' ? '📢' : v === 'users' ? '👥' : v === 'activity' ? '⏱️' : '⚙️'}</span>
-            <span className={"dl-txt"}>{viewNames[v]}</span>
-            {showEnqCnt && v === 'enquiries' && <span className={"dl-badge"}>{enqNewAll}</span>}
-          </button>
-        ))}
-      </div>
-    );
-
-    const setTab = (tab: string) => { self.setState({ view: tab }); };
+  }
 
   render() {
     const $v = this.renderVals();
@@ -820,31 +741,31 @@ type ActivityRow = Database['public']['Tables']['activity_log']['Row'];
               <div className={"side-group"}>
                 <div className={"side-group-label"}>Manage</div>
                 <div className={"side-list"}>
-                  <button className={"side-item" + ($v.isDash ? ' on' : '')} onClick={$v.dashboard}><span className={"side-ic"}>📊</span><span className={"side-lbl"}>Dashboard</span></button>
-                  <button className={"side-item" + ($v.isPages ? ' on' : '')} onClick={$v.pages}><span className={"side-ic"}>📄</span><span className={"side-lbl"}>Pages</span></button>
-                  <button className={"side-item" + ($v.isCar ? ' on' : '')} onClick={$v.carousel}><span className={"side-ic"}>🖼️</span><span className={"side-lbl"}>Carousel</span></button>
-                  <button className={"side-item" + ($v.isMedia ? ' on' : '')} onClick={$v.media}><span className={"side-ic"}>🖼️</span><span className={"side-lbl"}>Media</span></button>
+                  <button className={"side-item" + ($v.isDash ? ' on' : '')} onClick={$v.go.dashboard}><span className={"side-ic"}>📊</span><span className={"side-lbl"}>Dashboard</span></button>
+                  <button className={"side-item" + ($v.isPages ? ' on' : '')} onClick={$v.go.pages}><span className={"side-ic"}>📄</span><span className={"side-lbl"}>Pages</span></button>
+                  <button className={"side-item" + ($v.isCar ? ' on' : '')} onClick={$v.go.carousel}><span className={"side-ic"}>🖼️</span><span className={"side-lbl"}>Carousel</span></button>
+                  <button className={"side-item" + ($v.isMedia ? ' on' : '')} onClick={$v.go.media}><span className={"side-ic"}>🖼️</span><span className={"side-lbl"}>Media</span></button>
                 </div>
               </div>
               <div className={"side-group"}>
                 <div className={"side-group-label"}>Audience</div>
                 <div className={"side-list"}>
-                  <button className={"side-item" + ($v.isEnq ? ' on' : '')} onClick={$v.enquiries}><span className={"side-ic"}>✉️</span><span className={"side-lbl"}>Enquiries</span></button>
-                  <button className={"side-item" + ($v.isUsers ? ' on' : '')} onClick={$v.users}><span className={"side-ic"}>👥</span><span className={"side-lbl"}>Users &amp; roles</span></button>
+                  <button className={"side-item" + ($v.isEnq ? ' on' : '')} onClick={$v.go.enquiries}><span className={"side-ic"}>✉️</span><span className={"side-lbl"}>Enquiries</span></button>
+                  <button className={"side-item" + ($v.isUsers ? ' on' : '')} onClick={$v.go.users}><span className={"side-ic"}>👥</span><span className={"side-lbl"}>Users &amp; roles</span></button>
                 </div>
               </div>
               <div className={"side-group"}>
                 <div className={"side-group-label"}>Publish</div>
                 <div className={"side-list"}>
-                  <button className={"side-item" + ($v.isProg ? ' on' : '')} onClick={$v.programmes}><span className={"side-ic"}>🎓</span><span className={"side-lbl"}>Programmes</span></button>
-                  <button className={"side-item" + ($v.isAnn ? ' on' : '')} onClick={$v.announcements}><span className={"side-ic"}>📢</span><span className={"side-lbl"}>Announcements</span></button>
-                  <button className={"side-item" + ($v.isAct ? ' on' : '')} onClick={$v.activity}><span className={"side-ic"}>⏱️</span><span className={"side-lbl"}>Activity log</span></button>
+                  <button className={"side-item" + ($v.isProg ? ' on' : '')} onClick={$v.go.programmes}><span className={"side-ic"}>🎓</span><span className={"side-lbl"}>Programmes</span></button>
+                  <button className={"side-item" + ($v.isAnn ? ' on' : '')} onClick={$v.go.announcements}><span className={"side-ic"}>📢</span><span className={"side-lbl"}>Announcements</span></button>
+                  <button className={"side-item" + ($v.isAct ? ' on' : '')} onClick={$v.go.activity}><span className={"side-ic"}>⏱️</span><span className={"side-lbl"}>Activity log</span></button>
                 </div>
               </div>
               <div className={"side-group"}>
                 <div className={"side-group-label"}>Setup</div>
                 <div className={"side-list"}>
-                  <button className={"side-item" + ($v.isSet ? ' on' : '')} onClick={$v.settings}><span className={"side-ic"}>⚙️</span><span className={"side-lbl"}>Settings</span></button>
+                  <button className={"side-item" + ($v.isSet ? ' on' : '')} onClick={$v.go.settings}><span className={"side-ic"}>⚙️</span><span className={"side-lbl"}>Settings</span></button>
                 </div>
               </div>
             </div>
@@ -869,17 +790,17 @@ type ActivityRow = Database['public']['Tables']['activity_log']['Row'];
                 <div className={"card"}>
                   <div className={"card-h"}>Enquiries</div>
                   <div className={"card-n"}>{$v.enqNewAll}</div>
-                  <div className={"card-s"}>{enqNewAll === 1 ? 'new enquiry' : 'new enquiries'} needing a reply</div>
+                  <div className={"card-s"}>{$v.enqNewAll === 1 ? 'new enquiry' : 'new enquiries'} needing a reply</div>
                 </div>
                 <div className={"card"}>
                   <div className={"card-h"}>Programmes</div>
-                  <div className={"card-n"}>{progs.length}</div>
-                  <div className={"card-s"}>{progDrafts} needing review</div>
+                  <div className={"card-n"}>{$v.progs.length}</div>
+                  <div className={"card-s"}>{$v.progDrafts} needing review</div>
                 </div>
                 <div className={"card"}>
                   <div className={"card-h"}>Announcements</div>
-                  <div className={"card-n"}>{s.ann ? s.ann.length : 0}</div>
-                  <div className={"card-s"}>{annDrafts} drafts</div>
+                  <div className={"card-n"}>{$v.ann ? $v.ann.length : 0}</div>
+                  <div className={"card-s"}>{$v.annDrafts} drafts</div>
                 </div>
               </div>
             )}
@@ -893,14 +814,14 @@ type ActivityRow = Database['public']['Tables']['activity_log']['Row'];
                   <div className={"row"} style={css("justify-content: space-between; align-items: center;")}>
                     <h2 id="pages-h">Pages</h2>
                     <div className={"filter"}>
-                      {pTabs.map((t) => (
+                      {$v.pTabs.map((t) => (
                         <button key={t.label} className={t.cls} onClick={t.pick}>{t.label}</button>
                       ))}
                     </div>
                   </div>
-                  <p className={"hint"}>{pRows.length === 0 ? 'No pages found.' : 'Manage pages and their sections.'}</p>
+                  <p className={"hint"}>{$v.pRows.length === 0 ? 'No pages found.' : 'Manage pages and their sections.'}</p>
                 </div>
-                {pRows.map((p) => (
+                {$v.pRows.map((p) => (
                   <div key={p.id} className={"card row"}>
                     <div className={"row"} style={css("flex: 1; align-items: center; gap: 10px;")}>
                       <span className={"tag"}>{p.stLabel}</span>
@@ -908,14 +829,14 @@ type ActivityRow = Database['public']['Tables']['activity_log']['Row'];
                       <span className={"pg-path"}>{p.path}</span>
                     </div>
                     <div className={"card-f"} style={css("align-items: center; gap: 6px;")}>
-                      <button className={"btn sm"} onClick={$v.pages}>Edit</button>
+                      <button className={"btn sm"} onClick={() => $v.go.pageEdit(p.id)}>Edit</button>
                       <button className={"btn sm"} onClick={$v.previewPage}>Preview</button>
                       {p.canUnpub && <button className={"btn sm"} onClick={$v.askUnpublish}>Unpublish</button>}
                       {p.dirty && <button className={"btn sm"} onClick={$v.askDiscard}>Discard</button>}
                     </div>
                   </div>
                 ))}
-                {pRows.length === 0 && <div className={"empty"}>No pages match the current filter.</div>}
+                {$v.pRows.length === 0 && <div className={"empty"}>No pages match the current filter.</div>}
               </div>
             )}
 
@@ -928,20 +849,6 @@ type ActivityRow = Database['public']['Tables']['activity_log']['Row'];
                   <div className={"card-h"}>{$v.pg?.name || 'Page'}</div>
                   <div className={"card-s"}>{$v.pg?.path}</div>
                   <div className={"st"}><span className={"st-txt"}>{$v.pg?.stLabel}</span><span className={"st-sub"}>{$v.pg?.dirty ? 'unsaved changes' : 'no unsaved changes'}</span></div>
-                  {$v.pg && (
-                    <div className={"tbl"}>
-                      <div className={"hdr"}>
-                        <div className={"c"}>Version</div>
-                        <div className={"c"}>Updated</div>
-                        <div className={"c"}>By</div>
-                      </div>
-                      <div className={"row"}>
-                        <div className={"c"}>{$v.pg?.version || 1}</div>
-                        <div className={"c"}>{$v.pg?.updated_at}</div>
-                        <div className={"c"}>{$v.pg?.updated_by}</div>
-                      </div>
-                    </div>
-                  )}
                 </div>
                 <div className={"card"}>
                   <div className={"card-h"}>Sections</div>
@@ -986,7 +893,7 @@ type ActivityRow = Database['public']['Tables']['activity_log']['Row'];
               <div className={"card-grid"}>
                 <div className={"card"}>
                   <div className={"card-h"}>Media</div>
-                  <div className={"card-s"}>{$v.upl?.name || 'No upload'}</div>
+                  <div className={"card-s"}>{Array.isArray($v.upl) && $v.upl.length ? $v.upl.length + ' uploads' : 'No upload'}</div>
                 </div>
                 <div className={"card"}>
                   <div className={"card-h"}>Status</div>
@@ -1004,7 +911,7 @@ type ActivityRow = Database['public']['Tables']['activity_log']['Row'];
                 </div>
                 <div className={"card"}>
                   <div className={"card-h"}>Status</div>
-                  <div className={"card-s"}>{$v.prst}</div>
+                  <div className={"card-s"}>{JSON.stringify($v.prst)}</div>
                 </div>
               </div>
             )}
@@ -1018,7 +925,7 @@ type ActivityRow = Database['public']['Tables']['activity_log']['Row'];
                 </div>
                 <div className={"card"}>
                   <div className={"card-h"}>Error</div>
-                  <div className={"card-s"}>{$v.annErr}</div>
+                  <div className={"card-s"}>{$v.annErr ? 'Error' : 'None'}</div>
                 </div>
               </div>
             )}
@@ -1066,11 +973,11 @@ type ActivityRow = Database['public']['Tables']['activity_log']['Row'];
               <div className={"card-grid"}>
                 <div className={"card"}>
                   <div className={"card-h"}>Settings</div>
-                  <div className={"card-s"}>{$v.set?.req2fa ? '2FA required' : 'Optional'}</div>
+                  <div className={"card-s"}>{(s.set as any)?.req2fa ? '2FA required' : 'Optional'}</div>
                 </div>
                 <div className={"card"}>
                   <div className={"card-h"}>Crop</div>
-                  <div className={"card-s"}>{$v.crop?.width || 0}×{$v.crop?.height || 0}</div>
+                  <div className={"card-s"}>{$v.crop ? 'Custom' : 'Default'}</div>
                 </div>
               </div>
             )}
@@ -1079,3 +986,5 @@ type ActivityRow = Database['public']['Tables']['activity_log']['Row'];
         </div>
       </div>
     );
+  }
+}

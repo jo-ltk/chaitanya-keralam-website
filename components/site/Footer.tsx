@@ -1,8 +1,10 @@
 'use client';
 /* Converted from the Chaitanya Keralam design canvas (Footer). */
 import React from 'react';
-import Map from '@/components/site/Map';
+import dynamic from 'next/dynamic';
 import { css, str } from '@/lib/dc';
+
+const Map = dynamic(() => import('@/components/site/Map'), { ssr: false });
 
 export default class Footer extends React.Component<any, any> {
   [key: string]: any;

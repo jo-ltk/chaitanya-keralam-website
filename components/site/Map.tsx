@@ -34,7 +34,9 @@ export default function Map() {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
-    link.integrity = 'sha512-p4NFkBKj+cTZYiYisoRP7Nmo7eZd3G8PG36RzbNQ/JR9XlII6NlNEGocb8itifwAz2p/oBg2aRw8mLlDY surroundinga7I1RKHgQj86+vJSwg5vF4tTQZjzYw8BT8wDz6J4MmDw07JWMhLlQoWiwAK/UKCE6kGxOSnyI67I3543GmXZKzZ1M2CZQ5zD9zS5UMHUhlSAHJ4JDiQ3mFgMZpJ2S5A3kMZwfZ7ow5XZsG7TA1dKHlMyfMJ8c67GkLsW4C881IAxTjmnhZkl3qkn1mWTtAWfefZ3HB8c42' + '" crossorigin="">;
+    link.integrity = 'sha512-p4NFkBKj+cTZYiYisoRP7Nmo7eZd3G8PG36RzbNQ/JR9XlII6NlNEGocb8itifwAz2p/oBg2aRw8mLlDY surroundinga7I1RKHgQj86+vJSwg5vF4tTQZjzYw8BT8wDz6J4MmDw07JWMhLlQoWiwAK/UKCE6kGxOSnyI67I3543GmXZKzZ1M2CZQ5zD9zS5UMHUhlSAHJ4JDiQ3mFgMZpJ2S5A3kMZwfZ7ow5XZsG7TA1dKHlMyfMJ8c67GkLsW4C881IAxTjmnhZkl3qkn1mWTtAWfefZ3HB8c42==';
+    link.crossOrigin = '';
+
     document.head.appendChild(link);
 
     // Initialize after a slight delay to ensure DOM is ready
@@ -49,5 +51,5 @@ export default function Map() {
     };
   }, []);
 
-  return <div ref={mapRef} style={{ height: '250px', width: '100%' }} /></div>;
+  return <div ref={mapRef} style={{ height: '250px', width: '100%' }} />;
 }
