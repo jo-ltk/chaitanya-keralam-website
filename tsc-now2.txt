@@ -1,0 +1,199 @@
+﻿app/actions/enquiries.ts(41,14): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(value: readonly Literal[], params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>>; message?: string; }): ZodLiteral<Literal>', gave the following error.
+    Argument of type 'boolean' is not assignable to parameter of type 'readonly Literal[]'.
+  Overload 2 of 2, '(value: true, params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>>; message?: string; }): ZodLiteral<true>', gave the following error.
+    Object literal may only specify known properties, and 'errorMap' does not exist in type '{ error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>>; message?: string; }'.
+components/admin/AdminApp.tsx(192,11): error TS2393: Duplicate function implementation.
+components/admin/AdminApp.tsx(272,43): error TS2322: Type 'Record<string, unknown>' is not assignable to type 'Record<string, boolean>'.
+  'string' index signatures are incompatible.
+    Type 'unknown' is not assignable to type 'boolean'.
+components/admin/AdminApp.tsx(321,33): error TS2339: Property 'st' does not exist on type 'ProfileRow'.
+components/admin/AdminApp.tsx(324,123): error TS2339: Property 'st' does not exist on type 'ProfileRow'.
+components/admin/AdminApp.tsx(325,25): error TS2339: Property 'st' does not exist on type 'ProfileRow'.
+components/admin/AdminApp.tsx(325,49): error TS2339: Property 'email' does not exist on type 'ProfileRow'.
+components/admin/AdminApp.tsx(325,77): error TS2339: Property 'email' does not exist on type 'ProfileRow'.
+components/admin/AdminApp.tsx(336,84): error TS2339: Property 'email' does not exist on type 'ProfileRow'.
+components/admin/AdminApp.tsx(357,8): error TS2339: Property 'enquiriesTesh' does not exist on type '{}'.
+components/admin/AdminApp.tsx(362,8): error TS2339: Property 'ini' does not exist on type '{ name: string; email: string; roleLabel: string; }'.
+components/admin/AdminApp.tsx(374,127): error TS2339: Property 'upd' does not exist on type 'PageRow'.
+components/admin/AdminApp.tsx(374,138): error TS2339: Property 'by' does not exist on type 'PageRow'.
+components/admin/AdminApp.tsx(408,138): error TS2554: Expected 3 arguments, but got 2.
+components/admin/AdminApp.tsx(426,109): error TS2339: Property 'imgs' does not exist on type 'SectionRow'.
+components/admin/AdminApp.tsx(426,143): error TS2339: Property 'imgs' does not exist on type 'SectionRow'.
+components/admin/AdminApp.tsx(426,182): error TS2339: Property 'imgs' does not exist on type 'SectionRow'.
+components/admin/AdminApp.tsx(426,228): error TS2339: Property 'carousel' does not exist on type 'SectionRow'.
+components/admin/AdminApp.tsx(453,9): error TS2339: Property 'restore' does not exist on type '{ page: any; title: string; left: string; right: string; rows: any[]; none: boolean; canRestore: boolean; }'.
+components/admin/AdminApp.tsx(463,56): error TS2339: Property 'empty' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(464,25): error TS2339: Property 'name' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(464,39): error TS2339: Property 'dims' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(464,52): error TS2339: Property 'src' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(464,64): error TS2339: Property 'fit' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(464,86): error TS2339: Property 'name' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(465,94): error TS2339: Property 'src' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(465,300): error TS2339: Property 'name' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(486,172): error TS2554: Expected 2 arguments, but got 1.
+components/admin/AdminApp.tsx(509,56): error TS2339: Property 'empty' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(512,91): error TS2339: Property 'empty' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(512,101): error TS2339: Property 'cat' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(517,59): error TS2339: Property 'empty' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(517,69): error TS2339: Property 'cat' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(518,39): error TS2339: Property 'name' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(518,55): error TS2339: Property 'slot' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(518,91): error TS2339: Property 'cat' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(521,35): error TS2339: Property 'empty' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(521,45): error TS2339: Property 'slot' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(521,54): error TS2339: Property 'name' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(521,68): error TS2339: Property 'empty' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(521,97): error TS2339: Property 'type' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(521,115): error TS2339: Property 'dims' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(521,133): error TS2339: Property 'size' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(521,148): error TS2339: Property 'empty' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(521,202): error TS2339: Property 'uses' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(521,219): error TS2339: Property 'uses' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(522,16): error TS2339: Property 'cat' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(522,29): error TS2339: Property 'empty' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(522,54): error TS2339: Property 'type' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(522,68): error TS2339: Property 'dims' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(522,91): error TS2339: Property 'size' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(522,118): error TS2339: Property 'src' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(522,133): error TS2339: Property 'src' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(522,145): error TS2339: Property 'src' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(522,157): error TS2339: Property 'fit' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(523,32): error TS2339: Property 'empty' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(523,134): error TS2339: Property 'empty' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(523,161): error TS2339: Property 'slot' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(523,170): error TS2339: Property 'name' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(528,35): error TS2339: Property 'empty' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(528,48): error TS2339: Property 'slot' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(528,60): error TS2339: Property 'name' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(528,82): error TS2339: Property 'empty' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(528,103): error TS2339: Property 'empty' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(528,125): error TS2339: Property 'src' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(528,140): error TS2339: Property 'src' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(528,155): error TS2339: Property 'fit' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(528,192): error TS2339: Property 'empty' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(529,69): error TS2339: Property 'desc' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(529,86): error TS2339: Property 'type' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(529,103): error TS2339: Property 'dims' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(529,120): error TS2339: Property 'size' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(529,138): error TS2339: Property 'added' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(530,27): error TS2339: Property 'name' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(530,155): error TS2339: Property 'desc' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(530,217): error TS2339: Property 'cat' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(531,18): error TS2339: Property 'uses' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(531,37): error TS2339: Property 'uses' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(536,18): error TS2339: Property 'uses' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(536,115): error TS2339: Property 'name' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(536,206): error TS2339: Property 'uses' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(537,53): error TS2339: Property 'name' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(551,19): error TS2339: Property 'mods' does not exist on type '{}'.
+components/admin/AdminApp.tsx(553,264): error TS2339: Property 'hours' does not exist on type '{}'.
+components/admin/AdminApp.tsx(554,25): error TS2339: Property 'title' does not exist on type '{}'.
+components/admin/AdminApp.tsx(554,67): error TS2339: Property 'level' does not exist on type '{}'.
+components/admin/AdminApp.tsx(558,705): error TS2339: Property 'mods' does not exist on type '{}'.
+components/admin/AdminApp.tsx(562,66): error TS2339: Property 'st' does not exist on type 'AnnouncementRow'.
+components/admin/AdminApp.tsx(563,41): error TS2339: Property 'place' does not exist on type 'AnnouncementRow'.
+components/admin/AdminApp.tsx(563,58): error TS2339: Property 'from' does not exist on type 'AnnouncementRow'.
+components/admin/AdminApp.tsx(563,77): error TS2339: Property 'from' does not exist on type 'AnnouncementRow'.
+components/admin/AdminApp.tsx(563,96): error TS2339: Property 'to' does not exist on type 'AnnouncementRow'.
+components/admin/AdminApp.tsx(563,112): error TS2339: Property 'to' does not exist on type 'AnnouncementRow'.
+components/admin/AdminApp.tsx(572,56): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(...items: ConcatArray<AnnouncementRow>[]): AnnouncementRow[]', gave the following error.
+    Type '{ id: string; title: any; msg: any; place: any; from: any; to: any; st: any; }' is missing the following properties from type 'AnnouncementRow': date, body, category, status, and 2 more.
+  Overload 2 of 2, '(...items: (AnnouncementRow | ConcatArray<AnnouncementRow>)[]): AnnouncementRow[]', gave the following error.
+    Type '{ id: string; title: any; msg: any; place: any; from: any; to: any; st: any; }' is missing the following properties from type 'AnnouncementRow': date, body, category, status, and 2 more.
+components/admin/AdminApp.tsx(573,25): error TS2322: Type '(AnnouncementRow | { id: string; title: any; msg: any; place: any; from: any; to: any; st: any; })[]' is not assignable to type 'AnnouncementRow[]'.
+  Type 'AnnouncementRow | { id: string; title: any; msg: any; place: any; from: any; to: any; st: any; }' is not assignable to type 'AnnouncementRow'.
+    Type '{ id: string; title: any; msg: any; place: any; from: any; to: any; st: any; }' is missing the following properties from type 'AnnouncementRow': date, body, category, status, and 2 more.
+components/admin/AdminApp.tsx(578,79): error TS2339: Property 'st' does not exist on type 'AnnouncementRow | { id: string; title: string; msg: string; place: string; from: string; to: string; st: string; }'.
+  Property 'st' does not exist on type 'AnnouncementRow'.
+components/admin/AdminApp.tsx(581,237): error TS2339: Property 'start' does not exist on type '{}'.
+components/admin/AdminApp.tsx(581,263): error TS2339: Property 'title' does not exist on type '{}'.
+components/admin/AdminApp.tsx(585,87): error TS2339: Property 't' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(585,103): error TS2339: Property 'st' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(586,54): error TS2339: Property 't' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(588,128): error TS2339: Property 'st' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(590,76): error TS2339: Property 'st' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(590,134): error TS2339: Property 'msg' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(590,148): error TS2339: Property 'sub' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(591,32): error TS2339: Property 'st' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(592,51): error TS2339: Property 'msg' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(592,63): error TS2339: Property 'sub' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(592,76): error TS2339: Property 'date' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(592,142): error TS2339: Property 'as' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(596,164): error TS2345: Argument of type '{ who: string; ini: string; when: string; text: any; }[]' is not assignable to parameter of type 'string'.
+components/admin/AdminApp.tsx(601,25): error TS2339: Property 't' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(601,71): error TS2339: Property 'sub' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(601,97): error TS2339: Property 'age' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(601,133): error TS2339: Property 'qual' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(602,15): error TS2339: Property 't' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(602,60): error TS2339: Property 'prop' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(602,92): error TS2339: Property 'loc' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(602,127): error TS2339: Property 'collab' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(603,15): error TS2339: Property 't' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(603,62): error TS2339: Property 'org' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(603,101): error TS2339: Property 'sub' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(603,138): error TS2339: Property 'contact' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(604,35): error TS2339: Property 'sub' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(605,52): error TS2339: Property 'date' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(605,192): error TS2339: Property 't' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(606,17): error TS2339: Property 'st' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(606,35): error TS2339: Property 'as' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(606,65): error TS2339: Property 'msg' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(617,32): error TS2339: Property 'st' does not exist on type 'ProfileRow'.
+components/admin/AdminApp.tsx(618,39): error TS2339: Property 'email' does not exist on type 'ProfileRow'.
+components/admin/AdminApp.tsx(618,53): error TS2339: Property 'st' does not exist on type 'ProfileRow'.
+components/admin/AdminApp.tsx(619,21): error TS2339: Property 'self' does not exist on type 'ProfileRow'.
+components/admin/AdminApp.tsx(619,39): error TS2339: Property 'self' does not exist on type 'ProfileRow'.
+components/admin/AdminApp.tsx(619,88): error TS2339: Property 'twofa' does not exist on type 'ProfileRow'.
+components/admin/AdminApp.tsx(619,103): error TS2339: Property 'last' does not exist on type 'ProfileRow'.
+components/admin/AdminApp.tsx(620,22): error TS2339: Property 'st' does not exist on type 'ProfileRow'.
+components/admin/AdminApp.tsx(620,55): error TS2339: Property 'self' does not exist on type 'ProfileRow'.
+components/admin/AdminApp.tsx(620,65): error TS2339: Property 'st' does not exist on type 'ProfileRow'.
+components/admin/AdminApp.tsx(620,95): error TS2339: Property 'st' does not exist on type 'ProfileRow'.
+components/admin/AdminApp.tsx(621,197): error TS2339: Property 'email' does not exist on type 'ProfileRow'.
+components/admin/AdminApp.tsx(622,38): error TS2339: Property 'st' does not exist on type 'ProfileRow'.
+components/admin/AdminApp.tsx(623,70): error TS2339: Property 'email' does not exist on type 'ProfileRow'.
+components/admin/AdminApp.tsx(624,110): error TS2339: Property 'email' does not exist on type 'ProfileRow'.
+components/admin/AdminApp.tsx(631,50): error TS2339: Property 'email' does not exist on type 'ProfileRow'.
+components/admin/AdminApp.tsx(634,111): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(...items: ConcatArray<ProfileRow>[]): ProfileRow[]', gave the following error.
+    Object literal may only specify known properties, and 'email' does not exist in type 'ProfileRow'.
+  Overload 2 of 2, '(...items: (ProfileRow | ConcatArray<ProfileRow>)[]): ProfileRow[]', gave the following error.
+    Object literal may only specify known properties, and 'email' does not exist in type 'ProfileRow'.
+components/admin/AdminApp.tsx(659,11): error TS2339: Property 'secs' does not exist on type 'PageRow'.
+components/admin/AdminApp.tsx(661,78): error TS2339: Property 'empty' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(661,89): error TS2339: Property 'name' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(661,146): error TS2339: Property 'name' does not exist on type 'MediaRow'.
+components/admin/AdminApp.tsx(662,242): error TS2339: Property 't' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(663,93): error TS2339: Property 'email' does not exist on type 'ProfileRow'.
+components/admin/AdminApp.tsx(663,165): error TS2339: Property 'email' does not exist on type 'ProfileRow'.
+components/admin/AdminApp.tsx(682,55): error TS2339: Property 't' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(682,78): error TS2339: Property 'st' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(683,56): error TS2339: Property 't' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(683,74): error TS2339: Property 't' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(683,144): error TS2339: Property 'st' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(684,152): error TS2339: Property 'st' does not exist on type 'AnnouncementRow'.
+components/admin/AdminApp.tsx(690,156): error TS2339: Property 't' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(691,58): error TS2339: Property 'st' does not exist on type 'EnquiryRow'.
+components/admin/AdminApp.tsx(693,243): error TS2322: Type 'string' is not assignable to type 'AdminRole'.
+components/admin/AdminApp.tsx(699,201): error TS2353: Object literal may only specify known properties, and 'href' does not exist in type '{ title: string; body: string; ok: string; act?: string; danger?: boolean; warn?: boolean; needAck?: boolean; ackLabel?: string; list?: string[]; }'.
+components/admin/AdminApp.tsx(737,83): error TS2339: Property 'title' does not exist on type '{}'.
+components/admin/AdminApp.tsx(743,192): error TS2345: Argument of type '{ who: string; ini: any; when: string; text: string; }[]' is not assignable to parameter of type 'string'.
+components/admin/AdminApp.tsx(743,217): error TS2339: Property 'ini' does not exist on type '{ name: string; email: string; roleLabel: string; }'.
+components/admin/AdminApp.tsx(753,59): error TS2339: Property 'kind' does not exist on type '[string, string, string?]'.
+components/admin/AdminApp.tsx(756,3): error TS2393: Duplicate function implementation.
+components/admin/AdminApp.tsx(775,27): error TS2322: Type '{ id: string; name: string; type: string; dims: string; size: string; cat: string; alt: string; desc: string; src: string; fit: string; added: string; uses: any[]; }[]' is not assignable to type 'MediaRow[]'.
+  Type '{ id: string; name: string; type: string; dims: string; size: string; cat: string; alt: string; desc: string; src: string; fit: string; added: string; uses: any[]; }' is missing the following properties from type 'MediaRow': path, filename, credit, category, and 4 more.
+components/admin/AdminApp.tsx(775,263): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(...items: ConcatArray<{ id: string; name: string; type: string; dims: string; size: string; cat: string; alt: string; desc: string; src: string; fit: string; added: string; uses: any[]; }>[]): { ...; }[]', gave the following error.
+    Argument of type 'MediaRow[]' is not assignable to parameter of type 'ConcatArray<{ id: string; name: string; type: string; dims: string; size: string; cat: string; alt: string; desc: string; src: string; fit: string; added: string; uses: any[]; }>'.
+      The types returned by 'slice(...)' are incompatible between these types.
+        Type 'MediaRow[]' is not assignable to type '{ id: string; name: string; type: string; dims: string; size: string; cat: string; alt: string; desc: string; src: string; fit: string; added: string; uses: any[]; }[]'.
+          Type 'MediaRow' is missing the following properties from type '{ id: string; name: string; type: string; dims: string; size: string; cat: string; alt: string; desc: string; src: string; fit: string; added: string; uses: any[]; }': name, type, dims, size, and 6 more.
+  Overload 2 of 2, '(...items: ({ id: string; name: string; type: string; dims: string; size: string; cat: string; alt: string; desc: string; src: string; fit: string; added: string; uses: any[]; } | ConcatArray<{ id: string; name: string; type: string; ... 8 more ...; uses: any[]; }>)[]): { ...; }[]', gave the following error.
+    Argument of type 'MediaRow[]' is not assignable to parameter of type '{ id: string; name: string; type: string; dims: string; size: string; cat: string; alt: string; desc: string; src: string; fit: string; added: string; uses: any[]; } | ConcatArray<{ id: string; name: string; type: string; ... 8 more ...; uses: any[]; }>'.
+      Type 'MediaRow[]' is not assignable to type 'ConcatArray<{ id: string; name: string; type: string; dims: string; size: string; cat: string; alt: string; desc: string; src: string; fit: string; added: string; uses: any[]; }>'.
+        The types returned by 'slice(...)' are incompatible between these types.
+          Type 'MediaRow[]' is not assignable to type '{ id: string; name: string; type: string; dims: string; size: string; cat: string; alt: string; desc: string; src: string; fit: string; added: string; uses: any[]; }[]'.
+            Type 'MediaRow' is missing the following properties from type '{ id: string; name: string; type: string; dims: string; size: string; cat: string; alt: string; desc: string; src: string; fit: string; added: string; uses: any[]; }': name, type, dims, size, and 6 more.
