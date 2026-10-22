@@ -47,7 +47,7 @@ export default class Programmes extends React.Component<any, any> {
 
 <div className={"navbar"}>
 <a className={"nav-logo"} href={"/"} tabIndex={-1}><img src={"/images/chaitanya-keralam-logo.png"} alt={"Chaitanya Keralam logo"} width={"335"} height={"320"} /></a>
-<NavBar brand={"Chaitanya Keralam"} brandHref={"/"} links={$v?.navLinks} />
+<NavBar brandHref={"/"} links={$v?.navLinks} />
 <div className={"nav-cta"}><Button variant={"primary"} size={"sm"} href={"#admissions"}>Apply now</Button></div>
 <button className={"menu-btn"} aria-label={$v?.menuLabel} aria-expanded={$v?.menuOpen} onClick={$v?.toggleMenu}><svg width={"20"} height={"20"} viewBox={"0 0 20 20"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.6"} strokeLinecap={"round"} aria-hidden={"true"}><path d={$v?.menuIcon} /></svg></button>
 </div>

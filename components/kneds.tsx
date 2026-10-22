@@ -67,7 +67,7 @@ export function NavBar(p: any) {
   const links = p.links || [];
   return (
     <header className={cx('kn-nav', p.className)}>
-      <a className="kn-nav-brand" href={p.brandHref || '#'}>{p.brand}</a>
+      {p.brand && <a className="kn-nav-brand" href={p.brandHref || '#'}>{p.brand}</a>}
       <nav aria-label="Main"><ul className="kn-nav-links">{links.map((l: any, i: number) => (
         <li key={i}><a href={l.href || '#'} aria-current={l.active ? 'page' : undefined}>{l.label}</a></li>
       ))}</ul></nav>
