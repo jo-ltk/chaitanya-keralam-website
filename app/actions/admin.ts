@@ -283,10 +283,10 @@ export async function getUsersAction() {
   const caller = await getCallerProfile();
   if (!caller) return { success: false, error: 'Unauthorized' };
   if (caller.role !== 'super') return { success: false, error: 'Only Super Admins can view users' };
-  const supabase = createClient();
-  const { data: profiles, error: profErr } = await supabase.from('profiles').select('*').order('created_at');
+  const admin = createAdminClient();
+  const { data: profiles, error: profErr } = await admin.from('profiles').select('*').order('created_at');
   if (profErr) return { success: false, error: profErr.message };
-  const { data: invitations } = await supabase.from('invitations')
+  const { data: invitations } = await admin.from('invitations')
     .select('email, role, expires_at, created_at').is('accepted_at', null)
     .gt('expires_at', new Date().toISOString());
   return { success: true, profiles: profiles || [], invitations: invitations || [] };

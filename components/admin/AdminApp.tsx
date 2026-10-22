@@ -275,15 +275,22 @@ export default class AdminApp extends React.Component<{
     const self = this;
     const role = this.state.role;
     try {
+      console.time('[admin] loadAll');
+      console.log('[admin] loadAll: starting parallel fetches...');
+
       const [pagesRes, slidesRes, mediaRes, annRes, enqRes, activities] = await Promise.all([
-        getPagesAction(),
-        getCarouselSlidesAction(),
-        getMediaAction(),
-        getAnnouncementsAction(),
-        getEnquiriesAction(),
-        getActivityLogAction(),
+        getPagesAction().then(r => { console.log('[admin] getPagesAction done:', r.success); return r; }),
+        getCarouselSlidesAction().then(r => { console.log('[admin] getCarouselSlidesAction done:', r.success); return r; }),
+        getMediaAction().then(r => { console.log('[admin] getMediaAction done:', r.success, r.error || ''); return r; }),
+        getAnnouncementsAction().then(r => { console.log('[admin] getAnnouncementsAction done:', r.success); return r; }),
+        getEnquiriesAction().then(r => { console.log('[admin] getEnquiriesAction done:', r.success, r.error || ''); return r; }),
+        getActivityLogAction().then(r => { console.log('[admin] getActivityLogAction done:', r.success); return r; }),
       ]);
+      console.log('[admin] parallel fetches done, fetching programmes...');
+
       const programmesRes = await getProgrammesAction();
+      console.log('[admin] getProgrammesAction done:', programmesRes.success);
+
       if (!pagesRes.success || !slidesRes.success || !mediaRes.success) {
         this.toast('Some admin data failed to load', 'Refresh to retry.', 'err');
       }
@@ -301,19 +308,23 @@ export default class AdminApp extends React.Component<{
       if (enqRes.success && enqRes.enquiries) self.setState({ enq: enqRes.enquiries });
       if (activities.success && activities.log) self.setState({ activity: activities.log });
       if (role === 'super') {
+        console.log('[admin] super: fetching users + settings...');
         const [usersRes, settingsRes] = await Promise.all([
-          getUsersAction(),
-          getSettingsAction(),
+          getUsersAction().catch(err => ({ success: false, error: err?.message, profiles: [], invitations: [] })).then(r => { console.log('[admin] getUsersAction done:', r.success); return r; }),
+          getSettingsAction().catch(err => ({ success: false, error: err?.message, settings: null })).then(r => { console.log('[admin] getSettingsAction done:', r.success, r.error || ''); return r; }),
         ]);
         if (usersRes.success && usersRes.profiles) self.setState({ users: usersRes.profiles, invitations: (usersRes.invitations as InvitationRow[]) || [] });
         if (settingsRes.success && settingsRes.settings) self.setState({ set: settingsRes.settings });
       }
+      console.timeEnd('[admin] loadAll');
     } catch (e) {
-      console.error('Error loading admin data:', e);
+      console.error('[admin] Error loading admin data:', e);
     } finally {
+      console.log('[admin] loadAll: setting loading=false');
       self.setState({ loading: false });
     }
   }
+
 
   private toast(msg: string, sub?: string, kind?: string) {
     this.setState({ toast: [msg, sub || '', kind] });
