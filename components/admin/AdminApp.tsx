@@ -31,6 +31,7 @@ import {
   saveMediaMetaAction,
   getMediaAction,
   saveSettingsAction,
+  getSettingsAction,
   getActivityLogAction,
 } from '@/app/actions/admin';
 import { inviteUserAction } from '@/app/actions/auth';
@@ -257,7 +258,14 @@ export default class AdminApp extends React.Component<{
   private async loadSections(pid: string) {
     const res = await getPageSectionsAction(pid);
     if (res.success && res.sections) {
-      this.setState({ sections: res.sections, secId: res.sections[0]?.id ?? null, edits: {}, order: {} });
+      this.setState({
+        pageId: pid,
+        sections: res.sections,
+        secId: res.sections[0]?.id ?? null,
+        edits: {},
+        order: {},
+        hidden: Object.fromEntries(res.sections.map((x: SectionRow) => [pid + '.' + x.id, !!x.is_hidden])),
+      });
     } else {
       this.toast('Could not load sections: ' + (res.error || 'Unknown error'), '', 'err');
     }
@@ -293,8 +301,12 @@ export default class AdminApp extends React.Component<{
       if (enqRes.success && enqRes.enquiries) self.setState({ enq: enqRes.enquiries });
       if (activities.success && activities.log) self.setState({ activity: activities.log });
       if (role === 'super') {
-        const usersRes = await getUsersAction();
+        const [usersRes, settingsRes] = await Promise.all([
+          getUsersAction(),
+          getSettingsAction(),
+        ]);
         if (usersRes.success && usersRes.profiles) self.setState({ users: usersRes.profiles, invitations: (usersRes.invitations as InvitationRow[]) || [] });
+        if (settingsRes.success && settingsRes.settings) self.setState({ set: settingsRes.settings });
       }
     } catch (e) {
       console.error('Error loading admin data:', e);
@@ -589,7 +601,7 @@ export default class AdminApp extends React.Component<{
     const next = !this.state.hidden[key];
     const res = await toggleSectionVisibilityAction({ pageId: this.state.pageId, sectionId: sec.section_id || sec.id, hidden: next });
     if (res?.success) {
-      this.setState((p) => ({ hidden: { ...p.hidden, [key]: next }, dirty: { ...p.dirty, [p.pageId]: true } }));
+      this.setState((p) => ({ hidden: { ...p.hidden, [key]: next } }));
     } else {
       this.toast('Could not change visibility: ' + (res?.error || 'Unknown error'), '', 'err');
     }
@@ -1353,7 +1365,23 @@ carSel: s.carSel,
                             <div className={"td"} style={css("text-align: right; display: flex; gap: 6px; justify-content: flex-end;")}>
                               <button className={"btn sm pri"} onClick={() => $v.go.pageEdit(p.id)}>Edit Page</button>
                               <a href={p.path} target={"_blank"} rel={"noreferrer"} className={"btn sm"}>View Live ↗</a>
-                              {p.canUnpub && <button className={"btn sm q"} onClick={$v.askUnpublish}>Unpublish</button>}
+                              {p.canUnpub && (
+                                <button
+                                  className={"btn sm q"}
+                                  onClick={() => {
+                                    this.setState({ pageId: p.id });
+                                    this.confirm({
+                                      title: 'Unpublish ' + (p.name || 'Page'),
+                                      body: 'The page will disappear from the website and its menu links will be hidden. Visitors who open the address will see a "page not available" notice. You can republish it at any time.',
+                                      ok: 'Unpublish page',
+                                      danger: true,
+                                      act: 'unpublishPage'
+                                    });
+                                  }}
+                                >
+                                  Unpublish
+                                </button>
+                              )}
                             </div>
                           </div>
                         );
@@ -1753,10 +1781,10 @@ carSel: s.carSel,
               const setFeeField = (feeKey: string, val: string) => {
                 const nextFees = { ...fFees, [feeKey]: val };
                 // Calculate total automatically if numeric
-                const t = (Number(nextFees.tuition.replace(/[^0-9]/g, '')) || 0) +
-                          (Number(nextFees.lab.replace(/[^0-9]/g, '')) || 0) +
-                          (Number(nextFees.materials.replace(/[^0-9]/g, '')) || 0) +
-                          (Number(nextFees.cert.replace(/[^0-9]/g, '')) || 0);
+                const t = (Number(String(nextFees.tuition || '').replace(/[^0-9]/g, '')) || 0) +
+                          (Number(String(nextFees.lab || '').replace(/[^0-9]/g, '')) || 0) +
+                          (Number(String(nextFees.materials || '').replace(/[^0-9]/g, '')) || 0) +
+                          (Number(String(nextFees.cert || '').replace(/[^0-9]/g, '')) || 0);
                 nextFees.total = t > 0 ? t.toLocaleString('en-IN') : nextFees.total;
                 setField('fees', nextFees);
               };
@@ -1777,7 +1805,10 @@ carSel: s.carSel,
                     summary: fSummary,
                     curriculum: curriculumArr,
                     projects: projectsArr,
-                    learning_areas: { fees: fFees },
+                    learning_areas: {
+                      ...((dbProg?.learning_areas as object) || {}),
+                      fees: fFees,
+                    },
                   }
                 };
 
@@ -1871,6 +1902,8 @@ carSel: s.carSel,
                       {curStatus === 'draft' && (
                         <button
                           className={"btn sm"}
+                          disabled={isDirty}
+                          title={isDirty ? 'Save draft before submitting for review' : ''}
                           onClick={() => {
                             this.confirm({
                               title: `Submit "${fName}" for Review?`,
@@ -1879,7 +1912,7 @@ carSel: s.carSel,
                               act: 'submitForReview',
                             });
                           }}
-                          style={css("background: #1f4a6b; color: #ffffff; border-color: #1f4a6b;")}
+                          style={css(isDirty ? "background: #cbdde9; color: #fff; border-color: #cbdde9; cursor: not-allowed;" : "background: #1f4a6b; color: #ffffff; border-color: #1f4a6b;")}
                         >
                           Submit for Review
                         </button>
@@ -1889,6 +1922,8 @@ carSel: s.carSel,
                       {currentRole === 'super' ? (
                         <button
                           className={"btn sm pri"}
+                          disabled={isDirty}
+                          title={isDirty ? 'Save draft before publishing' : ''}
                           onClick={() => {
                             this.confirm({
                               title: `Publish "${fName}" Live?`,
@@ -2160,6 +2195,8 @@ carSel: s.carSel,
                     {curStatus === 'draft' && (
                       <button
                         className={"btn"}
+                        disabled={isDirty}
+                        title={isDirty ? 'Save draft before submitting for review' : ''}
                         onClick={() => {
                           this.confirm({
                             title: `Submit "${fName}" for Review?`,
@@ -2168,7 +2205,7 @@ carSel: s.carSel,
                             act: 'submitForReview',
                           });
                         }}
-                        style={css("background: #1f4a6b; color: #ffffff; border-color: #1f4a6b;")}
+                        style={css(isDirty ? "background: #cbdde9; color: #fff; border-color: #cbdde9; cursor: not-allowed;" : "background: #1f4a6b; color: #ffffff; border-color: #1f4a6b;")}
                       >
                         Submit for Review
                       </button>
@@ -2176,6 +2213,8 @@ carSel: s.carSel,
                     {currentRole === 'super' && (
                       <button
                         className={"btn pri"}
+                        disabled={isDirty}
+                        title={isDirty ? 'Save draft before publishing' : ''}
                         onClick={() => {
                           this.confirm({
                             title: `Publish "${fName}" Live?`,
@@ -2196,9 +2235,36 @@ carSel: s.carSel,
             {/* Announcements */}
             {is('announcements') && (() => {
               const currentRole = $v.role || s.role;
-              const annList = s.ann || [];
+              const rawAnnList = s.ann || [];
+              const todayStr = new Date().toISOString().split('T')[0];
+
+              // Helper to parse pinned flag and expiry
+              const getAnnMeta = (a: { order_index?: number; body: string }) => {
+                let isPinned = a.order_index === -1;
+                let expiry = '';
+                let text = a.body;
+                try {
+                  if (a.body && a.body.startsWith('{') && a.body.endsWith('}')) {
+                    const parsed = JSON.parse(a.body);
+                    text = parsed.text || text;
+                    if (parsed.pinned !== undefined) isPinned = parsed.pinned;
+                    if (parsed.expiry) expiry = parsed.expiry;
+                  }
+                } catch {}
+                return { isPinned, expiry, text };
+              };
+
+              // Sort pinned first, then by date descending
+              const annList = [...rawAnnList].sort((a, b) => {
+                const aMeta = getAnnMeta(a);
+                const bMeta = getAnnMeta(b);
+                if (aMeta.isPinned && !bMeta.isPinned) return -1;
+                if (!aMeta.isPinned && bMeta.isPinned) return 1;
+                return (b.date || '').localeCompare(a.date || '');
+              });
+
               const selectedAnn = s.annId === 'new'
-                ? { id: '', title: '', body: '', category: 'Admissions', date: new Date().toISOString().split('T')[0], status: 'pub' as const, order_index: 0 }
+                ? { id: '', title: '', body: '', category: 'Admissions', date: todayStr, status: 'pub' as const, order_index: 0 }
                 : annList.find((a: AnnouncementRow) => a.id === s.annId) || null;
 
               const edits = (s.annEdits as Record<string, any>) || {};
@@ -2208,29 +2274,28 @@ carSel: s.carSel,
               let parsedPinned = false;
               let cleanBody = selectedAnn?.body || '';
               if (selectedAnn) {
-                try {
-                  if (cleanBody.startsWith('{') && cleanBody.endsWith('}')) {
-                    const parsed = JSON.parse(cleanBody);
-                    cleanBody = parsed.text || '';
-                    parsedExpiry = parsed.expiry || '';
-                    parsedPinned = !!parsed.pinned;
-                  }
-                } catch {
-                  // normal text
-                }
+                const meta = getAnnMeta(selectedAnn);
+                cleanBody = meta.text;
+                parsedExpiry = meta.expiry;
+                parsedPinned = meta.isPinned;
               }
 
               const fTitle = edits.title !== undefined ? edits.title : (selectedAnn?.title || '');
               const fBody = edits.body !== undefined ? edits.body : cleanBody;
               const fCategory = edits.category !== undefined ? edits.category : (selectedAnn?.category || 'Admissions');
-              const fDate = edits.date !== undefined ? edits.date : (selectedAnn?.date || new Date().toISOString().split('T')[0]);
+              const fDate = edits.date !== undefined ? edits.date : (selectedAnn?.date || todayStr);
               const fStatus = edits.status !== undefined ? edits.status : (selectedAnn?.status || 'pub');
-              const fPinned = edits.pinned !== undefined ? edits.pinned : (selectedAnn ? (selectedAnn.order_index === -1 || parsedPinned) : false);
+              const fPinned = edits.pinned !== undefined ? edits.pinned : parsedPinned;
               const fExpiry = edits.expiry !== undefined ? edits.expiry : parsedExpiry;
 
               const handleSaveAnnouncement = async () => {
                 if (!fTitle.trim() || !fBody.trim()) {
                   this.toast('Title and body cannot be empty', '', 'err');
+                  return;
+                }
+
+                if (fExpiry && fDate && fExpiry < fDate) {
+                  this.toast('Expiration date cannot be earlier than publication date', '', 'err');
                   return;
                 }
 
@@ -2304,19 +2369,24 @@ carSel: s.carSel,
                             </tr>
                           ) : (
                             annList.map((a: AnnouncementRow) => {
-                              let isPinned = a.order_index === -1;
-                              let expiry = '';
-                              let previewText = a.body;
-                              try {
-                                if (a.body.startsWith('{') && a.body.endsWith('}')) {
-                                  const parsed = JSON.parse(a.body);
-                                  previewText = parsed.text || previewText;
-                                  if (parsed.pinned !== undefined) isPinned = parsed.pinned;
-                                  if (parsed.expiry) expiry = parsed.expiry;
-                                }
-                              } catch {}
+                              const meta = getAnnMeta(a);
+                              const isPinned = meta.isPinned;
+                              const expiry = meta.expiry;
+                              const previewText = meta.text;
 
-                              const isExpired = expiry && new Date(expiry) < new Date();
+                              const isExpired = expiry && expiry < todayStr;
+                              const isScheduled = a.status === 'pub' && a.date > todayStr;
+
+                              let statusLabel = a.status === 'pub' ? 'Active' : a.status === 'draft' ? 'Draft' : 'Archived';
+                              let statusPillClass = a.status === 'pub' ? 'pub' : a.status === 'draft' ? 'draft' : 'rev';
+
+                              if (isExpired) {
+                                statusLabel = 'Expired';
+                                statusPillClass = 'rev';
+                              } else if (isScheduled) {
+                                statusLabel = 'Scheduled';
+                                statusPillClass = 'draft';
+                              }
 
                               const catBadgeStyle = a.category === 'Admissions'
                                 ? 'background: #e8f0eb; color: #123d32; border: 1px solid #c8dcd0;'
@@ -2358,8 +2428,8 @@ carSel: s.carSel,
                                     )}
                                   </td>
                                   <td style={css("padding: 14px 18px; vertical-align: middle; text-align: center;")}>
-                                    <span className={`pill ${a.status === 'pub' ? 'pub' : a.status === 'draft' ? 'draft' : 'rev'}`}>
-                                      {a.status === 'pub' ? 'Active' : a.status === 'draft' ? 'Draft' : 'Archived'}
+                                    <span className={`pill ${statusPillClass}`}>
+                                      {statusLabel}
                                     </span>
                                   </td>
                                   <td style={css("padding: 14px 18px; vertical-align: middle; text-align: right; white-space: nowrap;")}>
@@ -2550,14 +2620,19 @@ carSel: s.carSel,
               const activeTab = s.enqTab || 'all'; // all, admission, tesh, partner, general
               const statusFilter = s.enqSt || 'all'; // all, new, contacted, progress, completed, archived
 
+              // Normalization helper T(e): programme->admission, partnership->partner, contact->general
+              const T = (e: { type: string } | string) => {
+                const t = typeof e === 'string' ? e : e?.type;
+                if (t === 'programme') return 'admission';
+                if (t === 'partnership') return 'partner';
+                if (t === 'contact') return 'general';
+                return t;
+              };
+
               // Filter by Category tab
               const catFiltered = enqList.filter((e: EnquiryRow) => {
                 if (activeTab === 'all') return true;
-                if (activeTab === 'admission') return e.type === 'programme' || e.type === 'admission';
-                if (activeTab === 'tesh') return e.type === 'tesh';
-                if (activeTab === 'partner') return e.type === 'partnership' || e.type === 'partner';
-                if (activeTab === 'general') return e.type === 'general';
-                return true;
+                return T(e) === activeTab;
               });
 
               // Filter by Status & Query
@@ -2579,10 +2654,10 @@ carSel: s.carSel,
 
               const tabs = [
                 { id: 'all', label: 'All Enquiries', count: enqList.length, newCount: enqList.filter(e => e.status === 'new').length },
-                { id: 'admission', label: 'Admissions', count: enqList.filter(e => e.type === 'programme' || e.type === 'admission').length, newCount: enqList.filter(e => (e.type === 'programme' || e.type === 'admission') && e.status === 'new').length },
-                { id: 'tesh', label: 'TESH Homestays', count: enqList.filter(e => e.type === 'tesh').length, newCount: enqList.filter(e => e.type === 'tesh' && e.status === 'new').length },
-                { id: 'partner', label: 'Partnerships', count: enqList.filter(e => e.type === 'partnership' || e.type === 'partner').length, newCount: enqList.filter(e => (e.type === 'partnership' || e.type === 'partner') && e.status === 'new').length },
-                { id: 'general', label: 'General Contact', count: enqList.filter(e => e.type === 'general').length, newCount: enqList.filter(e => e.type === 'general' && e.status === 'new').length },
+                { id: 'admission', label: 'Admissions', count: enqList.filter(e => T(e) === 'admission').length, newCount: enqList.filter(e => T(e) === 'admission' && e.status === 'new').length },
+                { id: 'tesh', label: 'TESH Homestays', count: enqList.filter(e => T(e) === 'tesh').length, newCount: enqList.filter(e => T(e) === 'tesh' && e.status === 'new').length },
+                { id: 'partner', label: 'Partnerships', count: enqList.filter(e => T(e) === 'partner').length, newCount: enqList.filter(e => T(e) === 'partner' && e.status === 'new').length },
+                { id: 'general', label: 'General Contact', count: enqList.filter(e => T(e) === 'general').length, newCount: enqList.filter(e => T(e) === 'general' && e.status === 'new').length },
               ];
 
               const handleStatusChange = async (newStatus: EnquiryStatus) => {
@@ -2744,8 +2819,8 @@ carSel: s.carSel,
                                     text-transform: uppercase;
                                     padding: 1px 6px;
                                     border-radius: 4px;
-                                    background: ${e.type === 'programme' || e.type === 'admission' ? '#e8f0eb' : e.type === 'tesh' ? '#fdf5e6' : '#f0f4f8'};
-                                    color: ${e.type === 'programme' || e.type === 'admission' ? '#123d32' : e.type === 'tesh' ? '#8a6414' : '#1f4a6b'};
+                                    background: ${T(e) === 'admission' ? '#e8f0eb' : T(e) === 'tesh' ? '#fdf5e6' : T(e) === 'partner' ? '#f3e8ff' : '#f0f4f8'};
+                                    color: ${T(e) === 'admission' ? '#123d32' : T(e) === 'tesh' ? '#8a6414' : T(e) === 'partner' ? '#6b21a8' : '#1f4a6b'};
                                   `)}>
                                     {e.type}
                                   </span>
@@ -3014,7 +3089,9 @@ carSel: s.carSel,
                           ) : (
                             userList.map((u: any) => {
                               const userEmail = u.email || `${u.name?.toLowerCase().replace(/\s+/g, '') || 'admin'}@chaitanyakeralam.org`;
-                              const isSelf = userEmail === $v.me.email;
+                              const isSelf = ($v.me.id && u.id === $v.me.id) ||
+                                             (this.props.userId && u.id === this.props.userId) ||
+                                             (Boolean($v.me.email) && (userEmail.toLowerCase() === $v.me.email.toLowerCase() || (u.email && u.email.toLowerCase() === $v.me.email.toLowerCase())));
                               const isSuspended = u.status === 'suspended';
                               const initials = (u.name || userEmail || 'A')
                                 .split(' ')
@@ -3585,6 +3662,19 @@ carSel: s.carSel,
               </div>
               <div className={"dlg-b"}>
                 <p>{s.dlg.body}</p>
+                {s.dlg.needAck && (
+                  <div style={css("margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line);")}>
+                    <label style={css("display: flex; align-items: flex-start; gap: 8px; cursor: pointer; font-size: 13px; color: var(--ink);")}>
+                      <input
+                        type="checkbox"
+                        checked={!!s.ack}
+                        onChange={(e) => this.setState({ ack: e.target.checked })}
+                        style={css("margin-top: 2px; width: 16px; height: 16px; accent-color: var(--forest); cursor: pointer; flex-shrink: 0;")}
+                      />
+                      <span>{s.dlg.ackLabel || 'I understand and confirm this action'}</span>
+                    </label>
+                  </div>
+                )}
               </div>
               <div className={"dlg-f"}>
                 <button className={"btn"} onClick={() => this.setState({ dlg: null })}>
@@ -3592,8 +3682,11 @@ carSel: s.carSel,
                 </button>
                 <button
                   className={"btn " + (s.dlg.danger ? "danger pri" : "pri")}
+                  disabled={s.dlg.needAck && !s.ack}
                   onClick={() => {
-                    if (s.dlg.act) {
+                    if (s.dlg.href) {
+                      window.location.href = s.dlg.href;
+                    } else if (s.dlg.act) {
                       this.run(s.dlg.act);
                     } else {
                       this.setState({ dlg: null });

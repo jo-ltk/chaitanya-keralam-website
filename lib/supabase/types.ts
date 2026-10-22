@@ -1,4 +1,4 @@
-﻿export type Json =
+export type Json =
   | string
   | number
   | boolean
@@ -371,6 +371,20 @@ export interface Database {
           created_at?: string;
         };
         Update: never;
+      };
+      site_settings: {
+        Row: {
+          key: string;
+          value: string;
+        };
+        Insert: {
+          key: string;
+          value: string;
+        };
+        Update: {
+          key?: string;
+          value?: string;
+        };
       };
     };
   };

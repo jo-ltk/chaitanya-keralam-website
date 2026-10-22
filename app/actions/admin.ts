@@ -1,4 +1,4 @@
-﻿'use server';
+'use server';
 
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
@@ -105,6 +105,7 @@ export async function unpublishPageAction(pageId: string) {
   const caller = await getCallerProfile();
   if (!caller) return { success: false, error: 'Unauthorized' };
   if (caller.role !== 'super') return { success: false, error: 'Only Super Admins can unpublish pages' };
+  if (pageId === 'home') return { success: false, error: 'Cannot unpublish the home page' };
   const supabase = createClient();
   const { data: page, error } = await supabase.from('pages')
     .update({ status: 'unpub', updated_by: caller.name, updated_at: new Date().toISOString() })
@@ -432,11 +433,41 @@ export async function saveSettingsAction(settings: {
   const caller = await getCallerProfile();
   if (!caller) return { success: false, error: 'Unauthorized' };
   if (caller.role !== 'super') return { success: false, error: 'Only Super Admins can change settings' };
+  const admin = createAdminClient();
+  // Upsert each setting as a key-value row in site_settings
+  const entries = [
+    { key: 'req2fa',  value: String(settings.req2fa) },
+    { key: 'timeout', value: settings.timeout },
+    { key: 'invite',  value: settings.invite },
+    { key: 'domains', value: settings.domains },
+  ];
+  const { error } = await admin.from('site_settings').upsert(entries, { onConflict: 'key' });
+  if (error) return { success: false, error: error.message };
   await logActivity(
     'updated security settings',
     `2FA: ${settings.req2fa}, Timeout: ${settings.timeout}m, Invite: ${settings.invite}h`,
     caller.name, 'super'
   );
   return { success: true };
+}
+
+export async function getSettingsAction() {
+  const caller = await getCallerProfile();
+  if (!caller) return { success: false, error: 'Unauthorized' };
+  if (caller.role !== 'super') return { success: false, error: 'Only Super Admins can read settings' };
+  const admin = createAdminClient();
+  const { data, error } = await admin.from('site_settings').select('key, value');
+  if (error) return { success: false, error: error.message };
+  const map: Record<string, string> = {};
+  (data || []).forEach(row => { map[row.key] = row.value; });
+  return {
+    success: true,
+    settings: {
+      req2fa: map['req2fa'] === 'true',
+      timeout: map['timeout'] || '30',
+      invite: map['invite'] || '48',
+      domains: map['domains'] || '',
+    }
+  };
 }
 

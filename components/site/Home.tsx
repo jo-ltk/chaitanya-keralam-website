@@ -162,7 +162,7 @@ export default class Home extends React.Component<any, any> {
 <div className={"fc-stage"} onTouchStart={$v?.fcTStart} onTouchEnd={$v?.fcTEnd}>
 {($v?.fcSlides || []).map((s: any, $index: number) => (<React.Fragment key={$index}>
 <figure className={s?.cls} aria-hidden={s?.hidden} role={"group"} aria-roledescription={"slide"} aria-label={s?.label}>
-<div className={`fc-img`} style={{overflow:'hidden',borderRadius:'inherit'}}><img src={$index === 0 ? 'https://images.unsplash.com/photo-1593693411515-c20261bcad6e?w=900&q=80' : $index === 1 ? 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=900&q=80' : $index === 2 ? 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=900&q=80' : $index === 3 ? 'https://images.unsplash.com/photo-1545389336-cf090694435e?w=900&q=80' : 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80'} alt={s?.caption} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
+<div className={`fc-img`} style={{overflow:'hidden',borderRadius:'inherit'}}><img src={$index === 0 ? '/images/home/kerala-backwaters-at-golden-hour.webp' : $index === 1 ? '/images/home/kerala-courtyard-heritage-iside-home.webp' : $index === 2 ? '/images/home/warm-kerala-veranda-welcome.webp' : $index === 3 ? '/images/home/warm-wellness-stretch-in-a-sunlit-garden-room.webp' : '/images/home/tropical-veranda-study-circle.webp'} alt={s?.caption} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
 <figcaption className={"fc-cap"}><span>{s?.n}</span>{s?.caption}</figcaption>
 </figure>
 </React.Fragment>))}
@@ -206,7 +206,7 @@ export default class Home extends React.Component<any, any> {
 <button className={"why-btn"} aria-expanded={w?.open} onClick={w?.pick}>
 <span className={"why-l"}><span className={"why-n"}>{w?.n}</span><span className={"why-t"}>{w?.title}</span></span>
 {!!(w?.open) && (<><span className={"why-d"}>{w?.text}</span></>)}
-{!!(w?.closed) && (<><span className={"why-img"} style={{overflow:'hidden',borderRadius:'8px',flexShrink:0}}><img src={$index === 0 ? 'https://images.unsplash.com/photo-1593693411515-c20261bcad6e?w=300&q=80' : $index === 1 ? 'https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=300&q=80' : $index === 2 ? 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=300&q=80' : 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=300&q=80'} alt={w?.title} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></span></>)}
+{!!(w?.closed) && (<><span className={"why-img"} style={{overflow:'hidden',borderRadius:'8px',flexShrink:0}}><img src={$index === 0 ? '/images/home/kerala-backwaters-at-sunrise.webp' : $index === 1 ? '/images/home/tropical-veranda-table-setting.webp' : $index === 2 ? '/images/home/joyful-gardening-together.webp' : '/images/home/tropical-creative-study-gathering.webp'} alt={w?.title} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></span></>)}
 </button>
 </li>
 </React.Fragment>))}
@@ -293,25 +293,8 @@ export default class Home extends React.Component<any, any> {
 
 <section id={"tesh"} className={"sec"} style={css("background:#ffffff")}>
 <div className={"wrap split"}>
-<div className={"panel-art"} style={css("min-height:clamp(320px,34vw,560px)")}>
-<svg className={"art"} viewBox={"0 0 600 520"} preserveAspectRatio={"xMidYMid slice"} role={"img"} aria-label={"Illustration: a student in an apron serving tea to guests on a veranda overlooking green hills"}>
-<rect width={"600"} height={"520"} fill={"#123d32"} />
-<path d={"M0 250 C120 200 220 236 320 210 C440 180 520 220 600 200 V520 H0 Z"} fill={"#2f6b50"} />
-<path d={"M0 300 C160 270 320 300 600 280 V520 H0 Z"} fill={"#2f6b50"} opacity={".6"} />
-<circle cx={"470"} cy={"110"} r={"40"} fill={"#c5a15a"} />
-<rect x={"0"} y={"380"} width={"600"} height={"140"} fill={"#80664b"} />
-<path d={"M0 380 H600"} stroke={"#c5a15a"} strokeWidth={"3"} />
-<rect x={"40"} y={"200"} width={"14"} height={"180"} fill={"#f2e7cd"} /><rect x={"546"} y={"200"} width={"14"} height={"180"} fill={"#f2e7cd"} />
-<path d={"M20 200 H580 L540 160 H60 Z"} fill={"#80664b"} stroke={"#0c2b23"} strokeWidth={"2"} />
-
-<ellipse cx={"300"} cy={"400"} rx={"120"} ry={"20"} fill={"#f7f3e8"} stroke={"#0c2b23"} strokeWidth={"2"} />
-<rect x={"292"} y={"410"} width={"16"} height={"60"} fill={"#0c2b23"} />
-<path d={"M260 392 h24 v-10 h-24 Z M318 392 h24 v-10 h-24 Z"} fill={"#c5a15a"} stroke={"#0c2b23"} strokeWidth={"1.5"} />
-
-<g stroke={"#0c2b23"} strokeWidth={"2"}><circle cx={"150"} cy={"300"} r={"16"} fill={"#c08a68"} /><path d={"M128 330 Q150 316 172 330 L176 392 H124 Z"} fill={"#dde8df"} /><path d={"M134 296 Q140 278 156 282 Q168 288 164 300 Q154 290 140 300 Z"} fill={"#80664b"} /></g>
-
-<g stroke={"#0c2b23"} strokeWidth={"2"}><circle cx={"430"} cy={"280"} r={"16"} fill={"#8a5a3c"} /><path d={"M414 276 Q418 258 434 262 Q448 266 444 282 Q434 270 420 280 Z"} fill={"#0c2b23"} /><path d={"M406 310 Q430 298 454 310 L460 400 H400 Z"} fill={"#f7f3e8"} /><path d={"M412 330 H448 L452 396 H408 Z"} fill={"#c5a15a"} /><path d={"M410 320 L362 352"} stroke={"#8a5a3c"} strokeWidth={"8"} strokeLinecap={"round"} /><path d={"M340 348 h30 v6 h-30 Z"} fill={"#f7f3e8"} /><rect x={"414"} y={"400"} width={"12"} height={"40"} fill={"#123d32"} /><rect x={"434"} y={"400"} width={"12"} height={"40"} fill={"#123d32"} /></g>
-</svg>
+<div className={"panel-art"} style={{minHeight:'clamp(320px,34vw,560px)',position:'relative',overflow:'hidden',borderRadius:'24px',boxShadow:'var(--shadow-card)'}}>
+<img src={"/images/home/kerala-heritage-home-planning.webp"} alt={"Kerala Heritage Home Planning and transformation"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} />
 </div>
 <div style={css("display:flex;flex-direction:column;gap:24px")}>
 <p className={"eyebrow"}>TESH Homes <span className={"tbc"}>Proposed</span></p>
@@ -392,12 +375,13 @@ export default class Home extends React.Component<any, any> {
 <div className={"wrap"}>
 <div className={"head"}><p className={"eyebrow"}>Gallery</p><h2 className={"h-sec"}>Glimpses of <em>Kerala</em></h2></div>
 <div className={"gal"}>
-<figure className={"tile t-wide t-tall"}><img src={"https://images.unsplash.com/photo-1593693411515-c20261bcad6e?w=900&q=80"} alt={"Kerala backwaters"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /><figcaption>Backwaters</figcaption></figure>
-<figure className={"tile"}><img src={"https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&q=80"} alt={"Hospitality practice"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /><figcaption>Hospitality practice</figcaption></figure>
-<figure className={"tile"}><img src={"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80"} alt={"Hill landscapes"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /><figcaption>Hill landscapes</figcaption></figure>
-<figure className={"tile"}><img src={"https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=600&q=80"} alt={"Heritage and culture"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /><figcaption>Heritage &amp; culture</figcaption></figure>
-<figure className={"tile t-wide"}><img src={"https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=900&q=80"} alt={"Traditional Kerala home"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /><figcaption>Learning together</figcaption></figure>
-<figure className={"tile t-wide"}><img src={"https://images.unsplash.com/photo-1545389336-cf090694435e?w=900&q=80"} alt={"Wellness and peace"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /><figcaption>Wellness &amp; peace</figcaption></figure>
+<figure className={"tile t-wide t-tall"}><img src={"/images/home/kerala-backwaters-storytime.webp"} alt={"Kerala backwaters"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /><figcaption>Backwaters</figcaption></figure>
+<figure className={"tile"}><img src={"/images/home/tropical-veranda-hospitality-scene.webp"} alt={"Hospitality practice"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /><figcaption>Hospitality practice</figcaption></figure>
+<figure className={"tile"}><img src={"/images/home/sunrise-over-misty-tea-hills.webp"} alt={"Hill landscapes"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /><figcaption>Hill landscapes</figcaption></figure>
+<figure className={"tile"}><img src={"/images/home/kerala-courtyard-heritage-tour.webp"} alt={"Heritage and culture"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /><figcaption>Heritage &amp; culture</figcaption></figure>
+<figure className={"tile"}><img src={"/images/home/exploring-cardamom-in-the-spice-forest.webp"} alt={"Spice plantation & nature"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /><figcaption>Spice plantation</figcaption></figure>
+<figure className={"tile t-wide"}><img src={"/images/home/kerala-village-walk-with-friends.webp"} alt={"Learning together and village walk"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /><figcaption>Learning together</figcaption></figure>
+<figure className={"tile t-wide"}><img src={"/images/home/golden-trails-through-the-misty-forest.webp"} alt={"Forest wellness and peace"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /><figcaption>Wellness &amp; peace</figcaption></figure>
 </div>
 </div>
 </section>

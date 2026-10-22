@@ -170,11 +170,29 @@ export async function inviteUserAction(data: { email: string; role: AdminRole })
     }
 
     const adminClient = createAdminClient();
+
+    // Read site settings for invite expiry and allowed domains
+    const { data: settingsData } = await adminClient.from('site_settings').select('key, value');
+    const settingsMap: Record<string, string> = {};
+    (settingsData || []).forEach(row => { settingsMap[row.key] = row.value; });
+
+    const allowedDomainsStr = settingsMap['domains'] || '';
+    const inviteHours = parseInt(settingsMap['invite'] || '48', 10) || 48;
+
+    const emailTrimmed = data.email.trim().toLowerCase();
+    if (allowedDomainsStr.trim()) {
+      const allowedList = allowedDomainsStr.split(',').map(d => d.trim().toLowerCase()).filter(Boolean);
+      const emailDomain = emailTrimmed.split('@')[1];
+      if (allowedList.length > 0 && (!emailDomain || !allowedList.includes(emailDomain))) {
+        return { success: false, error: `Email domain is not in the allowed domains list: ${allowedDomainsStr}` };
+      }
+    }
+
     const token = crypto.randomBytes(32).toString('hex');
-    const expiresAt = new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString();
+    const expiresAt = new Date(Date.now() + inviteHours * 60 * 60 * 1000).toISOString();
 
     const { error: invErr } = await adminClient.from('invitations').insert({
-      email: data.email.trim().toLowerCase(),
+      email: emailTrimmed,
       role: data.role,
       token,
       invited_by: callerProfile.name || user.email || 'Super Admin',
@@ -189,17 +207,17 @@ export async function inviteUserAction(data: { email: string; role: AdminRole })
     const inviteUrl = `${origin}/admin/invite?token=${token}`;
 
     await sendInviteEmail({
-      to: data.email.trim().toLowerCase(),
+      to: emailTrimmed,
       role: data.role,
       inviteUrl,
     });
 
     await adminClient.from('activity_log').insert({
       action: 'invited',
-      item: `${data.email} (${data.role})`,
+      item: `${emailTrimmed} (${data.role})`,
       by_user: callerProfile.name || 'Super Admin',
       role: 'super',
-      details: `Sent invitation link expiring in 48 hours`
+      details: `Sent invitation link expiring in ${inviteHours} hours`
     });
 
     return { success: true };
