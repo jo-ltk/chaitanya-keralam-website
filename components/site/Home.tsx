@@ -391,7 +391,7 @@ export default class Home extends React.Component<any, any> {
 <section id={"outcomes"} className={"sec band"}>
 <div className={"wrap"}>
 <div className={"g2"} style={css("align-items:start")}>
-<div className={"head"} style={css("margin-bottom:0;position:sticky;top:96px")}>
+<div className={"head out-head"}>
 <p className={"eyebrow"}>Career pathway</p>
 <h2 className={"h-sec"}>From training to <em>enterprise</em></h2>
 <p className={"lede"}>Global citizenship through global entrepreneurship and e-commerce.</p><p className={"small"}>An intended pathway — not a guaranteed placement or income.</p>

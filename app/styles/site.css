@@ -170,6 +170,7 @@ img{max-width:100%}
 .incl span.off{background:transparent;border:1px solid #dcd3bf;color:#5d5b4d}
 .panel-art{background:#123d32;overflow:hidden;border-radius:24px}
 .out{display:flex;gap:20px;align-items:flex-start;padding:24px 0;border-bottom:1px solid #dcd3bf}
+.out-head{margin-bottom:0;position:sticky;top:96px}
 .out-n{font-family:var(--font-sans);font-weight:300;font-size:24px;line-height:1.2;color:#80664b;min-width:40px}
 .role{background:#fff;border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:8px;border:1px solid #dcd3bf;transition:border-color .25s,transform .35s var(--ease),box-shadow .35s}
 .role:hover{border-color:#2f6b50;transform:translateY(-3px);box-shadow:var(--shadow-sm)}
@@ -557,6 +558,7 @@ a:focus-visible{outline:2px solid #2f6b50;outline-offset:3px;border-radius:4px}
   .c-hero .wrap{align-items:start}
   .c-badge{font-size:12px}
   .summary{position:static;order:-1}
+  .out-head{position:static;margin-bottom:24px}
   .heritage{grid-template-columns:minmax(0,1fr)}
   .goal-list{grid-template-rows:none}
   .hstep{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:28px}
