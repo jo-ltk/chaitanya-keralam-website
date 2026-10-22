@@ -60,7 +60,8 @@ export default class EcoSpiritualTourism extends React.Component<any, any> {
 
 
 <section className={"t-hero"}>
-<img src={"https://images.unsplash.com/photo-1593693411515-c20261bcad6e?w=1600&q=80"} alt={"Kerala backwaters — panoramic landscape"} style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',objectPosition:'center'}} aria-hidden={"true"} />
+<img src={"/images/eco-spiritual-tourism/kerala-backwaters-sunrise.png"} alt={"Kerala backwaters — panoramic landscape"} style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',objectPosition:'center',filter:'brightness(0.72)'}} aria-hidden={"true"} />
+<div style={{position:'absolute',inset:0,background:'linear-gradient(180deg, rgba(14, 43, 35, 0.45) 0%, rgba(14, 43, 35, 0.75) 60%, rgba(14, 43, 35, 0.92) 100%)',pointerEvents:'none'}} aria-hidden={"true"} />
 <div className={"wrap t-copy"}>
 <div className={"stack"} style={css("gap:22px")}>
 <p className={"crumbs r1"}><a href={"/"}>Home</a> / Eco-Spiritual Peace Tourism</p>
@@ -75,10 +76,10 @@ export default class EcoSpiritualTourism extends React.Component<any, any> {
 </section>
 <div className={"wrap"}>
 <div className={"t-film"} aria-label={"Photos of Kerala landscapes and culture"}>
-<div style={{borderRadius:'14px',overflow:'hidden',aspectRatio:'4/3',boxShadow:'var(--shadow-card)'}}><img src={"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80"} alt={"Kerala forest hills"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
-<div style={{borderRadius:'14px',overflow:'hidden',aspectRatio:'4/3',boxShadow:'var(--shadow-card)'}}><img src={"https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=800&q=80"} alt={"Kerala spiritual heritage"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
-<div style={{borderRadius:'14px',overflow:'hidden',aspectRatio:'4/3',boxShadow:'var(--shadow-card)'}}><img src={"https://images.unsplash.com/photo-1545389336-cf090694435e?w=800&q=80"} alt={"Wellness and meditation"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
-<div style={{borderRadius:'14px',overflow:'hidden',aspectRatio:'4/3',boxShadow:'var(--shadow-card)'}}><img src={"https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=800&q=80"} alt={"Kerala heritage home"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
+<div style={{borderRadius:'14px',overflow:'hidden',aspectRatio:'4/3',boxShadow:'var(--shadow-card)'}}><img src={"/images/eco-spiritual-tourism/misty-rainforest-stream.png"} alt={"Kerala forest hills"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
+<div style={{borderRadius:'14px',overflow:'hidden',aspectRatio:'4/3',boxShadow:'var(--shadow-card)'}}><img src={"/images/eco-spiritual-tourism/kerala-courtyard.png"} alt={"Kerala spiritual heritage"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
+<div style={{borderRadius:'14px',overflow:'hidden',aspectRatio:'4/3',boxShadow:'var(--shadow-card)'}}><img src={"/images/eco-spiritual-tourism/serene-tropical-retreat.png"} alt={"Wellness and meditation"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
+<div style={{borderRadius:'14px',overflow:'hidden',aspectRatio:'4/3',boxShadow:'var(--shadow-card)'}}><img src={"/images/eco-spiritual-tourism/golden-backwaters-village.png"} alt={"Kerala heritage home"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
 </div>
 </div>
 
@@ -102,7 +103,7 @@ export default class EcoSpiritualTourism extends React.Component<any, any> {
 </React.Fragment>))}
 </div>
 <div className={"tpanel"} role={"tabpanel"} data-swap>
-<div style={{borderRadius:'24px',overflow:'hidden',aspectRatio:'16/11'}}><img src={$v?.cur?.n === '01' ? 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80' : $v?.cur?.n === '02' ? 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=900&q=80' : $v?.cur?.n === '03' ? 'https://images.unsplash.com/photo-1545389336-cf090694435e?w=900&q=80' : $v?.cur?.n === '04' ? 'https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=900&q=80' : 'https://images.unsplash.com/photo-1593693411515-c20261bcad6e?w=900&q=80'} alt={$v?.cur?.title} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
+<div style={{borderRadius:'24px',overflow:'hidden',aspectRatio:'16/11'}}><img src={$v?.cur?.n === '01' ? '/images/eco-spiritual-tourism/misty-rainforest-stream.png' : $v?.cur?.n === '02' ? '/images/eco-spiritual-tourism/kerala-courtyard.png' : $v?.cur?.n === '03' ? '/images/eco-spiritual-tourism/serene-tropical-retreat.png' : $v?.cur?.n === '04' ? '/images/eco-spiritual-tourism/golden-backwaters-village.png' : '/images/eco-spiritual-tourism/kerala-backwaters-sunrise.png'} alt={$v?.cur?.title} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
 <div className={"stack"} style={css("gap:18px")}>
 <span className={"tnum"}>{$v?.cur?.n}</span>
 <h3 className={"h-sec"} style={css("font-size:clamp(26px,2.4vw,40px)")}>{$v?.cur?.title}</h3>
@@ -126,7 +127,7 @@ export default class EcoSpiritualTourism extends React.Component<any, any> {
 <div><span className={"small"} style={css("opacity:.8")}>Ports of the Indian Ocean</span><b>Pattanam</b><span className={"small"}>Linked with Muziris on the project presentation's map of ancient trade ports, 100 BC – 300 AD</span></div>
 </div>
 </div>
-<div style={{borderRadius:'18px',overflow:'hidden',aspectRatio:'4/5'}}><img src={"https://images.unsplash.com/photo-1593693411515-c20261bcad6e?w=800&q=80"} alt={"Kerala landscape"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
+<div style={{borderRadius:'18px',overflow:'hidden',aspectRatio:'4/5'}}><img src={"/images/eco-spiritual-tourism/golden-backwaters-village.png"} alt={"Kerala landscape"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
 </div>
 </section>
 

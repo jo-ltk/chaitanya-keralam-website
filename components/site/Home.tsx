@@ -56,14 +56,53 @@ export default class Home extends React.Component<any, any> {
       return { label: p[1], active: self.state.prog === p[0], pick: function () { self.setState({ prog: p[0] }); } };
     });
     var whyData = [
-      ['01', 'Eco-Spiritual Peace Tourism & Travel', 'Tourism experiences, travel planning, destination development, interpretation and responsible tourism.', 'p1'],
-      ['02', 'Eco-Spiritual Hospitality', 'Guest relations, front office, housekeeping, food & beverage service, guest experience, wellness, retreat and eco-hospitality.', 'p2'],
-      ['03', 'International Caregiving', 'Personal care, daily living support, elderly and vulnerable-person care, mobility, nutrition, wellbeing, communication, first aid awareness and care documentation — a specialised skill area within the wider programme.', 'p4'],
-      ['04', 'Global Entrepreneurship & Leadership', 'Entrepreneurial mindset, opportunity identification, market research, business models and planning, costing and pricing, digital marketing, team management, leadership and project development.', 'p1']
+      [
+        '01',
+        'Eco-Spiritual Peace Tourism & Travel',
+        'Immersive training connecting Kerala’s pristine backwaters, hill sanctuaries, and heritage trails with responsible visitor stewardship.',
+        ['Travel Planning', 'Destination Development', 'Cultural Interpretation', 'Eco-Stewardship'],
+        'Part of 3-Month, 6-Month & 1-Year Programmes',
+        '/images/home/kerala-backwaters-at-golden-hour.webp'
+      ],
+      [
+        '02',
+        'Eco-Spiritual Hospitality',
+        'Warm, authentic homestay and retreat hospitality blending traditional Kerala guest care with professional front office and eco-resort standards.',
+        ['Guest Relations', 'Food & Beverage', 'Housekeeping', 'Retreat & Eco-Hospitality'],
+        'Practical Training in TESH Home Living',
+        '/images/home/tropical-veranda-table-setting.webp'
+      ],
+      [
+        '03',
+        'International Caregiving',
+        'Specialised compassionate care skills tailored for global benchmarks — supporting seniors, vulnerable guests, and wellness-seekers with dignity.',
+        ['Personal Care', 'Daily Living Support', 'Mobility & Nutrition', 'First Aid & Documentation'],
+        'Integrated into 6-Month & 1-Year Courses',
+        '/images/home/warm-wellness-stretch-in-a-sunlit-garden-room.webp'
+      ],
+      [
+        '04',
+        'Global Entrepreneurship & Leadership',
+        'Empowering youth to launch, manage, and scale independent micro-ventures, homestay enterprises, and community-rooted tourism businesses.',
+        ['Business Modeling', 'Pricing & Costing', 'Digital Marketing', 'Youth Team Leadership'],
+        'Key Pillar for 1,000 Global Youth Leaders',
+        '/images/home/tropical-veranda-study-circle.webp'
+      ]
     ];
     var whyRows = whyData.map(function (r, i) {
       var open = self.state.why === i;
-      return { n: r[0], title: r[1], text: r[2], tone: r[3], open: open, closed: !open, cls: open ? 'why-row' : 'why-row off', pick: function () { self.setState({ why: i }); } };
+      return {
+        n: r[0],
+        title: r[1],
+        desc: r[2],
+        tags: r[3],
+        badge: r[4],
+        img: r[5],
+        open: open,
+        closed: !open,
+        cls: open ? 'why-row on' : 'why-row off',
+        pick: function () { self.setState({ why: open ? -1 : i }); }
+      };
     });
     var fcData = [
       ['Nature & ecology', 'Backwaters, forests and hills', 'Backwaters and green landscapes of Kerala', "Kerala's rivers, forests, hill ranges and biodiversity are the foundation of eco-spiritual peace tourism.", 'Learners explore responsible travel that protects the natural environments guests come to experience.', '/eco-spiritual-tourism', 'Explore eco-spiritual tourism', 'p1'],
@@ -205,9 +244,46 @@ export default class Home extends React.Component<any, any> {
 <li className={w?.cls}>
 <button className={"why-btn"} aria-expanded={w?.open} onClick={w?.pick}>
 <span className={"why-l"}><span className={"why-n"}>{w?.n}</span><span className={"why-t"}>{w?.title}</span></span>
-{!!(w?.open) && (<><span className={"why-d"}>{w?.text}</span></>)}
-{!!(w?.closed) && (<><span className={"why-img"} style={{overflow:'hidden',borderRadius:'8px',flexShrink:0}}><img src={$index === 0 ? '/images/home/kerala-backwaters-at-sunrise.webp' : $index === 1 ? '/images/home/tropical-veranda-table-setting.webp' : $index === 2 ? '/images/home/joyful-gardening-together.webp' : '/images/home/tropical-creative-study-gathering.webp'} alt={w?.title} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></span></>)}
+{!(w?.open) && (
+  <span className={"why-preview"}>
+    <span className={"why-thumb"}><img src={w?.img} alt={w?.title} /></span>
+    <span className={"why-chevron"} aria-hidden={"true"}>
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 7.5L10 12.5L15 7.5"/></svg>
+    </span>
+  </span>
+)}
+{!!(w?.open) && (
+  <span className={"why-chevron open"} aria-hidden={"true"}>
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5L10 7.5L15 12.5"/></svg>
+  </span>
+)}
 </button>
+{!!(w?.open) && (
+  <div className={"why-expanded"}>
+    <div className={"why-expanded-content"}>
+      {w?.badge && <span className={"why-badge"}>{w?.badge}</span>}
+      <p className={"why-d"}>{w?.desc}</p>
+      {w?.tags && (
+        <div className={"why-tags-wrap"}>
+          <span className={"why-tags-label"}>Key Focus Areas:</span>
+          <div className={"why-tags"}>
+            {w.tags.map((t: string, ti: number) => (
+              <span key={ti} className={"why-tag"}>{t}</span>
+            ))}
+          </div>
+        </div>
+      )}
+      <div className={"why-expanded-action"}>
+        <a className={"why-more-link"} href={"/programmes"}>
+          Explore programme curriculum <span aria-hidden={"true"}>→</span>
+        </a>
+      </div>
+    </div>
+    <div className={"why-feature-img"}>
+      <img src={w?.img} alt={w?.title} />
+    </div>
+  </div>
+)}
 </li>
 </React.Fragment>))}
 </ul>

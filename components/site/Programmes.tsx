@@ -149,7 +149,7 @@ export default class Programmes extends React.Component<any, any> {
 <div className={"wrap"}>
 <div className={"g2"} style={css("margin-bottom:clamp(32px,3vw,48px)")}>
 <div className={"stack"}><p className={"eyebrow"}>Learning format</p><h2 className={"h-sec"}>Learn by <em>doing</em></h2><p className={"body muted"}>TESH programmes are designed around practical and experiential learning. Training may include the formats below.</p></div>
-<div style={{borderRadius:'12px',overflow:'hidden',aspectRatio:'16/10'}}><img src={"https://images.unsplash.com/photo-1531482615713-2afd69097998?w=900&q=80"} alt={"Learners in a practical hospitality training session"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
+<div style={{borderRadius:'12px',overflow:'hidden',aspectRatio:'16/10'}}><img src={"/images/learning-format-computer-lab.png"} alt={"Guidance in a Sunlit Kerala Computer Lab"} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} /></div>
 </div>
 <div className={"tiles"}>
 <div><div className={"ico"}><svg width={"22"} height={"22"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#2f6b50"} strokeWidth={"1.5"} strokeLinecap={"round"} aria-hidden={"true"}><path d={"M4 5h16v11H4z"} /><path d={"M8 20h8"} /></svg></div><div className={"stack-s"}><h3 className={"h-card"} style={css("font-size:18px")}>Classroom learning</h3><p className={"small"}>Understanding concepts, principles and professional knowledge.</p></div></div>
