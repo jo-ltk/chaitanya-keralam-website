@@ -191,7 +191,7 @@ export default function LandingPage() {
           <div className="wrap split-text">
             <p className="eyebrow">Spirituality</p>
             <h2 className="split-lines">Slow down.<br />Listen.</h2>
-            <div className="ph" data-speed="-10"><div className="bg s-forest"></div><span className="frame"></span><span className="label">[Image — Forest path]<small>1200×1200</small></span></div>
+            <div className="ph" data-speed="-10"><div className="bg s-forest"><img src="/assets/images/forest-path.jpg" alt="Forest path" /></div></div>
           </div>
         </section>
 
