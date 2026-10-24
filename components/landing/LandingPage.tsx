@@ -149,7 +149,7 @@ export default function LandingPage() {
               <div className="wrap pl-text"><p className="pl-index eyebrow">03 · Peace</p><h2 className="pl-word">Harmony</h2><p className="pl-line">Many faiths, one shore.</p></div>
             </article>
             <article className="pl" data-i="3">
-              <div className="ph"><div className="bg s-culture"><img src="/assets/images/pillar-tourism.webp" alt="Local people and cultural experiences" /></div></div>
+              <div className="ph"><div className="bg s-culture"><img src="/assets/images/pillar-tourism.png" alt="Local people and cultural experiences" /></div></div>
               <div className="wrap pl-text"><p className="pl-index eyebrow">04 · Tourism</p><h2 className="pl-word">Welcome</h2><p className="pl-line">A seat at every table.</p></div>
             </article>
             <nav className="pl-hud" aria-label="Pillars">
