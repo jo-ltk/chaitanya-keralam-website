@@ -131,7 +131,7 @@
       window.addEventListener('touchstart', skipIntroNative, { once: true, passive: true });
     }
     var mWords = splitWords(document.getElementById('manifestoText'));
-    gsap.fromTo(mWords, { opacity: 0.14 }, { opacity: 1, stagger: 0.1, ease: 'none', scrollTrigger: { trigger: '.manifesto', start: 'top 70%', end: 'bottom 55%', scrub: true } });
+    gsap.fromTo(mWords, { opacity: 0.15 }, { opacity: 1, stagger: 0.1, ease: 'none', scrollTrigger: { trigger: '.manifesto', start: 'top 85%', end: 'bottom 40%', scrub: 0.5 } });
 
     /* generic line/word reveals */
     document.querySelectorAll('.split-lines').forEach(function (el) {
