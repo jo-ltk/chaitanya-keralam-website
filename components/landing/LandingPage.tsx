@@ -116,7 +116,7 @@ export default function LandingPage() {
               <button className="disc" id="playBtn" type="button" aria-label="Pause background motion"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="playIcon" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg></button>
             </div>
           </div>
-          <a className="cue" href="#manifesto">Scroll<i aria-hidden="true"></i></a>
+          
         </section>
         {/* 2 · MANIFESTO */}
         <section className="manifesto wrap" id="manifesto">
