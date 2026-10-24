@@ -23,6 +23,7 @@
 
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var hasGsap = window.gsap && window.ScrollTrigger;
+    var userWantsPlay = !reduce;
 
     function onScrollNav() { nav.classList.toggle('solid', window.scrollY > window.innerHeight * 0.6); }
     on(window, 'scroll', onScrollNav, { passive: true }); onScrollNav();
@@ -31,10 +32,10 @@
     var heroTween = null, playing = !reduce;
     function setPlay(p) {
       playing = p;
+      userWantsPlay = p;
       playIcon.setAttribute('d', p ? 'M6 19h4V5H6v14zm8-14v14h4V5h-4z' : 'M8 5v14l11-7z');
       playBtn.setAttribute('aria-label', p ? 'Pause background motion' : 'Play background motion');
       var v = document.querySelector('#heroMedia video'); if (v) { p ? v.play().catch(function(){}) : v.pause(); }
-      if (heroTween) p ? heroTween.play() : heroTween.pause();
     }
     on(playBtn, 'click', function () { setPlay(!playing); });
     setPlay(playing);
@@ -49,7 +50,7 @@
     /* smooth scroll */
     var lenis = null;
     if (window.Lenis) {
-      lenis = state.lenis = new Lenis({ duration: 1.15, smoothWheel: true });
+      lenis = state.lenis = new Lenis({ lerp: 0.1, smoothWheel: true, wheelMultiplier: 1 });
       lenis.on('scroll', ScrollTrigger.update);
       state.tick = function (t) { lenis.raf(t * 1000); };
       gsap.ticker.add(state.tick);
@@ -86,17 +87,36 @@
     gsap.to('.progress', { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: 0.3 } });
 
     /* 1 · hero intro */
+    var heroHasVideo = !!document.querySelector('#heroMedia video');
     var lines = document.querySelectorAll('#heroTitle .line');
     var chars = []; lines.forEach(function (l) { chars = chars.concat(Array.prototype.slice.call(splitChars(l))); });
     var intro = gsap.timeline({ defaults: { ease: 'expo.out' } });
-    intro.from('#heroMedia .bg', { scale: 1.25, duration: 2.6, ease: 'power3.out' }, 0)
-         .from('.nav-in > *', { y: -24, opacity: 0, duration: 1.2, stagger: 0.08 }, 0.3)
+    if (heroHasVideo) {
+      intro.from('#heroMedia', { opacity: 0, duration: 1.6, ease: 'power2.out' }, 0);
+    } else {
+      intro.from('#heroMedia .bg', { scale: 1.25, duration: 2.6, ease: 'power3.out' }, 0);
+      heroTween = gsap.to('#heroMedia .bg', { scale: 1.08, duration: 14, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 2.6 });
+      if (!playing) heroTween.pause();
+    }
+    intro.from('.nav-in > *', { y: -24, opacity: 0, duration: 1.2, stagger: 0.08 }, 0.3)
          .from(chars, { yPercent: 115, rotate: 6, duration: 1.4, stagger: 0.045 }, 0.45)
          .from('.hero [data-fade]', { y: 30, opacity: 0, duration: 1.2, stagger: 0.12 }, 1.0)
          .from('.cue', { opacity: 0, duration: 1 }, 1.6);
-    heroTween = gsap.to('#heroMedia .bg', { scale: 1.08, duration: 14, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 2.6 });
-    if (!playing) heroTween.pause();
-    gsap.to('#heroMedia', { yPercent: 22, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+    /* mobile source selection */
+    var heroVideo = document.querySelector('#heroMedia video');
+    if (heroVideo) {
+      if (window.innerWidth <= 768) {
+        heroVideo.src = '/assets/video/kerala-aerial-720.mp4';
+      }
+      heroVideo.load();
+      if (reduce) { try { heroVideo.pause(); } catch (e) {} heroVideo.removeAttribute('autoplay'); }
+      ScrollTrigger.create({ trigger: '.hero', start: 'top top', end: 'bottom top',
+        onLeave: function () { heroVideo.pause(); },
+        onEnterBack: function () { if (userWantsPlay) heroVideo.play().catch(function () {}); }
+      });
+      on(document, 'visibilitychange', function () { if (document.hidden) heroVideo.pause(); });
+    }
+    gsap.to('#heroMedia', { y: function () { return window.innerHeight * 0.15; }, ease: 'none', force3D: true, scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true, invalidateOnRefresh: true } });
     gsap.to('.hero-body', { yPercent: -30, opacity: 0, ease: 'none', scrollTrigger: { trigger: '.hero', start: '30% top', end: 'bottom top', scrub: true } });
 
     /* 2 · manifesto: words light up as you scroll */

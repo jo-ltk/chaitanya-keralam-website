@@ -96,7 +96,10 @@ export default function LandingPage() {
         {/* 1 · HERO */}
         <section className="hero" aria-label="Welcome to Kerala">
           <div className="ph" id="heroMedia">
-            <div className="bg s-backwater"><video src="/assets/video/kerala-aerial.mp4" autoPlay muted loop playsInline /></div>
+            <div className="bg s-backwater"><video autoPlay muted loop playsInline preload="auto" disablePictureInPicture poster="/assets/video/kerala-aerial.jpg">
+              <source src="/assets/video/kerala-aerial-1080.webm" type="video/webm" />
+              <source src="/assets/video/kerala-aerial-1080.mp4" type="video/mp4" />
+            </video></div>
             <span className="frame"></span>
             <span className="label">[Full-screen hero video — Kerala aerial landscape]<small>Muted loop · 1920×1080 min · poster image fallback</small></span>
           </div>
