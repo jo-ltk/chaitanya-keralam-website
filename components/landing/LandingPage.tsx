@@ -219,7 +219,7 @@ export default function LandingPage() {
 
         {/* 10 · FINAL CTA */}
         <section className="final" id="plan" aria-label="Plan your journey">
-          <div className="ph" id="finalMedia"><div className="bg s-backwater"></div><span className="frame"></span><span className="label">[Full-screen image — Sunset over the Arabian Sea]<small>2560×1440</small></span></div>
+          <div className="ph" id="finalMedia"><div className="bg s-backwater"><img src="/assets/images/sunset-arabian-sea.jpg" alt="Sunset over the Arabian Sea" /></div></div>
           <div className="final-in wrap">
             <h2 id="finalTitle">Come slowly</h2>
             <a className="btn btn-solid" href="#top"><span>Plan your journey</span><span className="arr" aria-hidden="true">→</span></a>
