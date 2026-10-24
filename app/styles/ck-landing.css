@@ -172,7 +172,7 @@ h1, h2, h3 { font-weight: 300; text-wrap: balance; }
 .split > .ph { min-height: 70vh; }
 .split-text { display: grid; align-content: center; gap: 28px; padding-block: 80px; }
 .split-text h2 { font-size: clamp(44px, 5.4vw, 100px); line-height: 0.95; letter-spacing: -0.03em; }
-.split-text .ph { width: min(62%, 360px); aspect-ratio: 1 / 1; max-width: 100%; }
+.split-text .ph { width: 100%; aspect-ratio: 4 / 5; max-width: 100%; }
 @media (max-width: 860px) { .split { grid-template-columns: minmax(0, 1fr); } .split > .ph { min-height: 70vh; } }
 
 .collage { position: relative; background: var(--g-ocean); padding-block: clamp(100px, 12vw, 200px); overflow: hidden; }
