@@ -201,7 +201,7 @@ export default function LandingPage() {
             <h2 className="split-lines">Many faiths, one shore</h2>
             <div className="ph p1" data-inner="10"><div className="bg s-coast"><img src="/assets/images/festival-crowd.png" alt="Festival crowd by the sea" /></div></div>
             <div className="ph p2" data-speed="-16"><div className="bg s-culture"><img src="/assets/images/temple-lamps.png" alt="Temple lamps" /></div></div>
-            <div className="ph p3" data-speed="12"><div className="bg s-dusk"></div><span className="frame"></span><span className="label">[Image — Church and mosque, shared street]<small>1200×1200</small></span></div>
+            <div className="ph p3" data-speed="12"><div className="bg s-dusk"><img src="/assets/images/church-mosque.png" alt="Church and mosque, shared street" /></div></div>
           </div>
         </section>
 
