@@ -199,7 +199,7 @@ export default function LandingPage() {
         <section className="collage" aria-label="Harmony">
           <div className="wrap collage-grid">
             <h2 className="split-lines">Many faiths, one shore</h2>
-            <div className="ph p1" data-inner="10"><div className="bg s-coast"></div><span className="frame"></span><span className="label">[Large image — Festival crowd by the sea]<small>2000×1500 · 4:3</small></span></div>
+            <div className="ph p1" data-inner="10"><div className="bg s-coast"><img src="/assets/images/festival-crowd.png" alt="Festival crowd by the sea" /></div></div>
             <div className="ph p2" data-speed="-16"><div className="bg s-culture"></div><span className="frame"></span><span className="label">[Image — Temple lamps]<small>1200×1500 · 4:5</small></span></div>
             <div className="ph p3" data-speed="12"><div className="bg s-dusk"></div><span className="frame"></span><span className="label">[Image — Church and mosque, shared street]<small>1200×1200</small></span></div>
           </div>
