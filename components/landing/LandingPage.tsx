@@ -181,7 +181,7 @@ export default function LandingPage() {
               <figure className="card"><div className="ph"><div className="bg s-falls"><img src="/assets/images/gallery-waterfalls.jpg" alt="Athirappilly waterfalls" /></div></div><p><span>Waterfalls</span><span>Thrissur</span></p></figure>
               <figure className="card"><div className="ph"><div className="bg s-coast"><img src="/assets/images/gallery-coast.jpg" alt="Varkala cliffs and beach" /></div></div><p><span>Coast</span><span>Varkala</span></p></figure>
               <figure className="card"><div className="ph"><div className="bg s-tea"><img src="/assets/images/gallery-hills.jpg" alt="Munnar tea estates" /></div></div><p><span>Hills</span><span>Munnar</span></p></figure>
-              <figure className="card"><div className="ph"><div className="bg s-culture"></div><span className="frame"></span><span className="label">[Image — Kathakali performer]<small>1200×1500 · 4:5</small></span></div><p><span>Culture</span><span>Kochi</span></p></figure>
+              <figure className="card"><div className="ph"><div className="bg s-culture"><img src="/assets/images/gallery-culture.jpg" alt="Kathakali performer" /></div></div><p><span>Culture</span><span>Kochi</span></p></figure>
             </div>
           </div>
         </section>
