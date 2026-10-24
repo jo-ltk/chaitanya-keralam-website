@@ -187,7 +187,7 @@ export default function LandingPage() {
         </section>
         {/* 7 · SPLIT (spirituality) */}
         <section className="split" aria-label="Stillness">
-          <div className="ph" data-inner="12"><div className="bg s-temple"></div><span className="frame"></span><span className="label">[Large image — Dawn by the river, quiet reflection]<small>1600×2000 · half-screen</small></span></div>
+          <div className="ph" data-inner="12"><div className="bg s-temple"><img src="/assets/images/river-quiet.png" alt="Dawn by the river, quiet reflection" /></div></div>
           <div className="wrap split-text">
             <p className="eyebrow">Spirituality</p>
             <h2 className="split-lines">Slow down.<br />Listen.</h2>
