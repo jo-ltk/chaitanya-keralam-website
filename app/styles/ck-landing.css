@@ -1,4 +1,8 @@
-/* Chaitanya Keralam — landing page styles */
+/* Lenis required CSS */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
 /* Layout: one cinematic dark journey — full-bleed scenes, a pinned four-pillar story, a horizontal gallery, one ivory image grid. */
 :root {
   --night: #070d0b;
@@ -23,13 +27,13 @@ h1, h2, h3 { font-weight: 300; text-wrap: balance; }
 
 /* ---------- split text ---------- */
 .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
-.wi, .ci { display: inline-block; will-change: transform; }
+.wi, .ci { display: inline-block; }
 .c { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.1em; margin-bottom: -0.1em; }
 .pl-word .c { padding-top: 0.15em; margin-top: -0.15em; padding-bottom: 0.2em; margin-bottom: -0.2em; }
 
 /* ---------- media placeholders (scene gradients until photography arrives) ---------- */
 .ph { position: relative; overflow: hidden; background: var(--g-teal); isolation: isolate; }
-.ph .bg { position: absolute; inset: -12% 0; will-change: transform; }
+.ph .bg { position: absolute; inset: -12% 0; }
 .ph .bg::after { content: ""; position: absolute; inset: 0; background-image: repeating-linear-gradient(135deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 24px); }
 .ph .label { position: absolute; z-index: 2; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(80%, 460px); text-align: center; font: 500 11px/17px var(--font); letter-spacing: 0.18em; text-transform: uppercase; color: var(--on-muted); pointer-events: none; }
 .ph .label small { display: block; margin-top: 6px; font-size: 11px; letter-spacing: 0.04em; text-transform: none; opacity: 0.75; }
@@ -51,7 +55,7 @@ h1, h2, h3 { font-weight: 300; text-wrap: balance; }
 .s-dusk { background: radial-gradient(70% 40% at 50% 46%, rgba(255,180,150,0.18), transparent 70%), linear-gradient(180deg, #2b1a22 0%, #5c2a1c 36%, #6e2a16 46%, #1d2a2c 50%, #0b2027 100%); }
 
 /* ---------- nav ---------- */
-.nav { position: fixed; inset: 0 0 auto; z-index: 40; padding-top: env(safe-area-inset-top, 0px); transition: background-color .5s var(--ease), backdrop-filter .5s var(--ease); }
+.nav { position: fixed; inset: 0 0 auto; z-index: 40; padding-top: env(safe-area-inset-top, 0px); transition: background-color .5s var(--ease); }
 .nav.solid { background: rgba(7,13,11,0.85); }
 .nav-in { display: flex; align-items: center; gap: 32px; padding-block: 18px; }
 .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
@@ -143,7 +147,7 @@ h1, h2, h3 { font-weight: 300; text-wrap: balance; }
 
 /* ---------- word over image ---------- */
 .wordsec { position: relative; padding-block: clamp(100px, 12vw, 220px); overflow: hidden; background: var(--g-teal); }
-.bigword { font-size: clamp(90px, 22vw, 420px); line-height: 0.85; letter-spacing: -0.05em; white-space: nowrap; will-change: transform; }
+.bigword { font-size: clamp(90px, 22vw, 420px); line-height: 0.85; letter-spacing: -0.05em; white-space: nowrap; }
 .wordsec .ph { position: absolute; z-index: 2; width: clamp(160px, 22vw, 400px); aspect-ratio: 4 / 5; box-shadow: 0 18px 40px -12px rgba(4,12,9,0.45); max-width: 100%; }
 .wordsec .ph.a { right: 12%; top: 8%; }
 .wordsec .ph.b { left: 8%; bottom: 6%; width: clamp(120px, 15vw, 280px); aspect-ratio: 1 / 1; }
@@ -219,6 +223,8 @@ h1, h2, h3 { font-weight: 300; text-wrap: balance; }
 
 @media (prefers-reduced-motion: reduce) { .cue i::after { animation: none; top: 30%; } * { transition: none !important; } }
 
+/* will-change only on actively animating elements */
+#heroMedia, #track, .pillars-stage, .pano { will-change: transform; }
 /* Real media: once an <img> or <video> is placed inside a .ph, its placeholder label and frame hide automatically */
 .ph:has(img) > .label, .ph:has(img) > .frame, .ph:has(video) > .label, .ph:has(video) > .frame { display: none; }
 .ph:has(img) .bg::after, .ph:has(video) .bg::after { display: none; }

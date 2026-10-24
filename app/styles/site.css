@@ -12,7 +12,7 @@
   --nav-h:72px;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 16px)}
+html{scroll-behavior:auto;scroll-padding-top:calc(var(--nav-h) + 16px)}
 body{margin:0;overflow-x:clip;background:#f7f3e8;color:#123d32;font-family:var(--font-sans);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 a{color:#2f6b50;text-decoration-thickness:1px;text-underline-offset:3px;transition:color .2s}
 a:hover{color:#123d32}
