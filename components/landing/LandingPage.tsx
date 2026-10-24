@@ -165,7 +165,7 @@ export default function LandingPage() {
           <p className="bigword" id="word1" aria-hidden="true">Western Ghats</p>
           <p className="bigword row2" id="word2" aria-hidden="true">Monsoon</p>
           <div className="ph a" data-speed="-18"><div className="bg s-tea"><img src="/assets/images/munnar-tea.jpg" alt="Munnar tea hills" /></div></div>
-          <div className="ph b" data-speed="14"><div className="bg s-falls"></div><span className="frame"></span><span className="label">[Square — Athirappilly falls]<small>1200×1200</small></span></div>
+          <div className="ph b" data-speed="14"><div className="bg s-falls"><img src="/assets/images/athirappilly.jpg" alt="Athirappilly waterfalls" /></div></div>
         </section>
 
         {/* 6 · HORIZONTAL GALLERY */}
