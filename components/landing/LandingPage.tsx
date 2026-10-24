@@ -164,7 +164,7 @@ export default function LandingPage() {
         <section className="wordsec" aria-label="Western Ghats">
           <p className="bigword" id="word1" aria-hidden="true">Western Ghats</p>
           <p className="bigword row2" id="word2" aria-hidden="true">Monsoon</p>
-          <div className="ph a" data-speed="-18"><div className="bg s-tea"></div><span className="frame"></span><span className="label">[Portrait — Munnar tea hills]<small>1200×1500 · 4:5</small></span></div>
+          <div className="ph a" data-speed="-18"><div className="bg s-tea"><img src="/assets/images/munnar-tea.jpg" alt="Munnar tea hills" /></div></div>
           <div className="ph b" data-speed="14"><div className="bg s-falls"></div><span className="frame"></span><span className="label">[Square — Athirappilly falls]<small>1200×1200</small></span></div>
         </section>
 
