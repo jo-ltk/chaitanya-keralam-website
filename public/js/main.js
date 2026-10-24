@@ -198,7 +198,7 @@
     function dist() { return Math.max(0, track.scrollWidth - track.parentElement.clientWidth); }
     var hTween = gsap.to(track, { x: function () { return -dist(); }, ease: 'none', scrollTrigger: { trigger: '.gallery', start: 'top top', end: function () { return '+=' + dist(); }, scrub: 0.5, pin: true, invalidateOnRefresh: true, anticipatePin: 1, fastScrollEnd: true } });
     gsap.utils.toArray('.card').forEach(function (c) {
-      gsap.fromTo(c.querySelector('.bg'), { xPercent: -8, scale: 1.18 }, { xPercent: 8, scale: 1.18, ease: 'none', scrollTrigger: { trigger: c, containerAnimation: hTween, start: 'left right', end: 'right left', scrub: true } });
+      gsap.fromTo(c.querySelector('.bg'), { xPercent: -8, scale: 1.05 }, { xPercent: 8, scale: 1.05, ease: 'none', scrollTrigger: { trigger: c, containerAnimation: hTween, start: 'left right', end: 'right left', scrub: true } });
       gsap.from(c.querySelector('p'), { opacity: 0, y: 16, duration: 0.8, scrollTrigger: { trigger: c, containerAnimation: hTween, start: 'left 85%' } });
     });
 
