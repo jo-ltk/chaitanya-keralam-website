@@ -184,13 +184,19 @@
     gsap.fromTo('#word2', { xPercent: -30 }, { xPercent: 12, ease: 'none', scrollTrigger: { trigger: '.wordsec', start: 'top bottom', end: 'bottom top', scrub: true } });
 
     /* parallax helpers */
+    var isDesktop = window.innerWidth > 768;
     gsap.utils.toArray('[data-speed]').forEach(function (el) {
+      if (!isDesktop) return;
       var s = parseFloat(el.dataset.speed);
-      gsap.fromTo(el, { yPercent: -s }, { yPercent: s, ease: 'none', scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } });
+      var parent = el.closest('section') || el.parentElement;
+      gsap.fromTo(el, { yPercent: -s }, { yPercent: s, ease: 'none', scrollTrigger: { trigger: parent, start: 'top bottom', end: 'bottom top', scrub: true } });
     });
     gsap.utils.toArray('[data-inner]').forEach(function (el) {
       var s = parseFloat(el.dataset.inner);
-      gsap.fromTo(el.querySelector('.bg'), { yPercent: -s }, { yPercent: s, ease: 'none', scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true } });
+      var bg = el.querySelector('.bg');
+      if (bg) {
+        gsap.fromTo(bg, { yPercent: -s }, { yPercent: s, ease: 'none', scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true } });
+      }
     });
 
     /* 6 · horizontal gallery */

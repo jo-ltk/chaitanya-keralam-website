@@ -14,6 +14,12 @@ declare global {
 
 function loadScript(src: string, fallback?: string): Promise<void> {
   return new Promise((resolve) => {
+    // If already in DOM and global exists
+    const existing = document.querySelector(`script[src="${src}"]`) as HTMLScriptElement;
+    if (existing) {
+      resolve();
+      return;
+    }
     const s = document.createElement('script');
     s.src = src;
     s.async = false;
@@ -42,12 +48,23 @@ export default function LandingPage() {
     window.CK_MANUAL = true;
 
     (async () => {
-      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', '/vendor/gsap.min.js');
-      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js', '/vendor/ScrollTrigger.min.js');
-      await loadScript('https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js', '/vendor/lenis.min.js');
-      await loadScript('/js/main.js');
+      // Load dependencies in strict order using local vendored scripts with CDN fallback
+      if (!window.gsap) {
+        await loadScript('/vendor/gsap.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js');
+      }
+      if (!window.ScrollTrigger) {
+        await loadScript('/vendor/ScrollTrigger.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js');
+      }
+      if (!window.Lenis) {
+        await loadScript('/vendor/lenis.min.js', 'https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js');
+      }
+      if (!window.CKLanding) {
+        await loadScript('/js/main.js');
+      }
       if (cancelled) return;
       if (window.CKLanding) {
+        // Destroy previous state if any existed to avoid stale locks
+        window.CKLanding.destroy();
         const stop = window.CKLanding.init();
         cleanupRef.current = stop;
       }
@@ -121,7 +138,7 @@ export default function LandingPage() {
         {/* 2 · MANIFESTO */}
         <section className="manifesto wrap" id="manifesto">
           <p id="manifestoText">Where forests, faiths and shorelines meet, the land breathes slowly.</p>
-        </section>
+                  </section>
 
         {/* 3 · PANORAMA REVEAL */}
         <section className="pano" id="pano" aria-label="Backwaters">
@@ -132,7 +149,10 @@ export default function LandingPage() {
           </div>
           <div className="wrap pano-cap">
             <h2 className="split-lines">The backwaters</h2>
-            <span className="eyebrow">Alappuzha · Kumarakom</span>
+            <div className="pano-cap-text">
+              <span className="eyebrow">Alappuzha · Kumarakom</span>
+              <p data-fade>Still water, palm-lined banks and slow-moving houseboats. The backwaters are Kerala at its most unhurried — a place to watch the light change on the water.</p>
+            </div>
           </div>
         </section>
 
@@ -168,14 +188,20 @@ export default function LandingPage() {
           <p className="bigword" id="word1" aria-hidden="true">Western Ghats</p>
           <p className="bigword row2" id="word2" aria-hidden="true">Monsoon</p>
           <div className="ph a" data-speed="-18"><div className="bg s-tea"><img src="/assets/images/munnar-tea.jpg" alt="Munnar tea hills" /></div></div>
-          <div className="ph b" data-speed="14"><div className="bg s-falls"><img src="/assets/images/athirappilly.jpg" alt="Athirappilly waterfalls" /></div></div>
+          <div className="wrap wordsec-cap" data-fade>
+            <div className="ph b wordsec-cap-img"><div className="bg s-falls"><img src="/assets/images/athirappilly.jpg" alt="Athirappilly waterfalls" /></div></div>
+            <p>The Western Ghats catch the monsoon first. Forests, rivers and waterfalls follow — Kerala's wild, green spine.</p>
+          </div>
         </section>
 
         {/* 6 · HORIZONTAL GALLERY */}
         <section className="gallery" id="gallery" aria-label="Experiences">
           <div className="wrap gal-head">
-            <h2 className="split-lines">Ways to see Kerala</h2>
-            <span className="eyebrow">Scroll →</span>
+            <div>
+              <h2 className="split-lines">Ways to see Kerala</h2>
+              <p className="gal-sub" data-fade>Backwaters to hill stations, rainforest to coast — six doorways into the same landscape.</p>
+            </div>
+           
           </div>
           <div className="wrap">
             <div className="track" id="track">
@@ -194,17 +220,35 @@ export default function LandingPage() {
           <div className="wrap split-text">
             <p className="eyebrow">Spirituality</p>
             <h2 className="split-lines">Slow down.<br />Listen.</h2>
-            <div className="ph" data-speed="-10"><div className="bg s-forest"><img src="/assets/images/forest-path.jpg" alt="Forest path" /></div></div>
+                        <div className="ph" data-speed="-10"><div className="bg s-forest"><img src="/assets/images/forest-path.jpg" alt="Forest path" /></div></div>
           </div>
         </section>
 
         {/* 8 · COLLAGE (peace) */}
         <section className="collage" aria-label="Harmony">
           <div className="wrap collage-grid">
-            <h2 className="split-lines">Many faiths, one shore</h2>
+            <div className="collage-head">
+              <p className="eyebrow" data-fade>03 · Harmony & Living Culture</p>
+              <h2 className="split-lines">Many faiths,<br />one shore</h2>
+              <p className="collage-sub" data-fade>Churches, mosques and temples share the same streets and the same sea breeze. Kerala's peace is lived, celebrated side by side across every district and backwater shoreline.</p>
+              <div className="collage-stats" data-fade>
+                <div className="c-stat">
+                  <span className="c-stat-num">1,000+</span>
+                  <span className="c-stat-lbl">Years of shared heritage & living traditions</span>
+                </div>
+                <div className="c-stat">
+                  <span className="c-stat-num">3 Shores</span>
+                  <span className="c-stat-lbl">Coast, highlands, backwaters unified</span>
+                </div>
+              </div>
+            </div>
             <div className="ph p1" data-inner="10"><div className="bg s-coast"><img src="/assets/images/festival-crowd.png" alt="Festival crowd by the sea" /></div></div>
-            <div className="ph p2" data-speed="-16"><div className="bg s-culture"><img src="/assets/images/temple-lamps.png" alt="Temple lamps" /></div></div>
-            <div className="ph p3" data-speed="12"><div className="bg s-dusk"><img src="/assets/images/church-mosque.png" alt="Church and mosque, shared street" /></div></div>
+            <div className="ph p2" data-speed="-14"><div className="bg s-culture"><img src="/assets/images/temple-lamps.png" alt="Temple lamps" /></div></div>
+            <div className="ph p3" data-speed="10"><div className="bg s-dusk"><img src="/assets/images/church-mosque.png" alt="Church and mosque, shared street" /></div></div>
+            <div className="collage-quote" data-fade>
+              <blockquote>“Where the Arabian Sea touches every belief with the same quiet salt breeze.”</blockquote>
+              <cite>— Kerala Living Heritage</cite>
+            </div>
           </div>
         </section>
 
@@ -212,6 +256,7 @@ export default function LandingPage() {
         <section className="places" id="places" aria-label="Places to begin">
           <div className="wrap">
             <h2 className="split-lines">Places to begin</h2>
+            <p className="places-sub" data-fade>Three starting points. Each opens a different face of Kerala — water, mountain, festival.</p>
             <ul>
               <li><a className="tile" href="#plan"><div className="ph"><div className="bg s-backwater"><img src="/assets/images/kumarakom-backwaters.png" alt="Kumarakom backwaters" /></div></div><b>Backwaters</b><i>[Kumarakom — a morning on the water]</i></a></li>
               <li><a className="tile" href="#plan"><div className="ph"><div className="bg s-tea"><img src="/assets/images/tile-western-ghats.png" alt="Munnar tea hills" /></div></div><b>Western Ghats</b><i>[Munnar — tea hills in the mist]</i></a></li>
@@ -220,12 +265,27 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* 10b · VISION */}
+        <section className="vision" aria-label="Chaitanya Keralam">
+          <div className="wrap vision-in">
+            <p className="eyebrow" data-fade>Chaitanya Keralam</p>
+            <h2 className="split-lines">A wider vision, rooted in Kerala</h2>
+            <p className="vision-sub" data-fade>Chaitanya Keralam connects responsible tourism, practical learning, community development and sustainable livelihoods. Programmes begin December 2026 for youth aged 18–29, with 3-month, 6-month and 1-year pathways.</p>
+            <div className="vision-cta" data-fade>
+              <a className="btn btn-solid" href="/programmes"><span>Explore programmes</span><span className="arr" aria-hidden="true">→</span></a>
+              <a className="link" href="/about"><span>About the initiative</span><span aria-hidden="true">→</span></a>
+            </div>
+          </div>
+        </section>
+
         {/* 10 · FINAL CTA */}
         <section className="final" id="plan" aria-label="Plan your journey">
           <div className="ph" id="finalMedia"><div className="bg s-backwater"><img src="/assets/images/sunset-arabian-sea.jpg" alt="Sunset over the Arabian Sea" /></div></div>
           <div className="final-in wrap">
+            <p className="eyebrow" data-fade>Plan your journey</p>
             <h2 id="finalTitle">Come slowly</h2>
-            <a className="btn btn-solid" href="#top"><span>Plan your journey</span><span className="arr" aria-hidden="true">→</span></a>
+            <p className="final-sub" data-fade>Plan a visit shaped by the land, its people and its pace.</p>
+            <a className="btn btn-solid" href="#top"><span>Begin your journey</span><span className="arr" aria-hidden="true">→</span></a>
           </div>
         </section>
       </main>
