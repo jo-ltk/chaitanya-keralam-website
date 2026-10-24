@@ -212,7 +212,7 @@ export default function LandingPage() {
             <ul>
               <li><a className="tile" href="#plan"><div className="ph"><div className="bg s-backwater"><img src="/assets/images/kumarakom-backwaters.png" alt="Kumarakom backwaters" /></div></div><b>Backwaters</b><i>[Kumarakom — a morning on the water]</i></a></li>
               <li><a className="tile" href="#plan"><div className="ph"><div className="bg s-tea"><img src="/assets/images/tile-western-ghats.png" alt="Munnar tea hills" /></div></div><b>Western Ghats</b><i>[Munnar — tea hills in the mist]</i></a></li>
-              <li><a className="tile" href="#plan"><div className="ph"><div className="bg s-culture"></div><span className="frame"></span><span className="label">[Image — Thrissur Pooram]<small>1600×1600 · 1:1</small></span></div><b>Culture</b><i>[Thrissur — a festival of many faiths]</i></a></li>
+              <li><a className="tile" href="#plan"><div className="ph"><div className="bg s-culture"><img src="/assets/images/tile-culture.png" alt="Thrissur Pooram" /></div></div><b>Culture</b><i>[Thrissur — a festival of many faiths]</i></a></li>
             </ul>
           </div>
         </section>
