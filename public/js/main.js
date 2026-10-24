@@ -123,20 +123,23 @@
     var pls = gsap.utils.toArray('.pl'), hudBtns = gsap.utils.toArray('.pl-hud button');
     var plChars = pls.map(function (p) { return splitChars(p.querySelector('.pl-word')); });
     gsap.set(pls.slice(1), { autoAlpha: 0 });
-    pls.forEach(function (p, i) { if (i) { gsap.set(plChars[i], { yPercent: 110 }); gsap.set(p.querySelectorAll('.pl-line, .pl-index'), { opacity: 0, y: 20 }); } });
+    pls.forEach(function (p) { p.classList.remove('is-active'); });
+    if (pls[0]) pls[0].classList.add('is-active');
+    pls.forEach(function (p, i) { if (i) { gsap.set(plChars[i], { yPercent: 140, opacity: 0 }); gsap.set(p.querySelectorAll('.pl-line, .pl-index'), { opacity: 0, y: 20 }); } });
     var plTl = gsap.timeline({ defaults: { ease: 'power3.inOut' }, scrollTrigger: {
       trigger: '.pillars', start: 'top top', end: '+=' + (pls.length * 100) + '%', scrub: 0.8, pin: '.pillars-stage',
-      onUpdate: function (st) { var idx = Math.min(pls.length - 1, Math.floor(st.progress * pls.length * 0.999 + 0.12)); hudBtns.forEach(function (b, j) { b.classList.toggle('on', j === idx); }); }
+      onUpdate: function (st) { var idx = Math.min(pls.length - 1, Math.floor(st.progress * pls.length * 0.999 + 0.12)); hudBtns.forEach(function (b, j) { b.classList.toggle('on', j === idx); }); pls.forEach(function (p, j) { p.classList.toggle('is-active', j === idx); }); }
     } });
     pls.forEach(function (p, i) {
       plTl.fromTo(p.querySelector('.bg'), { yPercent: -6, scale: 1.12 }, { yPercent: 6, scale: 1, ease: 'none', duration: 1 }, i);
       if (i === 0) return;
       var prev = pls[i - 1], at = i - 0.25;
-      plTl.to(plChars[i - 1], { yPercent: -110, stagger: 0.015, duration: 0.3 }, at)
+      plTl.to(plChars[i - 1], { yPercent: -140, opacity: 0, stagger: 0.015, duration: 0.3 }, at)
           .to(prev.querySelectorAll('.pl-line, .pl-index'), { opacity: 0, y: -20, duration: 0.2 }, at)
           .fromTo(p, { autoAlpha: 0, clipPath: 'inset(100% 0% 0% 0%)' }, { autoAlpha: 1, clipPath: 'inset(0% 0% 0% 0%)', duration: 0.45 }, at)
-          .to(plChars[i], { yPercent: 0, stagger: 0.02, duration: 0.35 }, at + 0.2)
+          .fromTo(plChars[i], { yPercent: 140, opacity: 0 }, { yPercent: 0, opacity: 1, stagger: 0.02, duration: 0.35 }, at + 0.2)
           .to(p.querySelectorAll('.pl-line, .pl-index'), { opacity: 1, y: 0, duration: 0.25 }, at + 0.3);
+      plTl.set(prev, { autoAlpha: 0 }, at + 0.45);
     });
     plTl.to({}, { duration: 0.25 });
     hudBtns.forEach(function (b) {
@@ -199,6 +202,7 @@
     if (state.lenis) state.lenis.destroy();
     state.split.forEach(function (el) { if (el.hasAttribute('data-ck-orig')) el.innerHTML = el.getAttribute('data-ck-orig'); el.removeAttribute('aria-label'); });
     document.documentElement.classList.remove('motion');
+    document.querySelectorAll('.pl').forEach(function (p) { p.classList.remove('is-active'); });
     state = null;
   }
 
