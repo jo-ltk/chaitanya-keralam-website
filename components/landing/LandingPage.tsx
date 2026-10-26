@@ -6,6 +6,7 @@ declare global {
   interface Window {
     CK_MANUAL?: boolean;
     CKLanding?: { init: () => () => void; destroy: () => void };
+    CK_FORM_ENDPOINT?: string;
     gsap?: any;
     ScrollTrigger?: any;
     Lenis?: any;
@@ -14,12 +15,8 @@ declare global {
 
 function loadScript(src: string, fallback?: string): Promise<void> {
   return new Promise((resolve) => {
-    // If already in DOM and global exists
     const existing = document.querySelector(`script[src="${src}"]`) as HTMLScriptElement;
-    if (existing) {
-      resolve();
-      return;
-    }
+    if (existing) { resolve(); return; }
     const s = document.createElement('script');
     s.src = src;
     s.async = false;
@@ -32,9 +29,7 @@ function loadScript(src: string, fallback?: string): Promise<void> {
         s2.onload = () => resolve();
         s2.onerror = () => resolve();
         document.head.appendChild(s2);
-      } else {
-        resolve();
-      }
+      } else resolve();
     };
     document.head.appendChild(s);
   });
@@ -48,22 +43,12 @@ export default function LandingPage() {
     window.CK_MANUAL = true;
 
     (async () => {
-      // Load dependencies in strict order using local vendored scripts with CDN fallback
-      if (!window.gsap) {
-        await loadScript('/vendor/gsap.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js');
-      }
-      if (!window.ScrollTrigger) {
-        await loadScript('/vendor/ScrollTrigger.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js');
-      }
-      if (!window.Lenis) {
-        await loadScript('/vendor/lenis.min.js', 'https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js');
-      }
-      if (!window.CKLanding) {
-        await loadScript('/js/main.js');
-      }
+      if (!window.gsap) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', '/vendor/gsap.min.js');
+      if (!window.ScrollTrigger) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js', '/vendor/ScrollTrigger.min.js');
+      if (!window.Lenis) await loadScript('https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js', '/vendor/lenis.min.js');
+      if (!window.CKLanding) await loadScript('/js/main.js');
       if (cancelled) return;
       if (window.CKLanding) {
-        // Destroy previous state if any existed to avoid stale locks
         window.CKLanding.destroy();
         const stop = window.CKLanding.init();
         cleanupRef.current = stop;
@@ -72,380 +57,278 @@ export default function LandingPage() {
 
     return () => {
       cancelled = true;
-      if (cleanupRef.current) {
-        cleanupRef.current();
-        cleanupRef.current = null;
-      }
+      if (cleanupRef.current) { cleanupRef.current(); cleanupRef.current = null; }
     };
   }, []);
 
   return (
     <>
-      <div className="progress" aria-hidden="true"></div>
 
-      <header className="nav" id="nav">
-        <div className="wrap nav-in">
-          <a className="brand" href="#top" aria-label="Chaitanya Keralam home"><img src="/assets/logo.png" alt="" /><span>Chaitanya Keralam</span></a>
-          <nav aria-label="Primary">
-            <ul className="links">
-              <li><a href="/">Home</a></li>
-              <li><a href="/about">About</a></li>
-              <li><a href="/eco-spiritual-tourism">Tourism</a></li>
-              <li><a href="/programmes">Programmes</a></li>
-              <li><a href="/tesh-homes">TESH Homes</a></li>
-              <li><a href="/programmes#admissions">Admissions</a></li>
-              <li><a href="/programmes#contact">Contact</a></li>
-            </ul>
-          </nav>
-          <div className="nav-end">
-            <a className="btn btn-solid btn-sm nav-cta" href="#explore">Explore Kerala</a>
-            <button className="disc menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" /></svg></button>
+<header className="nav" id="nav">
+  <div className="wrap nav-in">
+    <a className="brand" href="#top" aria-label="Chaitanya Keralam, home"><img src="/assets/logo.png" alt="" width="46" height="44" /><span>Chaitanya Keralam</span></a>
+    <nav aria-label="Primary" style={{display: "contents"}}>
+      <ul className="nav-links">
+        <li><a href="#destinations">Places</a></li>
+        <li><a href="#nature">Our vision</a></li>
+        <li><a href="#experiences">Our values</a></li>
+        <li><a href="#stories">Journeys</a></li>
+      </ul>
+    </nav>
+    <div className="nav-end">
+      <a className="btn nav-cta" href="#plan">Plan a visit</a>
+      <button className="nav-menu" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><i></i></button>
+    </div>
+  </div>
+</header>
+<div className="menu" id="menu" hidden>
+  <ul>
+    <li><a href="#destinations">Places</a></li>
+    <li><a href="#nature">Our vision</a></li>
+    <li><a href="#experiences">Our values</a></li>
+    <li><a href="#stories">Journeys</a></li>
+    <li><a href="#plan">Plan a visit</a></li>
+  </ul>
+  <p className="label">Perhaps the only paradise on earth. Come, stay a while.</p>
+</div>
+
+<main id="top">
+
+  
+  <section className="hero" aria-roledescription="carousel" aria-label="Kerala">
+    <div className="slide is-active" data-slide="0">
+      <div className="ph"><div className="bg s-backwater">
+        
+      </div><span className="slot">[Full-screen hero video — Kerala aerial landscape]<small>1920×1080 · muted loop · poster image</small></span></div>
+    </div>
+    <div className="slide" data-slide="1">
+      <div className="ph"><div className="bg s-ghats"><img src="/assets/images/gallery-hills.jpg" alt="Western Ghats in mist" loading="eager" decoding="async" width="2560" height="1440" /></div><span className="slot">[Full-screen image — Western Ghats in mist]<small>2560×1440</small></span></div>
+    </div>
+    <div className="slide" data-slide="2">
+      <div className="ph"><div className="bg s-culture"><img src="/assets/images/temple-lamps.png" alt="Festival lamps, temple and people" loading="eager" decoding="async" width="2560" height="1440" /></div><span className="slot">[Full-screen image — Festival lamps, temple and people]<small>2560×1440</small></span></div>
+    </div>
+
+    <div className="hero-ui">
+      <div className="wrap hero-grid">
+        <div>
+          <div className="hero-titles" aria-live="polite">
+            <h1 className="hero-title is-active" data-title="0">Perhaps the only paradise on earth.</h1>
+            <p className="hero-title" data-title="1" aria-hidden="true">One with nature.</p>
+            <p className="hero-title" data-title="2" aria-hidden="true">God's own country.</p>
+          </div>
+          <div className="hero-sub">
+            <a className="tlink" href="#nature"><span>Begin your Kerala yatra</span><span className="arrow" aria-hidden="true">→</span></a>
+          </div>
+          <div className="mobile-segs">
+            <div className="segs" role="tablist" aria-label="Choose slide">
+              <button className="seg-hit" type="button" role="tab" aria-label="Slide 1: Perhaps the only paradise on earth" data-go="0"><span className="seg"></span></button>
+              <button className="seg-hit" type="button" role="tab" aria-label="Slide 2: One with nature" data-go="1"><span className="seg"></span></button>
+              <button className="seg-hit" type="button" role="tab" aria-label="Slide 3: God's own country" data-go="2"><span className="seg"></span></button>
+            </div>
+            <button className="hero-ctrl js-play" type="button" aria-label="Pause slideshow"><svg viewBox="0 0 24 24" aria-hidden="true"><path className="js-play-icon" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></button>
           </div>
         </div>
-      </header>
-      <div className="menu" id="menu" hidden>
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="/eco-spiritual-tourism">Tourism</a></li>
-          <li><a href="/programmes">Programmes</a></li>
-          <li><a href="/tesh-homes">TESH Homes</a></li>
-          <li><a href="/programmes#admissions">Admissions</a></li>
-          <li><a href="/programmes#contact">Contact</a></li>
-        </ul>
+        <div className="hero-side">
+          <button className="next" id="nextCard" type="button" aria-label="Next slide">
+            <div className="ph"><div className="bg s-ghats" id="nextThumb"></div></div>
+            <span className="next-body">
+              <span><span className="next-k" style={{display: "block"}}>Next</span><span className="next-t" id="nextTitle">One with nature</span></span>
+              <span className="segs" aria-hidden="true"><span className="seg"></span><span className="seg"></span><span className="seg"></span></span>
+            </span>
+          </button>
+          <button className="hero-ctrl js-play" type="button" aria-label="Pause slideshow"><svg viewBox="0 0 24 24" aria-hidden="true"><path className="js-play-icon" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></button>
+        </div>
       </div>
+    </div>
+  </section>
 
-      <main id="top">
-        {/* 1 · HERO */}
-        <section className="hero" aria-label="Welcome to Kerala · Eco-Spiritual Peace Tourism">
-          <div className="ph" id="heroMedia">
-            <div className="bg s-backwater"><video autoPlay muted loop playsInline preload="auto" disablePictureInPicture poster="/assets/video/kerala-aerial.jpg">
-              <source src="/assets/video/kerala-aerial-1080.webm" type="video/webm" />
-              <source src="/assets/video/kerala-aerial-1080.mp4" type="video/mp4" />
-            </video></div>
-            <span className="frame"></span>
-            <span className="label">[Full-screen hero video — Kerala aerial landscape]<small>Muted loop · 1920×1080 min · poster image fallback</small></span>
-          </div>
-          <div className="wrap hero-body">
-            <div>
-              <p className="eyebrow" data-fade>KERALA · ECO-SPIRITUAL PEACE TOURISM</p>
-              <h1 id="heroTitle"><span className="line">Nature &middot; Stillness &middot; Peace</span></h1>
-              <p className="hero-sub" data-fade style={{ marginTop: '20px', maxWidth: '44ch', fontSize: 'clamp(15px, 1.15vw, 19px)', lineHeight: 1.55, color: 'var(--on-muted)' }}>
-                Discover Kerala through its breathtaking landscapes, living traditions, cultural harmony, and meaningful experiences that reconnect us with nature and one another.
-              </p>
-              <div className="hero-actions" data-fade>
-                <a className="btn btn-solid" href="#explore"><span>Explore Kerala</span><span className="arr" aria-hidden="true">→</span></a>
-                <a className="link" href="#vision"><span>Discover Our Vision</span><span aria-hidden="true">→</span></a>
-              </div>
-            </div>
-            <div className="hero-side" data-fade>
-              <button className="disc" id="playBtn" type="button" aria-label="Pause background motion"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="playIcon" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg></button>
-            </div>
-          </div>
-        </section>
+  
+  <section className="dark statement">
+    <div className="wrap">
+      <span className="kicker">Chaitanya Keralam</span>
+      <p id="statement">Temple bells at dawn, church bells at noon, the azaan at dusk, all under one sky. In Kerala, faith means living in harmony with nature and with one another.</p>
+    </div>
+  </section>
 
-        {/* 2 · INTRODUCING THE VISION */}
-        <section className="manifesto wrap" id="vision" aria-label="Introducing the Vision">
-          <p id="manifestoText">
-            More than a destination <br />a journey where Kerala&apos;s forests, quiet waters, and living faiths unite in peace and stillness.
-          </p>
-        </section>
+  
+  <section className="dark chapter ch-1" aria-labelledby="ch1">
+    <div className="wrap chapter-stage">
+      <span className="kicker chapter-no">01 · Perhaps the only paradise on earth</span>
+      <div className="ph r-4x5 chapter-media"><div className="bg s-backwater"><img src="/assets/images/gallery-backwaters.jpg" alt="Houseboat on still backwaters" loading="lazy" decoding="async" /></div><span className="slot">[Portrait — Houseboat on still backwaters]<small>1200×1500 · 4:5</small></span></div>
+      <h2 className="chapter-word" id="ch1" data-drift="-6">Paradise</h2>
+      <div className="chapter-copy" data-reveal>
+        <p>The Kerala of the stories you grew up with: misty hills, coconut groves, backwaters and quiet village temples. Come and see it for yourself, at your own pace.</p>
+        <a className="tlink" href="#destinations"><span>See the places</span><span className="arrow" aria-hidden="true">→</span></a>
+      </div>
+      <div className="ph r-3x2 chapter-inset" data-reveal-img><div className="bg s-coast"><img src="/assets/images/kerala-backwaters.jpg" alt="Coconut grove by the water" loading="lazy" decoding="async" /></div><span className="slot">[Image — Coconut grove by the water]<small>1500×1000 · 3:2</small></span></div>
+    </div>
+  </section>
 
-        {/* 3 · PANORAMA REVEAL — KERALA'S NATURAL BEAUTY */}
-        <section className="pano" id="natural-beauty" aria-label="Kerala's Natural Beauty">
-          <div className="ph" id="panoMedia">
-            <div className="bg s-dusk"><img src="/assets/images/panorama-dusk.jpg" alt="Kerala backwaters at dusk" /></div>
-            <span className="frame"></span>
-            <span className="label">[Panoramic image — Kerala backwaters at dusk]<small>2880×1600 · full-bleed · houseboat, palms, still water</small></span>
-          </div>
-          <div className="wrap pano-cap">
-            <h2 className="split-lines">A Landscape That Stays With You</h2>
-            <div className="pano-cap-text">
-              <span className="eyebrow">KUMARAKOM · ALAPPUZHA</span>
-              <p data-fade>From the quiet rhythm of the backwaters to the dramatic beauty of the Western Ghats, Kerala invites you to slow down, explore, and reconnect with the natural world.</p>
-            </div>
-          </div>
-        </section>
+  
+  <section className="section" id="destinations" aria-labelledby="destH">
+    <div className="wrap">
+      <div className="head-row">
+        <h2 className="h-section" id="destH" data-split>Places that stay with you</h2>
+        <a className="tlink" href="#plan"><span>All destinations</span><span className="arrow" aria-hidden="true">→</span></a>
+      </div>
+      <ul className="cards">
+        <li data-reveal><a className="card" href="#plan"><div className="ph r-1x1"><div className="bg s-backwater"><img src="/assets/images/gallery-backwaters.jpg" alt="Alappuzha backwaters" loading="lazy" decoding="async" /></div><span className="slot">[Image — Alappuzha backwaters]<small>1600×1600 · 1:1</small></span></div><span className="label">Backwaters</span><h3>Alappuzha: a houseboat, a cup of chai and the backwaters drifting by</h3></a></li>
+        <li data-reveal><a className="card" href="#plan"><div className="ph r-1x1"><div className="bg s-tea"><img src="/assets/images/munnar-tea.jpg" alt="Munnar tea hills" loading="lazy" decoding="async" /></div><span className="slot">[Image — Munnar tea hills]<small>1600×1600 · 1:1</small></span></div><span className="label">Hills</span><h3>Munnar: tea gardens, cool air and morning walks you will remember for years</h3></a></li>
+        <li data-reveal><a className="card" href="#plan"><div className="ph r-1x1"><div className="bg s-forest"><img src="/assets/images/gallery-rainforest.jpg" alt="Wayanad forest" loading="lazy" decoding="async" /></div><span className="slot">[Image — Wayanad forest]<small>1600×1600 · 1:1</small></span></div><span className="label">Forests</span><h3>Wayanad: forest paths, spice gardens and quiet hill villages</h3></a></li>
+        <li data-reveal><a className="card" href="#plan"><div className="ph r-1x1"><div className="bg s-coast"><img src="/assets/images/gallery-coast.jpg" alt="Varkala cliffs and beach" loading="lazy" decoding="async" /></div><span className="slot">[Image — Varkala cliffs and beach]<small>1600×1600 · 1:1</small></span></div><span className="label">Coast</span><h3>Varkala: sea breeze on the red cliffs and a calm evening by the shore</h3></a></li>
+        <li data-reveal><a className="card" href="#plan"><div className="ph r-1x1"><div className="bg s-falls"><img src="/assets/images/athirappilly.jpg" alt="Athirappilly falls" loading="lazy" decoding="async" /></div><span className="slot">[Image — Athirappilly falls]<small>1600×1600 · 1:1</small></span></div><span className="label">Waterfalls</span><h3>Athirappilly: feel the cool spray of the great waterfall</h3></a></li>
+        <li data-reveal><a className="card" href="#plan"><div className="ph r-1x1"><div className="bg s-culture"><img src="/assets/images/gallery-culture.jpg" alt="Fort Kochi streets" loading="lazy" decoding="async" /></div><span className="slot">[Image — Fort Kochi streets]<small>1600×1600 · 1:1</small></span></div><span className="label">Heritage</span><h3>Kochi: old churches, spice markets and the Chinese fishing nets at sunset</h3></a></li>
+      </ul>
+      <a className="btn btn-line view-all" href="#plan"><span>All destinations</span><span className="arrow" aria-hidden="true">→</span></a>
+    </div>
+  </section>
 
-        {/* 4 · THE FOUR PILLARS */}
-        <section className="pillars" id="pillars" aria-label="The Chaitanya Keralam Vision — Four Pillars">
-          <div className="pillars-stage">
-            <article className="pl" data-i="0">
-              <div className="ph"><div className="bg s-ghats"><img src="/assets/images/pillar-ecology.jpg" alt="Western Ghats in mist" /></div></div>
-              <div className="wrap pl-text">
-                <p className="pl-index eyebrow">THE CHAITANYA KERALAM VISION · PILLAR 01</p>
-                <h2 className="pl-word">Ecology</h2>
-                <p className="pl-line">Journey through lush forests, misty mountains, flowing rivers, waterfalls, and serene backwaters. Experience the untamed beauty of Kerala and rediscover our connection with the natural world.</p>
-                <div style={{ marginTop: '24px' }}>
-                  <a className="btn btn-solid btn-sm" href="#ghats"><span>Explore Nature</span><span className="arr" aria-hidden="true">→</span></a>
-                </div>
-              </div>
-            </article>
-            <article className="pl" data-i="1">
-              <div className="ph"><div className="bg s-temple"><img src="/assets/images/pillar-stillness.jpg" alt="Silent Valley forest, morning light" /></div></div>
-              <div className="wrap pl-text">
-                <p className="pl-index eyebrow">THE CHAITANYA KERALAM VISION · PILLAR 02</p>
-                <h2 className="pl-word">Stillness</h2>
-                <p className="pl-line">Discover moments of reflection, tranquillity, and deeper connection through nature and sacred traditions. Experience the quiet beauty of places where life slows down and the mind finds space to breathe.</p>
-                <div style={{ marginTop: '24px' }}>
-                  <a className="btn btn-solid btn-sm" href="#spirituality"><span>Discover Spirituality</span><span className="arr" aria-hidden="true">→</span></a>
-                </div>
-              </div>
-            </article>
-            <article className="pl" data-i="2">
-              <div className="ph"><div className="bg s-coast"><img src="/assets/images/pillar-harmony.avif" alt="Kerala's religious and cultural harmony" /></div></div>
-              <div className="wrap pl-text">
-                <p className="pl-index eyebrow">THE CHAITANYA KERALAM VISION · PILLAR 03</p>
-                <h2 className="pl-word">Harmony</h2>
-                <p className="pl-line">Discover a culture shaped by diverse communities, living faiths, and shared traditions. Experience the values of mutual respect, peaceful coexistence, and the connections that bring people together.</p>
-                <div style={{ marginTop: '24px' }}>
-                  <a className="btn btn-solid btn-sm" href="#harmony"><span>Discover Harmony</span><span className="arr" aria-hidden="true">→</span></a>
-                </div>
-              </div>
-            </article>
-            <article className="pl" data-i="3">
-              <div className="ph"><div className="bg s-culture"><img src="/assets/images/pillar-tourism.png" alt="Local people and cultural experiences" /></div></div>
-              <div className="wrap pl-text">
-                <p className="pl-index eyebrow">THE CHAITANYA KERALAM VISION · PILLAR 04</p>
-                <h2 className="pl-word">Tourism</h2>
-                <p className="pl-line">Go beyond sightseeing. Connect with local communities, discover cultural traditions, experience authentic hospitality, and explore Kerala through encounters that leave a lasting impression.</p>
-                <div style={{ marginTop: '24px' }}>
-                  <a className="btn btn-solid btn-sm" href="#destinations"><span>Explore Experiences</span><span className="arr" aria-hidden="true">→</span></a>
-                </div>
-              </div>
-            </article>
-            <nav className="pl-hud" aria-label="Pillars">
-              <button type="button" data-go="0" className="on">Ecology</button>
-              <button type="button" data-go="1">Spirituality</button>
-              <button type="button" data-go="2">Peace</button>
-              <button type="button" data-go="3">Tourism</button>
-            </nav>
-          </div>
-        </section>
+  
+  <section className="dark chapter ch-2" aria-labelledby="ch2">
+    <div className="wrap chapter-stage">
+      <span className="kicker chapter-no">02 · One with nature</span>
+      <div className="ph r-4x5 chapter-media"><div className="bg s-ghats"><img src="/assets/images/tile-western-ghats.png" alt="Western Ghats Silent Valley" loading="lazy" decoding="async" /></div><span className="slot">[Portrait — Western Ghats, Silent Valley]<small>1200×1500 · 4:5</small></span></div>
+      <h2 className="chapter-word" id="ch2" data-drift="6">Nature</h2>
+      <div className="chapter-copy" data-reveal>
+        <p>Wake to birdsong, walk beneath old trees and breathe the clean air of the Western Ghats. Here, nature restores you slowly and gently.</p>
+        <a className="tlink" href="#nature"><span>Travel gently with us</span><span className="arrow" aria-hidden="true">→</span></a>
+      </div>
+      <div className="ph r-3x2 chapter-inset" data-reveal-img><div className="bg s-falls"><img src="/assets/images/gallery-waterfalls.jpg" alt="Waterfall in the forest" loading="lazy" decoding="async" /></div><span className="slot">[Image — Waterfall in the forest]<small>1500×1000 · 3:2</small></span></div>
+    </div>
+  </section>
 
-        {/* 5 · WESTERN GHATS / MONSOON */}
-        <section className="wordsec" id="ghats" aria-label="Western Ghats and Monsoon">
-          <p className="bigword" id="word1" aria-hidden="true">Western Ghats</p>
-          <p className="bigword row2" id="word2" aria-hidden="true">Monsoon</p>
-          <div className="ph a" data-speed="-18"><div className="bg s-tea"><img src="/assets/images/munnar-tea.jpg" alt="Munnar tea hills" /></div></div>
-          <div className="wrap wordsec-cap" data-fade>
-            <p className="eyebrow">KERALA · THE WESTERN GHATS</p>
-            <div className="ph b wordsec-cap-img"><div className="bg s-falls"><img src="/assets/images/athirappilly.jpg" alt="Athirappilly waterfalls" /></div></div>
-            <p>Where the mountains breathe, and the monsoon awakens the forest. Mist drifts across emerald ridges. Rain traces the leaves. Waterfalls descend through ancient forests, bringing the landscape to life.</p>
-            <p className="eyebrow" style={{ opacity: 0.75 }}>MUNNAR · WAYANAD · ATHIRAPPILLY</p>
-            <p style={{ fontSize: 'clamp(16px, 1.3vw, 22px)', color: 'var(--on)' }}>Experience Kerala in its most elemental form.</p>
-          </div>
-        </section>
-
-        {/* 6 · HORIZONTAL GALLERY — FESTIVALS AND LIVING CULTURE */}
-        <section className="gallery" id="culture" aria-label="Festivals and Living Culture">
-          <div className="wrap gal-head">
-            <div>
-              <p className="eyebrow">LIVING HERITAGE</p>
-              <h2 className="split-lines">A Culture Full of Life</h2>
-              <p className="gal-sub" data-fade>Experience the energy of traditional festivals, the artistry of local performers, the rhythm of community celebrations, and the traditions passed from one generation to the next.</p>
-            </div>
-          </div>
-          <div className="wrap">
-            <div className="track" id="track">
-              <figure className="card"><div className="ph"><div className="bg s-backwater"><img src="/assets/images/gallery-backwaters.jpg" alt="Kumarakom and Vembanad Lake backwaters" /></div></div><p><span>Backwaters</span><span>Kumarakom</span></p></figure>
-              <figure className="card"><div className="ph"><div className="bg s-forest"><img src="/assets/images/gallery-rainforest.jpg" alt="Silent Valley ancient rainforest" /></div></div><p><span>Rainforest</span><span>Wayanad</span></p></figure>
-              <figure className="card"><div className="ph"><div className="bg s-falls"><img src="/assets/images/gallery-waterfalls.jpg" alt="Athirappilly waterfalls cascading through forest" /></div></div><p><span>Waterfalls</span><span>Athirappilly</span></p></figure>
-              <figure className="card"><div className="ph"><div className="bg s-coast"><img src="/assets/images/gallery-coast.jpg" alt="Varkala coastal cliffs and the Arabian Sea" /></div></div><p><span>Coast</span><span>Varkala</span></p></figure>
-              <figure className="card"><div className="ph"><div className="bg s-tea"><img src="/assets/images/gallery-hills.jpg" alt="Munnar emerald tea estate hills" /></div></div><p><span>Highlands</span><span>Munnar</span></p></figure>
-              <figure className="card"><div className="ph"><div className="bg s-culture"><img src="/assets/images/gallery-culture.jpg" alt="Kathakali performer embodying living traditions" /></div></div><p><span>Living Traditions</span><span>Kochi</span></p></figure>
-            </div>
-          </div>
-        </section>
-
-        {/* 7 · SPLIT — SPIRITUALITY AND REFLECTION */}
-        <section className="split" id="spirituality" aria-label="Spirituality and Reflection">
-          <div className="ph" data-inner="12"><div className="bg s-temple"><img src="/assets/images/river-quiet.png" alt="Dawn by the river, quiet reflection" /></div></div>
-          <div className="wrap split-text">
-            <p className="eyebrow">SPIRITUALITY &amp; REFLECTION</p>
-            <h2 className="split-lines">Discover the Beauty<br />of Stillness</h2>
-            <p className="split-sub" data-fade>
-              Amid forests, rivers, and quiet natural landscapes, find moments to pause, reflect, and reconnect with yourself and the world around you. Kerala&apos;s natural and spiritual traditions offer space for contemplation and inner peace.
-            </p>
-            <div className="ph" data-speed="-10"><div className="bg s-forest"><img src="/assets/images/forest-path.jpg" alt="Quiet meditative forest path" /></div></div>
-          </div>
-        </section>
-
-        {/* 8 · COLLAGE — PEACE AND CULTURAL HARMONY */}
-        <section className="collage" id="harmony" aria-label="Peace and Cultural Harmony">
-          <div className="wrap collage-grid">
-            <div className="collage-head">
-              <p className="eyebrow" data-fade>PEACE &amp; CULTURAL HARMONY</p>
-              <h2 className="split-lines">Many Traditions.<br />One Shared Humanity.</h2>
-              <p className="collage-sub" data-fade>
-                A culture shaped by diverse communities, sacred traditions, and shared humanity — where different faiths coexist in mutual respect and everyday connection.
-              </p>
-              <div className="collage-stats" data-fade>
-                <div className="c-stat">
-                  <span className="c-stat-num">Centuries</span>
-                  <span className="c-stat-lbl">Of shared heritage, diverse faiths, and mutual respect</span>
-                </div>
-                <div className="c-stat">
-                  <span className="c-stat-num">One Vision</span>
-                  <span className="c-stat-lbl">Peaceful coexistence rooted in cultural harmony</span>
-                </div>
-              </div>
-            </div>
-            <div className="ph p1" data-inner="10"><div className="bg s-coast"><img src="/assets/images/festival-crowd.png" alt="Diverse community celebrating together" /></div></div>
-            <div className="ph p2" data-speed="-14"><div className="bg s-culture"><img src="/assets/images/temple-lamps.png" alt="Traditional lamps illuminating sacred spaces" /></div></div>
-            <div className="ph p3" data-speed="10"><div className="bg s-dusk"><img src="/assets/images/church-mosque.png" alt="Church and mosque sharing the same peaceful street" /></div></div>
-            <div className="collage-quote" data-fade>
-              <blockquote>“Where diverse traditions exist alongside one another, and mutual respect unites communities.”</blockquote>
-              <cite>— Kerala Cultural Heritage</cite>
-            </div>
-          </div>
-        </section>
-
-        {/* 9 · PLACES (image grid) — MEANINGFUL TOURISM */}
-        <section className="places" id="destinations" aria-label="Meaningful Tourism">
-          <div className="wrap">
-            <p className="eyebrow" style={{ color: 'var(--ink-muted)', marginBottom: '16px' }}>MEANINGFUL TOURISM</p>
-            <h2 className="split-lines">Experience Kerala Beyond the Ordinary</h2>
-            <p className="places-sub" data-fade>Meet local communities, discover traditional ways of life, experience regional culture, and explore the landscapes that make Kerala distinctive. Meaningful tourism creates opportunities for visitors to connect with places and people more deeply.</p>
-            <ul>
-              <li>
-                <a className="tile" href="/eco-spiritual-tourism">
-                  <div className="ph"><div className="bg s-backwater"><img src="/assets/images/kumarakom-backwaters.png" alt="Kumarakom backwaters" /></div></div>
-                  <b>KUMARAKOM</b>
-                  <i>Tranquil backwaters and village life connected by water</i>
-                </a>
-              </li>
-              <li>
-                <a className="tile" href="/eco-spiritual-tourism">
-                  <div className="ph"><div className="bg s-tea"><img src="/assets/images/tile-western-ghats.png" alt="Munnar tea hills" /></div></div>
-                  <b>MUNNAR</b>
-                  <i>Highland ridges, misty tea valleys, and mountain air</i>
-                </a>
-              </li>
-              <li>
-                <a className="tile" href="/eco-spiritual-tourism">
-                  <div className="ph"><div className="bg s-culture"><img src="/assets/images/tile-culture.png" alt="Cultural celebrations in Kerala" /></div></div>
-                  <b>WAYANAD &amp; THRISSUR</b>
-                  <i>Ancient forests, community festivals, and living arts</i>
-                </a>
-              </li>
-            </ul>
-            <div style={{ marginTop: '48px', textAlign: 'center' }}>
-              <a className="btn btn-solid" href="/eco-spiritual-tourism" style={{ background: 'var(--ink)', color: 'var(--ivory)' }}><span>Explore Eco-Spiritual Tourism</span><span className="arr" aria-hidden="true">→</span></a>
-            </div>
-          </div>
-        </section>
-
-        {/* 10 · PHILOSOPHY & COMMUNITY PROGRAMMES */}
-        <section className="vision" id="programmes" aria-label="Philosophy, Programmes, and TESH Homes">
-          <div className="wrap vision-in">
-            <div style={{ textAlign: 'center', maxWidth: '52ch', margin: '0 auto' }}>
-              <p className="eyebrow" data-fade>THE LIVING INITIATIVE</p>
-              <h2 className="split-lines" style={{ fontSize: 'clamp(36px, 4.5vw, 72px)' }}>Community, Learning &amp; Giving</h2>
-            </div>
-
-            <div className="vision-cards">
-              {/* Box 1: Tyagarchana */}
-              <div className="vision-card" data-fade>
-                <div>
-                  <p className="eyebrow">TYAGARCHANA PHILOSOPHY</p>
-                  <h3>A Philosophy of Love &amp; Service</h3>
-                  <p className="vision-sub">
-                    At the heart of Chaitanya Keralam is the spirit of giving, voluntary sacrifice, and contributing time, effort, and resources for community wellbeing and meaningful contribution.
-                  </p>
-                </div>
-                <div className="vision-cta">
-                  <a className="link" href="/about"><span>Discover Our Philosophy</span><span aria-hidden="true">→</span></a>
-                </div>
-              </div>
-
-              {/* Box 2: Programmes */}
-              <div className="vision-card" data-fade>
-                <div>
-                  <p className="eyebrow">LEARNING &amp; COMMUNITY</p>
-                  <h3>Learn. Practise. Create. Lead.</h3>
-                  <p className="vision-sub">
-                    Opportunities for personal growth, practical learning, and community participation. Pathways in sustainable tourism, community hospitality, and environmental stewardship.
-                  </p>
-                </div>
-                <div className="vision-cta">
-                  <a className="btn btn-solid btn-sm" href="/programmes"><span>Explore Programmes</span><span className="arr" aria-hidden="true">→</span></a>
-                </div>
-              </div>
-
-              {/* Box 3: TESH Homes */}
-              <div className="vision-card" data-fade>
-                <div>
-                  <p className="eyebrow">PROPOSED INITIATIVE</p>
-                  <h3>Homes That Connect Communities</h3>
-                  <p className="vision-sub">
-                    Envisioning suitable homes becoming welcoming spaces for accommodation, learning, and cultural activities, connecting visitors with local life.
-                  </p>
-                </div>
-                <div className="vision-cta">
-                  <a className="btn btn-ghost btn-sm" href="/tesh-homes"><span>Discover TESH Homes</span><span className="arr" aria-hidden="true">→</span></a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 11 · FINAL CALL TO ACTION */}
-        <section className="final" id="explore" aria-label="Come Discover a Different Side of Kerala">
-          <div className="ph" id="finalMedia"><div className="bg s-backwater"><img src="/assets/images/sunset-arabian-sea.jpg" alt="Sunset over the Arabian Sea" /></div></div>
-          <div className="final-in wrap">
-            <p className="eyebrow" data-fade>DISCOVER KERALA</p>
-            <h2 id="finalTitle">Discover a Different Kerala</h2>
-            <p className="final-sub" data-fade>Experience the meeting of nature, spirituality, peace, and culture in a place that invites you to reconnect.</p>
-            <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
-              <a className="btn btn-solid" href="#top"><span>Explore Kerala</span><span className="arr" aria-hidden="true">→</span></a>
-              <a className="btn btn-ghost" href="/about"><span>Learn About Chaitanya Keralam</span><span className="arr" aria-hidden="true">→</span></a>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <footer className="foot">
-        <div className="wrap">
-          <div className="foot-grid">
-            <div>
-              <a className="brand" href="#top"><img src="/assets/logo.png" alt="" style={{ width: 64 }} /><span>Chaitanya Keralam</span></a>
-              <p style={{ marginTop: '16px', maxWidth: '34ch', fontSize: '14px', lineHeight: 1.6, color: 'var(--on-muted)' }}>
-                An initiative envisioning Kerala as a global Eco-Spiritual Peace Tourism destination.
-              </p>
-            </div>
-            <div>
-              <h4>Explore</h4>
-              <ul>
-                <li><a href="#vision">Our Vision</a></li>
-                <li><a href="#pillars">The Four Pillars</a></li>
-                <li><a href="#natural-beauty">Kerala&apos;s Nature</a></li>
-                <li><a href="#spirituality">Spirituality &amp; Reflection</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4>Initiatives</h4>
-              <ul>
-                <li><a href="/eco-spiritual-tourism">Eco-Spiritual Tourism</a></li>
-                <li><a href="/programmes">Community Programmes</a></li>
-                <li><a href="/tesh-homes">TESH Homes Concept</a></li>
-                <li><a href="/about">Tyagarchana Philosophy</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4>Connect</h4>
-              <ul>
-                <li><a href="/about">About Us</a></li>
-                <li><a href="/programmes#contact">Contact</a></li>
-                <li><a href="#top">Back to Top ↑</a></li>
-              </ul>
-            </div>
-          </div>
-          <p className="water" id="water" aria-hidden="true">Keralam</p>
-          <div className="legal"><span>© 2026 Chaitanya Keralam</span><span>Eco-Spiritual Peace Tourism</span></div>
+  
+  <section className="section" id="nature" aria-labelledby="natH">
+    <div className="wrap story-grid">
+      <div className="story-text">
+        <span className="label">Our vision</span>
+        <h2 className="h-section" id="natH" data-split>Eco-Spiritual Peace Tourism</h2>
+        <p className="lead" data-reveal>A yatra for today. See Kerala's beauty, visit holy places of every faith, rest close to nature and return home lighter. Every journey is planned with care for the land and for the people who welcome you.</p>
+        <div className="facts" data-reveal>
+          <div className="fact"><b>44</b><span>Rivers</span></div>
+          <div className="fact"><b>14</b><span>Districts</span></div>
+          <div className="fact"><b>1</b><span>Western Ghats, a UNESCO World Heritage range</span></div>
         </div>
-      </footer>
+        <a className="btn btn-ink" href="#plan" data-reveal><span>Our vision</span><span className="arrow" aria-hidden="true">→</span></a>
+      </div>
+      <div className="story-media">
+        <div className="ph r-4x5" data-reveal-img><div className="bg s-forest"><img src="/assets/images/forest-path.jpg" alt="Forest path morning light" loading="lazy" decoding="async" /></div><span className="slot">[Image — Forest path, morning light]<small>1200×1500</small></span></div>
+        <div className="ph r-1x1" data-reveal-img><div className="bg s-falls"><img src="/assets/images/gallery-rainforest.jpg" alt="Rain on leaves" loading="lazy" decoding="async" /></div><span className="slot">[Image — Rain on leaves]<small>1000×1000</small></span></div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section className="section" id="experiences" aria-labelledby="expH" style={{paddingTop: 0}}>
+    <div className="wrap">
+      <div className="head-row"><h2 className="h-section" id="expH" data-split>Values our elders lived by</h2><p className="lead" data-reveal>Four simple values for a balanced life, and the ones we hope to pass on to our children.</p></div>
+      <ul className="rows">
+        <li><a className="row" href="#plan" data-img="0"><span className="row-no">01</span><div className="ph r-16x9"><div className="bg s-backwater"></div><span className="slot">[Image — Shared meal, hands and banana leaf]<small>1600×900</small></span></div><span className="row-t">Anbu · Love and compassion</span><span className="arrow" aria-hidden="true">→</span></a></li>
+        <li><a className="row" href="#plan" data-img="1"><span className="row-no">02</span><div className="ph r-16x9"><div className="bg s-temple"></div><span className="slot">[Image — Still water reflecting the sky]<small>1600×900</small></span></div><span className="row-t">Unmai · Truth and integrity</span><span className="arrow" aria-hidden="true">→</span></a></li>
+        <li><a className="row" href="#plan" data-img="2"><span className="row-no">03</span><div className="ph r-16x9"><div className="bg s-dusk"></div><span className="slot">[Image — Lighting the lamp at dawn]<small>1600×900</small></span></div><span className="row-t">Patru · Commitment and devotion</span><span className="arrow" aria-hidden="true">→</span></a></li>
+        <li><a className="row" href="#plan" data-img="3"><span className="row-no">04</span><div className="ph r-16x9"><div className="bg s-forest"></div><span className="slot">[Image — An elder and a young person in conversation]<small>1600×900</small></span></div><span className="row-t">Pagutharivu · Rational thinking and discernment</span><span className="arrow" aria-hidden="true">→</span></a></li>
+      </ul>
+    </div>
+    <div className="hover-img" id="hoverImg" aria-hidden="true">
+      <div className="ph"><div className="bg s-backwater"></div></div><div className="ph"><div className="bg s-temple"></div></div><div className="ph"><div className="bg s-dusk"></div></div>
+      <div className="ph"><div className="bg s-forest"></div></div>
+    </div>
+  </section>
+
+  
+  <section className="dark chapter ch-3" aria-labelledby="ch3">
+    <div className="wrap chapter-stage">
+      <span className="kicker chapter-no">03 · God's own country</span>
+      <div className="ph r-4x5 chapter-media"><div className="bg s-culture"><img src="/assets/images/temple-lamps.png" alt="Lamps at a temple festival" loading="lazy" decoding="async" /></div><span className="slot">[Portrait — Lamps at a temple festival]<small>1200×1500 · 4:5</small></span></div>
+      <h2 className="chapter-word" id="ch3" data-drift="-6">God's own</h2>
+      <div className="chapter-copy" data-reveal>
+        <p>Onam, Christmas and Eid, celebrated together by neighbours of every faith. Temples, churches and mosques on the same street. This is God's own country.</p>
+        <a className="tlink" href="#experiences"><span>Our values</span><span className="arrow" aria-hidden="true">→</span></a>
+      </div>
+      <div className="ph r-3x2 chapter-inset" data-reveal-img><div className="bg s-dusk"></div><span className="slot">[Image — Oil lamps and flowers]<small>1500×1000 · 3:2</small></span></div>
+    </div>
+  </section>
+
+  
+  <section className="section" id="stories" aria-labelledby="stH">
+    <div className="wrap">
+      <div className="head-row">
+        <h2 className="h-section" id="stH" data-split>Journeys with meaning</h2>
+        <a className="tlink" href="#plan"><span>Plan a journey</span><span className="arrow" aria-hidden="true">→</span></a>
+      </div>
+      <ul className="stories">
+        <li className="story-item" data-reveal><a href="#plan"><div className="ph r-3x2"><div className="bg s-backwater"><img src="/assets/images/kerala-wellness-meditation.jpg" alt="Ayurveda and yoga by the water" loading="lazy" decoding="async" /></div><span className="slot">[Image — Ayurveda and yoga by the water]<small>1500×1000</small></span></div><div><span className="label">Ayurveda & rest</span><h3>Ayurveda the traditional way: herbal oils, simple food and quiet, restful days</h3></div></a></li>
+        <li className="story-item" data-reveal><a href="#plan"><div className="ph r-3x2"><div className="bg s-tea"><img src="/assets/images/kerala-heritage-home.jpg" alt="Visitors with a local family homestay" loading="lazy" decoding="async" /></div><span className="slot">[Image — Visitors with a local family, homestay]<small>1500×1000</small></span></div><div><span className="label">Family homestays</span><h3>Stay with Kerala families, eat a sadya on a banana leaf and leave the land as you found it</h3></div></a></li>
+        <li className="story-item" data-reveal><a href="#plan"><div className="ph r-3x2"><div className="bg s-dusk"><img src="/assets/images/kerala-youth-training.jpg" alt="Young people training in hospitality" loading="lazy" decoding="async" /></div><span className="slot">[Image — Young people training in hospitality]<small>1500×1000</small></span></div><div><span className="label">Youth & community</span><h3>Your journey helps young people of Kerala build careers in hospitality and tourism</h3></div></a></li>
+      </ul>
+    </div>
+  </section>
+
+  
+  <section className="banner" aria-labelledby="banH">
+    <div className="ph"><div className="bg s-backwater" data-inner="8"></div><span className="slot" style={{top: "22%"}}>[Full-screen image — Sunset over the backwaters]<small>2560×1440</small></span></div>
+    <div className="wrap banner-in">
+      <h2 id="banH" data-chars>God's own country awaits.</h2>
+      <a className="btn btn-white" href="#plan"><span>Plan a journey for your family</span><span className="arrow" aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  
+  <section className="section" id="plan" aria-labelledby="planH">
+    <div className="wrap contact-grid">
+      <div className="contact-intro">
+        <h2 id="planH" data-split>Let us plan your Kerala journey</h2>
+        <p data-reveal>Travelling with family, as a couple, or on a pilgrimage? Tell us what you have in mind. We will plan an unhurried journey with comfortable stays, good food and time to rest.</p>
+        <a className="guide" href="assets/chaitanya-keralam-guide.pdf" data-reveal>
+          <div className="ph"><div className="bg s-tea"></div></div>
+          <span className="guide-t"><b>Download our Kerala family travel guide</b><span>PDF · [size] <span aria-hidden="true">↓</span></span></span>
+        </a>
+      </div>
+      <div data-reveal>
+        <div className="tabs" role="tablist" aria-label="Enquiry type">
+          <button className="tab" type="button" role="tab" id="t-trip" aria-selected="true" aria-controls="enquiry" data-type="trip">Plan a journey</button>
+          <button className="tab" type="button" role="tab" id="t-partner" aria-selected="false" aria-controls="enquiry" data-type="partner">Groups & organisations</button>
+          <button className="tab" type="button" role="tab" id="t-general" aria-selected="false" aria-controls="enquiry" data-type="general">General enquiry</button>
+        </div>
+        <form className="form" id="enquiry" role="tabpanel" aria-labelledby="t-trip" noValidate>
+          <div className="field"><label htmlFor="f-first">First name*</label><input id="f-first" name="firstName" autoComplete="given-name" placeholder="Enter first name" required /><span className="err" aria-live="polite"></span></div>
+          <div className="field"><label htmlFor="f-last">Last name</label><input id="f-last" name="lastName" autoComplete="family-name" placeholder="Enter last name" /></div>
+          <div className="field"><label htmlFor="f-email">Email*</label><input id="f-email" name="email" type="email" autoComplete="email" placeholder="Enter email" required /><span className="err" aria-live="polite"></span></div>
+          <div className="field"><label htmlFor="f-phone">Phone number*</label>
+            <div className="phone"><select id="f-code" name="countryCode" aria-label="Country code"><option value="+91">+91</option><option value="+971">+971</option><option value="+44">+44</option><option value="+1">+1</option><option value="+61">+61</option><option value="+49">+49</option></select><input id="f-phone" name="phone" type="tel" autoComplete="tel-national" placeholder="Phone number" required /></div>
+            <span className="err" aria-live="polite"></span></div>
+          <div className="field" data-for="trip"><label htmlFor="f-month">When would you like to travel?</label><select id="f-month" name="travelMonth"><option value="">Select month</option><option>January</option><option>February</option><option>March</option><option>April</option><option>May</option><option>June</option><option>July</option><option>August</option><option>September</option><option>October</option><option>November</option><option>December</option><option>Not sure yet</option></select></div>
+          <div className="field" data-for="trip"><label htmlFor="f-guests">Travellers</label><input id="f-guests" name="travellers" type="number" min="1" max="99" inputMode="numeric" placeholder="How many of you?" /></div>
+          <div className="field full" data-for="partner" hidden><label htmlFor="f-org">Group or organisation name</label><input id="f-org" name="organisation" autoComplete="organization" placeholder="Temple, church, mosque, senior citizens or community group" /></div>
+          <div className="field full"><span className="flabel"><label htmlFor="f-msg">Tell us more</label><span className="count" id="count">0 / 1000</span></span><textarea id="f-msg" name="message" maxLength={1000} placeholder="Places you would like to see, holy places to include, pace, food preferences, health needs: anything that helps us plan"></textarea></div>
+          <div className="form-foot">
+            <label className="consent"><input id="f-consent" type="checkbox" name="consent" /> <span>I agree to be contacted by phone or email about my enquiry.</span></label>
+            <button className="btn btn-ink" type="submit"><span>Send enquiry</span><span className="arrow" aria-hidden="true">→</span></button>
+          </div>
+          <p className="form-note" id="formNote" role="status" hidden></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer className="dark foot">
+  <div className="wrap">
+    <div className="foot-top">
+      <div className="foot-brand">
+        <a className="brand" href="#top"><img src="/assets/logo.png" alt="" width="60" height="58" style={{width: "60px"}} /><span>Chaitanya Keralam</span></a>
+        <p className="foot-promise">Perhaps the only paradise on earth.<br />One with nature.<br />God's own country.</p>
+        <p className="label">Eco-Spiritual Peace Tourism · Anbu · Unmai · Patru · Pagutharivu</p>
+      </div>
+      <div><h4>Explore</h4><ul><li><a href="#destinations">Places</a></li><li><a href="#nature">Our vision</a></li><li><a href="#experiences">Our values</a></li></ul></div>
+      <div><h4>Journeys</h4><ul><li><a href="#stories">Ayurveda & rest</a></li><li><a href="#stories">Family homestays</a></li><li><a href="#stories">Youth & community</a></li><li><a href="#plan">Plan a visit</a></li></ul></div>
+      <div><h4>Follow</h4><ul><li><a href="#plan">Instagram</a></li><li><a href="#plan">YouTube</a></li><li><a href="#plan">Facebook</a></li></ul></div>
+    </div>
+    <p className="water" id="water" aria-hidden="true">Keralam</p>
+    <div className="legal"><span>© [Year] Chaitanya Keralam</span><span>Privacy · Terms</span></div>
+  </div>
+</footer>
+
     </>
   );
 }
-
