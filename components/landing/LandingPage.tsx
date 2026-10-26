@@ -264,7 +264,7 @@ export default function LandingPage() {
 
   
   <section className="banner" aria-labelledby="banH">
-    <div className="ph"><div className="bg s-backwater" data-inner="8"></div><span className="slot" style={{top: "22%"}}>[Full-screen image — Sunset over the backwaters]<small>2560×1440</small></span></div>
+    <div className="ph"><div className="bg s-backwater" data-inner="8"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/sunset-backwaters-1793010741262.png" alt="Sunset over the backwaters" loading="lazy" decoding="async" style={{width: "100%", height: "100%", objectFit: "cover", display: "block"}} /></div><span className="slot" style={{top: "22%"}}>[Full-screen image — Sunset over the backwaters]<small>2560×1440</small></span></div>
     <div className="wrap banner-in">
       <h2 id="banH" data-chars>God's own country awaits.</h2>
       <a className="btn btn-white" href="#plan"><span>Plan a journey for your family</span><span className="arrow" aria-hidden="true">→</span></a>
