@@ -277,7 +277,7 @@ export default function LandingPage() {
       <div className="contact-intro">
         <h2 id="planH" data-split>Let us plan your Kerala journey</h2>
         <p data-reveal>Travelling with family, as a couple, or on a pilgrimage? Tell us what you have in mind. We will plan an unhurried journey with comfortable stays, good food and time to rest.</p>
-        <a className="guide" href="assets/chaitanya-keralam-guide.pdf" data-reveal>
+        <a className="guide" href="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/chaitanya-keralam-guide.pdf" data-reveal>
           <div className="ph"><div className="bg s-tea"></div></div>
           <span className="guide-t"><b>Download our Kerala family travel guide</b><span>PDF · [size] <span aria-hidden="true">↓</span></span></span>
         </a>
