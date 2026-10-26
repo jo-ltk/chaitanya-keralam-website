@@ -103,7 +103,7 @@ export default function LandingPage() {
       <div className="ph"><div className="bg s-ghats"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/western-ghats-mist-1793007116438.jpg" alt="Western Ghats in mist" loading="eager" decoding="async" width="2560" height="1440" /></div><span className="slot">[Full-screen image — Western Ghats in mist]<small>2560×1440</small></span></div>
     </div>
     <div className="slide" data-slide="2">
-      <div className="ph"><div className="bg s-culture"><img src="/assets/images/temple-lamps.png" alt="Festival lamps, temple and people" loading="eager" decoding="async" width="2560" height="1440" /></div><span className="slot">[Full-screen image — Festival lamps, temple and people]<small>2560×1440</small></span></div>
+      <div className="ph"><div className="bg s-culture"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/diya-temple-festival-1793008151792.png" alt="Festival lamps, temple and people" loading="eager" decoding="async" width="2560" height="1440" /></div><span className="slot">[Full-screen image — Festival lamps, temple and people]<small>2560×1440</small></span></div>
     </div>
 
     <div className="hero-ui">
