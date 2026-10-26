@@ -243,7 +243,7 @@ export default function LandingPage() {
         <p>Onam, Christmas and Eid, celebrated together by neighbours of every faith. Temples, churches and mosques on the same street. This is God's own country.</p>
         <a className="tlink" href="#experiences"><span>Our values</span><span className="arrow" aria-hidden="true">→</span></a>
       </div>
-      <div className="ph r-3x2 chapter-inset" data-reveal-img><div className="bg s-dusk"></div><span className="slot">[Image — Oil lamps and flowers]<small>1500×1000 · 3:2</small></span></div>
+      <div className="ph r-3x2 chapter-inset" data-reveal-img><div className="bg s-dusk"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/oil-lamps-flowers-1793010878547.png" alt="Oil lamps and flowers" loading="lazy" decoding="async" /></div><span className="slot">[Image — Oil lamps and flowers]<small>1500×1000 · 3:2</small></span></div>
     </div>
   </section>
 
