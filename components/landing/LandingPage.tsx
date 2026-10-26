@@ -152,7 +152,7 @@ export default function LandingPage() {
   <section className="dark chapter ch-1" aria-labelledby="ch1">
     <div className="wrap chapter-stage">
       <span className="kicker chapter-no">01 · Perhaps the only paradise on earth</span>
-      <div className="ph r-4x5 chapter-media"><div className="bg s-backwater"><img src="/assets/images/gallery-backwaters.jpg" alt="Houseboat on still backwaters" loading="lazy" decoding="async" /></div><span className="slot">[Portrait — Houseboat on still backwaters]<small>1200×1500 · 4:5</small></span></div>
+      <div className="ph r-4x5 chapter-media"><div className="bg s-backwater"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/houseboat-backwaters-1793008580480.png" alt="Houseboat on still backwaters" loading="lazy" decoding="async" /></div><span className="slot">[Portrait — Houseboat on still backwaters]<small>1200×1500 · 4:5</small></span></div>
       <h2 className="chapter-word" id="ch1" data-drift="-6">Paradise</h2>
       <div className="chapter-copy" data-reveal>
         <p>The Kerala of the stories you grew up with: misty hills, coconut groves, backwaters and quiet village temples. Come and see it for yourself, at your own pace.</p>
