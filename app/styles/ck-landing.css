@@ -134,6 +134,7 @@ a:hover > .arrow, button:hover > .arrow, .row:hover .arrow { transform: translat
 .hero-ctrl svg { width: 18px; height: 18px; fill: currentColor; }
 .mobile-segs { display: none; }
 @media (max-width: 900px) {
+  .ph .bg { inset: 0; }
   .hero-grid { grid-template-columns: minmax(0, 1fr); }
   .hero-side { display: none; }
   .mobile-segs { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: center; margin-top: 28px; }

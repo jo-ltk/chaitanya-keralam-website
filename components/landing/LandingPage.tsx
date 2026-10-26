@@ -97,7 +97,7 @@ export default function LandingPage() {
   
   <section className="hero" aria-roledescription="carousel" aria-label="Kerala">
     <div className="slide is-active" data-slide="0">
-      <div className="ph"><video className="hero-video" src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/kerala-aerial-landscape-1793006981218.mp4" autoPlay muted loop playsInline poster="/assets/images/gallery-hills.jpg" /><span className="slot">[Full-screen hero video — Kerala aerial landscape]<small>1920×1080 · muted loop · poster image</small></span></div>
+      <div className="ph"><div className="bg"><video className="hero-video" src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/kerala-aerial-landscape-1793006981218.mp4" autoPlay muted loop playsInline poster="/assets/images/gallery-hills.jpg" /></div><span className="slot">[Full-screen hero video — Kerala aerial landscape]<small>1920×1080 · muted loop · poster image</small></span></div>
     </div>
     <div className="slide" data-slide="1">
       <div className="ph"><div className="bg s-ghats"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/western-ghats-mist-1793007116438.jpg" alt="Western Ghats in mist" loading="eager" decoding="async" width="2560" height="1440" /></div><span className="slot">[Full-screen image — Western Ghats in mist]<small>2560×1440</small></span></div>
@@ -128,7 +128,7 @@ export default function LandingPage() {
         </div>
         <div className="hero-side">
           <button className="next" id="nextCard" type="button" aria-label="Next slide">
-            <div className="ph"><div className="bg s-ghats" id="nextThumb"><img id="nextThumbImg" src="/assets/images/tile-western-ghats.png" alt="" style={{width: "100%", height: "100%", objectFit: "cover", display: "block"}} /></div></div>
+            <div className="ph"><div className="bg s-ghats" id="nextThumb"><img id="nextThumbImg" src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/western-ghats-mist-1793007116438.jpg" alt="" style={{width: "100%", height: "100%", objectFit: "cover", display: "block"}} /></div></div>
             <span className="next-body">
               <span><span className="next-k" style={{display: "block"}}>Next</span><span className="next-t" id="nextTitle">One with nature</span></span>
               <span className="segs" aria-hidden="true"><span className="seg"></span><span className="seg"></span><span className="seg"></span></span>
@@ -185,7 +185,7 @@ export default function LandingPage() {
   <section className="dark chapter ch-2" aria-labelledby="ch2">
     <div className="wrap chapter-stage">
       <span className="kicker chapter-no">02 · One with nature</span>
-      <div className="ph r-4x5 chapter-media"><div className="bg s-ghats"><img src="/assets/images/tile-western-ghats.png" alt="Western Ghats Silent Valley" loading="lazy" decoding="async" /></div><span className="slot">[Portrait — Western Ghats, Silent Valley]<small>1200×1500 · 4:5</small></span></div>
+      <div className="ph r-4x5 chapter-media"><div className="bg s-ghats"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/western-ghats-mist-1793007116438.jpg" alt="Western Ghats Silent Valley" loading="lazy" decoding="async" /></div><span className="slot">[Portrait — Western Ghats, Silent Valley]<small>1200×1500 · 4:5</small></span></div>
       <h2 className="chapter-word" id="ch2" data-drift="6">Nature</h2>
       <div className="chapter-copy" data-reveal>
         <p>Wake to birdsong, walk beneath old trees and breathe the clean air of the Western Ghats. Here, nature restores you slowly and gently.</p>

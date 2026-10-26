@@ -59,7 +59,7 @@
     var slides = $$('.slide'), titles = $$('.hero-title'), segBars = $$('.hero-side .seg'), mSegs = $$('.mobile-segs .seg'), segHits = $$('.seg-hit');
     var names = titles.map(function (t) { return t.getAttribute('data-ck-orig') ? t.textContent : t.textContent; });
     var thumbs = ['s-backwater', 's-ghats', 's-culture'];
-var thumbImgs = ['/assets/images/gallery-hills.jpg', '/assets/images/tile-western-ghats.png', '/assets/images/tile-culture.png'];
+var thumbImgs = ['/assets/images/gallery-hills.jpg', 'https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/western-ghats-mist-1793007116438.jpg', 'https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/diya-temple-festival-1793008151792.png'];
     var cur = 0, playing = !reduce, DURATION = 7000, startT = 0, elapsed = 0, raf = 0;
     var titleChars = titles.map(function (t) { return G && !reduce ? chars(t) : []; });
     function paintSegs(p) {
