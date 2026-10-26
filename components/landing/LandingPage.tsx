@@ -158,7 +158,7 @@ export default function LandingPage() {
         <p>The Kerala of the stories you grew up with: misty hills, coconut groves, backwaters and quiet village temples. Come and see it for yourself, at your own pace.</p>
         <a className="tlink" href="#destinations"><span>See the places</span><span className="arrow" aria-hidden="true">→</span></a>
       </div>
-      <div className="ph r-3x2 chapter-inset" data-reveal-img><div className="bg s-coast"><img src="/assets/images/kerala-backwaters.jpg" alt="Coconut grove by the water" loading="lazy" decoding="async" /></div><span className="slot">[Image — Coconut grove by the water]<small>1500×1000 · 3:2</small></span></div>
+      <div className="ph r-3x2 chapter-inset" data-reveal-img><div className="bg s-coast"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/coconut-grove-water-1793007847586.jpg" alt="Coconut grove by the water" loading="lazy" decoding="async" /></div><span className="slot">[Image — Coconut grove by the water]<small>1500×1000 · 3:2</small></span></div>
     </div>
   </section>
 
