@@ -97,9 +97,7 @@ export default function LandingPage() {
   
   <section className="hero" aria-roledescription="carousel" aria-label="Kerala">
     <div className="slide is-active" data-slide="0">
-      <div className="ph"><div className="bg s-backwater">
-        
-      </div><span className="slot">[Full-screen hero video — Kerala aerial landscape]<small>1920×1080 · muted loop · poster image</small></span></div>
+      <div className="ph"><video className="hero-video" src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/kerala-aerial-landscape-1793006981218.mp4" autoPlay muted loop playsInline poster="/assets/images/gallery-hills.jpg" /><span className="slot">[Full-screen hero video — Kerala aerial landscape]<small>1920×1080 · muted loop · poster image</small></span></div>
     </div>
     <div className="slide" data-slide="1">
       <div className="ph"><div className="bg s-ghats"><img src="/assets/images/gallery-hills.jpg" alt="Western Ghats in mist" loading="eager" decoding="async" width="2560" height="1440" /></div><span className="slot">[Full-screen image — Western Ghats in mist]<small>2560×1440</small></span></div>
