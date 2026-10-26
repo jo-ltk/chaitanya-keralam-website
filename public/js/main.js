@@ -59,6 +59,7 @@
     var slides = $$('.slide'), titles = $$('.hero-title'), segBars = $$('.hero-side .seg'), mSegs = $$('.mobile-segs .seg'), segHits = $$('.seg-hit');
     var names = titles.map(function (t) { return t.getAttribute('data-ck-orig') ? t.textContent : t.textContent; });
     var thumbs = ['s-backwater', 's-ghats', 's-culture'];
+var thumbImgs = ['/assets/images/gallery-hills.jpg', '/assets/images/tile-western-ghats.png', '/assets/images/tile-culture.png'];
     var cur = 0, playing = !reduce, DURATION = 7000, startT = 0, elapsed = 0, raf = 0;
     var titleChars = titles.map(function (t) { return G && !reduce ? chars(t) : []; });
     function paintSegs(p) {
@@ -74,8 +75,8 @@
         G.killTweensOf(titleChars[prev]); G.killTweensOf(titleChars[i]);
         if (!instant) G.fromTo(titleChars[i], { yPercent: 120 }, { yPercent: 0, duration: 1.2, ease: 'expo.out', stagger: 0.022, delay: 0.15 });
       }
-      var nx = (i + 1) % n, th = $('#nextThumb'), nt = $('#nextTitle');
-      if (th) th.className = 'bg ' + thumbs[nx]; if (nt) nt.textContent = names[nx].replace(/\.$/, '');
+      var nx = (i + 1) % n, th = $('#nextThumb'), nt = $('#nextTitle'), thi = $('#nextThumbImg');
+      if (th) th.className = 'bg ' + thumbs[nx]; if (nt) nt.textContent = names[nx].replace(/\.$/, ''); if (thi) thi.src = thumbImgs[nx];
       $$('video', slides[prev]).forEach(function (v) { if (prev !== i) v.pause(); });
       $$('video', slides[i]).forEach(function (v) { if (playing) v.play().catch(function () {}); });
       elapsed = 0; startT = performance.now(); paintSegs(0);

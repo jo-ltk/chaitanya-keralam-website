@@ -128,7 +128,7 @@ export default function LandingPage() {
         </div>
         <div className="hero-side">
           <button className="next" id="nextCard" type="button" aria-label="Next slide">
-            <div className="ph"><div className="bg s-ghats" id="nextThumb"></div></div>
+            <div className="ph"><div className="bg s-ghats" id="nextThumb"><img id="nextThumbImg" src="/assets/images/tile-western-ghats.png" alt="" style={{width: "100%", height: "100%", objectFit: "cover", display: "block"}} /></div></div>
             <span className="next-body">
               <span><span className="next-k" style={{display: "block"}}>Next</span><span className="next-t" id="nextTitle">One with nature</span></span>
               <span className="segs" aria-hidden="true"><span className="seg"></span><span className="seg"></span><span className="seg"></span></span>
