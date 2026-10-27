@@ -1,0 +1,23 @@
+/* Floating WhatsApp button, shared by the landing page and site pages */
+.wa-float {
+  position: fixed;
+  right: max(20px, env(safe-area-inset-right));
+  bottom: max(20px, env(safe-area-inset-bottom));
+  z-index: 9999;
+  width: 58px;
+  height: 58px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: #25d366;
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.wa-float:hover { transform: scale(1.07); box-shadow: 0 10px 26px rgba(0, 0, 0, 0.34); }
+.wa-float:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+@media (max-width: 560px) {
+  .wa-float { width: 52px; height: 52px; right: 16px; bottom: 16px; }
+  .wa-float svg { width: 26px; height: 26px; }
+}
+@media (prefers-reduced-motion: reduce) { .wa-float { transition: none; } }

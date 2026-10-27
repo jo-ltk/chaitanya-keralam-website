@@ -89,8 +89,8 @@ a:hover > .arrow, button:hover > .arrow, .row:hover .arrow { transform: translat
 .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; flex: none; }
 .brand img { width: 46px; height: auto; }
 .brand span { font: 500 18px/1.1 var(--font); letter-spacing: -0.005em; }
-.nav-links { flex: 1; display: flex; justify-content: center; gap: clamp(20px, 3vw, 56px); margin: 0; padding: 0; list-style: none; }
-.nav-links a { text-decoration: none; font: 400 16px/20px var(--font); padding-block: 8px; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .3s var(--ease); }
+.nav-links { flex: 1; display: flex; justify-content: center; gap: clamp(16px, 2vw, 40px); margin: 0; padding: 0; list-style: none; }
+.nav-links a { text-decoration: none; white-space: nowrap; font: 400 16px/20px var(--font); padding-block: 8px; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .3s var(--ease); }
 .nav-links a:hover { background-size: 100% 1px; }
 .nav-cta { min-height: 46px; padding: 0 22px; background: var(--on); color: var(--ink); }
 .nav.solid .nav-cta { background: var(--ink); color: var(--paper); }
@@ -462,3 +462,8 @@ a:hover > .arrow, button:hover > .arrow, .row:hover .arrow { transform: translat
 @media (max-width: 760px) { .hero-title { font-size: var(--hero-fs, 5.2vw); max-width: none; } }
 @media (max-width: 375px) { .hero-title { font-size: var(--hero-fs, 5.2vw); } }
 @media (max-width: 340px) { .hero-title { font-size: var(--hero-fs, 5.2vw); } }
+
+/* Moment: single image with caption */
+.moment figure { margin: 0; display: grid; gap: 20px; }
+.moment figcaption { display: grid; gap: 8px; max-width: 52ch; }
+.moment figcaption p { font: 300 clamp(20px, 2.2vw, 30px)/1.25 var(--font); letter-spacing: -0.02em; margin: 0; }

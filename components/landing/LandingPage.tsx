@@ -69,10 +69,13 @@ export default function LandingPage() {
     <a className="brand" href="#top" aria-label="Chaitanya Keralam, home"><img src="/assets/logo.png" alt="" width="46" height="44" /><span>Chaitanya Keralam</span></a>
     <nav aria-label="Primary" style={{display: "contents"}}>
       <ul className="nav-links">
-        <li><a href="#destinations">Places</a></li>
-        <li><a href="#nature">Our vision</a></li>
-        <li><a href="#experiences">Our values</a></li>
-        <li><a href="#stories">Journeys</a></li>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/eco-spiritual-tourism">Tourism</a></li>
+        <li><a href="/programmes">Programmes</a></li>
+        <li><a href="/tesh-homes">TESH Homes</a></li>
+        <li><a href="/programmes#admissions">Admissions</a></li>
+        <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
     <div className="nav-end">
@@ -83,11 +86,13 @@ export default function LandingPage() {
 </header>
 <div className="menu" id="menu" hidden>
   <ul>
-    <li><a href="#destinations">Places</a></li>
-    <li><a href="#nature">Our vision</a></li>
-    <li><a href="#experiences">Our values</a></li>
-    <li><a href="#stories">Journeys</a></li>
-    <li><a href="#plan">Plan a visit</a></li>
+    <li><a href="/">Home</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/eco-spiritual-tourism">Tourism</a></li>
+    <li><a href="/programmes">Programmes</a></li>
+    <li><a href="/tesh-homes">TESH Homes</a></li>
+    <li><a href="/programmes#admissions">Admissions</a></li>
+    <li><a href="#contact">Contact</a></li>
   </ul>
   <p className="label">Perhaps the only paradise on earth. Come, stay a while.</p>
 </div>
@@ -217,6 +222,15 @@ export default function LandingPage() {
   </section>
 
   
+  <section className="section moment" aria-label="Sunrise yoga amid Kerala tea hills" style={{paddingTop: 0, paddingBottom: 0}}>
+    <div className="wrap">
+      <figure>
+        <div className="ph r-3x2" data-reveal-img><div className="bg s-tea" data-inner="6"><img src="/assets/images/sunrise-yoga-tea-hills.png" alt="Sunrise yoga amid Kerala tea hills" loading="lazy" decoding="async" width="1516" height="1037" /></div><span className="slot">[Image — Sunrise yoga amid Kerala tea hills]<small>1516×1037 · 3:2</small></span></div>
+        <figcaption data-reveal><span className="label">Munnar · Dawn</span><p>Sunrise yoga amid the tea hills, where the day begins slowly.</p></figcaption>
+      </figure>
+    </div>
+  </section>
+
   <section className="section" id="experiences" aria-labelledby="expH" style={{paddingTop: 0}}>
     <div className="wrap">
       <div className="head-row"><h2 className="h-section" id="expH" data-split>Values our elders lived by</h2><p className="lead" data-reveal>Four simple values for a balanced life, and the ones we hope to pass on to our children.</p></div>
@@ -310,7 +324,7 @@ export default function LandingPage() {
   </section>
 </main>
 
-<footer className="dark foot">
+<footer className="dark foot" id="contact">
   <div className="wrap">
     <div className="foot-top">
       <div className="foot-brand">
