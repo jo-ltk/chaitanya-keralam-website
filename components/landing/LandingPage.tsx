@@ -79,7 +79,7 @@ export default function LandingPage() {
       </ul>
     </nav>
     <div className="nav-end">
-      <a className="btn nav-cta" href="#plan">Plan a visit</a>
+      <a className="btn nav-cta" href="/programmes#admissions">Apply now</a>
       <button className="nav-menu" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><i></i></button>
     </div>
   </div>
@@ -333,7 +333,7 @@ export default function LandingPage() {
         <p className="label">Eco-Spiritual Peace Tourism · Anbu · Unmai · Patru · Pagutharivu</p>
       </div>
       <div><h4>Explore</h4><ul><li><a href="#destinations">Places</a></li><li><a href="#nature">Our vision</a></li><li><a href="#experiences">Our values</a></li></ul></div>
-      <div><h4>Journeys</h4><ul><li><a href="#stories">Ayurveda & rest</a></li><li><a href="#stories">Family homestays</a></li><li><a href="#stories">Youth & community</a></li><li><a href="#plan">Plan a visit</a></li></ul></div>
+      <div><h4>Journeys</h4><ul><li><a href="#stories">Ayurveda & rest</a></li><li><a href="#stories">Family homestays</a></li><li><a href="#stories">Youth & community</a></li><li><a href="/programmes#admissions">Apply now</a></li></ul></div>
       <div><h4>Follow</h4><ul><li><a href="#plan">Instagram</a></li><li><a href="#plan">YouTube</a></li><li><a href="#plan">Facebook</a></li></ul></div>
     </div>
     <p className="water" id="water" aria-hidden="true">Keralam</p>
