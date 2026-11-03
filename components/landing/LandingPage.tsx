@@ -237,7 +237,7 @@ export default function LandingPage() {
     </div>
   </section>
 
-  <section className="section" id="experiences" aria-labelledby="expH" style={{paddingTop: 0}}>
+  <section className="section" id="experiences" aria-labelledby="expH">
     <div className="wrap">
       <div className="head-row"><h2 className="h-section" id="expH" data-split>Values our elders lived by</h2><p className="lead" data-reveal>Four simple values for a balanced life, and the ones we hope to pass on to our children.</p><a className="tlink" href="/values"><span>What these values mean</span><span className="arrow" aria-hidden="true">→</span></a></div>
       <ul className="rows">
