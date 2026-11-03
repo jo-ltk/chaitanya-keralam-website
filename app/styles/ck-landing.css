@@ -39,7 +39,7 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 .dark .label { color: var(--on-muted); }
 .kicker { font: 500 12px/16px var(--font); letter-spacing: 0.16em; text-transform: uppercase; }
 .h-section { font-size: clamp(36px, 4.6vw, 80px); line-height: 1.05; letter-spacing: -0.015em; }
-.lead { font: 300 clamp(18px, 1.3vw, 22px)/1.55 var(--font); color: var(--ink-muted); max-width: 46ch; }
+.lead { font: 300 clamp(18px, 1.3vw, 22px)/1.55 var(--font); color: var(--ink-muted); max-width: 54ch; text-wrap: balance; }
 .dark .lead { color: var(--on-muted); }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
@@ -198,6 +198,8 @@ a:hover > .arrow, button:hover > .arrow, .row:hover .arrow { transform: translat
 .row-no { font: 400 14px/1 var(--font); color: var(--ink-muted); font-variant-numeric: tabular-nums; }
 .row-t { font: 300 clamp(26px, 3vw, 52px)/1.1 var(--font); letter-spacing: -0.015em; transition: transform .5s var(--ease); }
 .row:hover .row-t { transform: translateX(10px); }
+.row-c { display: grid; gap: 10px; min-width: 0; }
+.row-d { font: 400 clamp(15px, 1.1vw, 17px)/1.5 var(--font); color: var(--ink-muted); max-width: 54ch; text-wrap: balance; }
 .row .arrow { font-size: 22px; }
 .row .ph { display: none; }
 .hover-img { position: fixed; z-index: 30; left: 0; top: 0; width: 300px; aspect-ratio: 4 / 5; pointer-events: none; opacity: 0; transform: translate(-50%, -50%) scale(0.9); transition: opacity .3s var(--ease); }
@@ -262,7 +264,7 @@ a:hover > .arrow, button:hover > .arrow, .row:hover .arrow { transform: translat
 .phone select { border-right: 0; padding: 0 30px 0 14px; background-position: calc(100% - 16px) 50%, calc(100% - 11px) 50%; }
 .count { color: var(--ink-muted); font-size: 14px; }
 .form-foot { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; }
-.consent { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: var(--ink-muted); max-width: 46ch; }
+.consent { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: var(--ink-muted); max-width: 54ch; text-wrap: balance; }
 .consent input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--ink); }
 .form-note { grid-column: 1 / -1; padding: 18px 20px; background: var(--paper-2); border-left: 0; font-size: 15px; }
 @media (max-width: 960px) { .contact-grid { grid-template-columns: minmax(0, 1fr); } }
@@ -419,7 +421,7 @@ a:hover > .arrow, button:hover > .arrow, .row:hover .arrow { transform: translat
   .chapter-stage { justify-items: stretch; text-align: left; }
   .chapter-media, .chapter.ch-2 .chapter-media { position: relative; inset: auto; width: min(100%, 560px); box-shadow: none; }
   .chapter-word { margin-top: -0.42em; white-space: normal; font-size: clamp(88px, 14vw, 128px); }
-  .chapter-copy { max-width: 40ch; }
+  .chapter-copy { max-width: 54ch; }
 }
 /* tiny thumbnails: hide placeholder captions that can't be read at that size */
 @media (max-width: 900px) { .story-item .ph .slot, .guide .ph .slot { display: none; } }
@@ -467,3 +469,143 @@ a:hover > .arrow, button:hover > .arrow, .row:hover .arrow { transform: translat
 .moment figure { margin: 0; display: grid; gap: 20px; }
 .moment figcaption { display: grid; gap: 8px; max-width: 52ch; }
 .moment figcaption p { font: 300 clamp(20px, 2.2vw, 30px)/1.25 var(--font); letter-spacing: -0.02em; margin: 0; }
+
+/* brand tagline */
+.brand span { display: inline-flex; flex-direction: column; gap: 3px; }
+.brand .brand-tag { font: 400 11px/1.2 var(--font); letter-spacing: .04em; opacity: .75; white-space: nowrap; }
+@media (max-width: 600px) { .brand .brand-tag { font-size: 9px; } }
+.invite { margin-top: 20px; max-width: 54ch; text-wrap: balance; }
+.invite b { font-weight: 500; }
+/* maps: Find Kerala, one interactive map (components/landing/maps) */
+.geo { display: grid; grid-template-columns: minmax(0, 0.62fr) minmax(0, 2fr); gap: clamp(32px, 4vw, 72px) clamp(32px, 4vw, 72px); align-items: start; }
+.geo-info { display: grid; gap: 36px; align-content: start; }
+.geo-tabs { margin: 0; }
+.geo-detail { display: grid; gap: 10px; justify-items: start; min-height: 230px; align-content: start; }
+.geo-detail .kicker { color: var(--ink-muted); }
+.geo-detail b { font: 300 clamp(24px, 2vw, 34px)/1.25 var(--font); color: var(--ink); }
+.geo-detail p { margin: 0; max-width: 46ch; color: var(--ink-muted); }
+.geo-detail-meta { font: 400 15px/22px var(--font); color: var(--ink-muted); }
+.geo-cta { margin-top: 14px; padding: 0; border: 0; background: none; color: var(--ink); cursor: pointer; }
+.geo-legend { display: grid; gap: 12px; list-style: none; padding: 0; margin: 0; font: 400 15px/22px var(--font); color: var(--ink-muted); }
+.geo-legend li { display: flex; align-items: center; gap: 12px; }
+
+.geo-frame { background: #fff; border: 1px solid var(--line); }
+.geo-stage { position: relative; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; }
+.geo-svg { position: absolute; inset: 0; display: block; width: 100%; height: 100%; transition: opacity 1.4s var(--ease); }
+.geo-overlay { position: absolute; inset: 0; pointer-events: none; }
+
+.geo-land path { fill: var(--line); stroke: #fff; stroke-width: 0.75px; transition: stroke-opacity 1s var(--ease) .5s, fill .9s var(--ease); }
+.geo[data-level="india"] .geo-world-land path, .geo[data-level="kerala"] .geo-world-land path { fill: var(--paper-2); }
+.geo-hl { fill: var(--forest); stroke: #fff; stroke-width: 0.75px; transition: opacity 1.4s var(--ease) 1.1s; }
+.geo-glow { fill: var(--forest); opacity: .4; transition: opacity 1.4s var(--ease) 1.6s; }
+.geo-hit { cursor: default; }
+.geo-districts path { fill: var(--forest); fill-opacity: .16; }
+.geo-tint { fill: var(--forest); fill-opacity: .2; stroke: #fff; stroke-width: 0.75px; pointer-events: none; animation: geo-fade .35s var(--ease); }
+
+/* which layer shows at which zoom */
+.geo-world-in, .geo-states, .geo-kl, .geo-districts { transition: opacity 1s var(--ease); }
+.geo-world-in { pointer-events: none; }
+.geo[data-level="world"] .geo-world-in { pointer-events: auto; }
+.geo[data-level="world"] .geo-world-in .geo-hit { cursor: pointer; }
+.geo[data-level="india"] .geo-world-in, .geo[data-level="kerala"] .geo-world-in { opacity: 0; }
+.geo[data-level="world"] .geo-states { opacity: 0; pointer-events: none; }
+.geo[data-level="india"] .geo-kl .geo-hit { cursor: pointer; }
+.geo[data-level="kerala"] .geo-kl { opacity: 0; pointer-events: none; }
+.geo-districts { opacity: 0; pointer-events: none; }
+.geo[data-level="kerala"] .geo-districts { opacity: 1; }
+
+/* pulsing pin + drawn callout (world and India zoom) */
+.geo-pin { position: absolute; width: 0; height: 0; transition: opacity .8s var(--ease); }
+.geo[data-level="kerala"] .geo-pin { opacity: 0; }
+.geo-pin-dot, .geo-pin-pulse { position: absolute; left: -6px; top: -6px; width: 12px; height: 12px; border-radius: 999px; background: var(--forest); }
+.geo-pin-dot { border: 2px solid #fff; transition: transform .6s var(--ease) 2.2s; }
+.geo-pin-pulse { opacity: 0; }
+.geo:not([data-phase="armed"]) .geo-pin-pulse { animation: geo-pulse 2.4s var(--ease) 2.6s infinite; }
+.geo-callout { position: absolute; top: 0; right: 14px; display: flex; flex-direction: row-reverse; align-items: center; gap: 8px; transform: translateY(-50%); white-space: nowrap; }
+.geo-callout-line { display: block; width: clamp(16px, 4vw, 48px); height: 1px; background: var(--ink); transform-origin: 100% 50%; transition: transform .6s var(--ease) 2.5s; }
+.geo-callout-t { font: 400 15px/22px var(--font); color: var(--ink); transition: opacity 1s var(--ease) 2.8s, transform 1s var(--ease) 2.8s; }
+
+/* Kerala destinations (shown at the Kerala zoom) */
+.geo-place { position: absolute; transform: translate(-50%, -50%); font: 500 12px/16px var(--font); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-muted); white-space: nowrap; opacity: 0; transition: opacity .6s var(--ease); }
+.geo[data-level="kerala"] .geo-place { opacity: 1; transition-delay: 1s; }
+.geo-mk { position: absolute; width: 36px; height: 36px; margin: -18px 0 0 -18px; padding: 0; border: 0; background: none; color: var(--ink); cursor: pointer; display: grid; place-items: center; opacity: 0; pointer-events: none; transition: opacity .5s var(--ease); }
+.geo[data-level="kerala"] .geo-mk { opacity: 1; pointer-events: auto; transition: opacity 1s var(--ease) calc(1.1s + var(--i) * 80ms); }
+.geo-mk-t { position: absolute; top: 50%; transform: translateY(-50%); font: 400 14px/1.2 var(--font); white-space: nowrap; }
+.geo-mk.to-right .geo-mk-t { left: 26px; }
+.geo-mk.to-left .geo-mk-t { right: 26px; }
+.geo-mk.to-top .geo-mk-t { left: 50%; top: auto; bottom: 22px; transform: translateX(-50%); }
+.geo-mk[aria-pressed="true"] .geo-mk-t { font-weight: 500; }
+.geo-mk:focus-visible { outline-offset: -6px; }
+
+.geo-mk-dot { position: relative; display: inline-block; flex: none; width: 10px; height: 10px; background: var(--forest); border: 2px solid var(--forest); transition: transform .3s var(--ease); }
+.geo-mk-dot.k-hills { border-radius: 999px; }
+.geo-mk-dot.k-backwaters { border-radius: 999px; background: #fff; }
+.geo-mk-dot.k-coast { width: 9px; height: 9px; transform: rotate(45deg); }
+.geo-mk-dot.k-heritage { background: #fff; }
+.geo-mk:hover .geo-mk-dot, .geo-mk[aria-pressed="true"] .geo-mk-dot { transform: scale(1.4); }
+.geo-mk:hover .geo-mk-dot.k-coast, .geo-mk[aria-pressed="true"] .geo-mk-dot.k-coast { transform: rotate(45deg) scale(1.4); }
+.geo-mk[aria-pressed="true"] .geo-mk-dot::after { content: ""; position: absolute; inset: -7px; border: 1px solid var(--forest); border-radius: inherit; opacity: .5; }
+
+/* entrance start states (set only after JS has mounted, so content stays visible without it) */
+.geo[data-phase="armed"] .geo-svg { opacity: 0; }
+.geo[data-phase="armed"] .geo-land path { stroke-opacity: 0; }
+.geo[data-phase="armed"] .geo-hl, .geo[data-phase="armed"] .geo-glow { opacity: 0; }
+.geo[data-phase="armed"] .geo-pin-dot { transform: scale(0); }
+.geo[data-phase="armed"] .geo-callout-line { transform: scaleX(0); }
+.geo[data-phase="armed"] .geo-callout-t { opacity: 0; transform: translateY(6px); }
+@keyframes geo-pulse { from { transform: scale(1); opacity: .45; } to { transform: scale(4); opacity: 0; } }
+@keyframes geo-fade { from { opacity: 0; } }
+
+/* place list */
+.map-places { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0 clamp(20px, 2.6vw, 48px); list-style: none; padding: 0; margin: 0; }
+.map-places button { display: grid; grid-template-columns: 12px minmax(0, 1fr); align-items: baseline; column-gap: 14px; row-gap: 2px; width: 100%; min-height: 72px; padding: 16px 0; border: 0; border-bottom: 1px solid var(--line); background: none; color: var(--ink); font: 400 16px/1.35 var(--font); text-align: left; cursor: pointer; }
+.map-places button .geo-mk-dot { align-self: center; grid-row: 1 / span 2; }
+.map-places button span { grid-column: 2; font-size: 14px; color: var(--ink-muted); }
+.map-places button:hover .geo-mk-dot, .map-places button[aria-pressed="true"] .geo-mk-dot { transform: scale(1.4); }
+.map-places button:hover .geo-mk-dot.k-coast, .map-places button[aria-pressed="true"] .geo-mk-dot.k-coast { transform: rotate(45deg) scale(1.4); }
+.map-places button[aria-pressed="true"] { font-weight: 500; }
+.map-link { margin-top: 36px; }
+.geo-credit { margin: 16px 0 0; font: 400 13px/1.4 var(--font); color: var(--ink-muted); }
+
+@media (max-width: 1024px) { .map-places { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 900px) {
+  .geo { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .geo-info { display: contents; }
+  .geo-tabs { order: 1; }
+  .geo-frame { order: 2; }
+  .geo-detail { order: 3; min-height: 0; }
+  .geo-legend { order: 4; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .map-places { order: 5; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .geo-stage { aspect-ratio: 1 / 1; }
+}
+@media (max-width: 600px) {
+  .geo-stage { aspect-ratio: 4 / 5; }
+  .geo-mk { width: 44px; height: 44px; margin: -22px 0 0 -22px; }
+  .geo-mk .geo-mk-t { display: none; }
+  .geo-mk[aria-pressed="true"] .geo-mk-t { display: block; }
+  .geo-place { font-size: 10px; letter-spacing: .12em; }
+  .geo-place[data-p="tamil-nadu"] { display: none; }
+  .geo-callout-t { font-size: 14px; }
+}
+@media (max-width: 430px) { .map-places { grid-template-columns: minmax(0, 1fr); } }
+/* values page */
+.values-page { max-width: 880px; margin: 0 auto; padding: 48px max(24px, env(safe-area-inset-left, 0px)) 96px; font: 300 18px/1.65 var(--font); }
+.values-page header { display: grid; gap: 16px; margin-bottom: 48px; }
+.values-page h1 { font: 400 clamp(32px, 5vw, 56px)/1.1 var(--font); margin: 0; }
+.values-page article { padding: 32px 0; border-top: 1px solid rgba(128,128,128,.3); }
+.values-page article h2 { font: 500 26px/1.2 var(--font); margin: 0 0 4px; }
+.values-page article .meaning { opacity: .65; margin: 0 0 12px; }
+.values-page a { color: inherit; }
+
+.official { position: relative; overflow: hidden; min-height: clamp(280px, 40vh, 400px); display: grid; place-items: center; text-align: center; }
+.official > .ph { position: absolute; inset: 0; }
+.official::after { content: ""; position: absolute; inset: 0; background: rgba(5,10,8,0.55); pointer-events: none; }
+.official-in { position: relative; z-index: 2; display: grid; gap: 20px; justify-items: center; padding-block: 56px; }
+.official h2 { font: 300 clamp(32px, 5vw, 72px)/1 var(--font); letter-spacing: -0.03em; }
+
+.invitation { padding-block: clamp(56px, 8vw, 112px); }
+.invitation-in { display: grid; gap: 20px; max-width: 1100px; margin-inline: auto; justify-items: center; text-align: center; }
+.invitation h2 { font: 300 clamp(28px, 4.2vw, 60px)/1.12 var(--font); letter-spacing: -0.03em; }
+
+.foot .social a { display: inline-flex; align-items: center; gap: 12px; }
+.foot .social svg { width: 20px; height: 20px; flex: none; }

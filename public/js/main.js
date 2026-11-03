@@ -148,6 +148,10 @@ var thumbImgs = ['/assets/images/gallery-hills.jpg', 'https://uwhatknkdcffxpezka
       var sw = words($('#statement'));
       G.fromTo(sw, { opacity: 0.18 }, { opacity: 1, stagger: 0.08, ease: 'none', scrollTrigger: { trigger: '.statement', start: 'top 75%', end: 'bottom 70%', scrub: true } });
 
+      // invitation: words light up while scrolling, like the statement
+      var iw = words($('#invH'));
+      if (iw.length) G.fromTo(iw, { opacity: 0.18 }, { opacity: 1, stagger: 0.08, ease: 'none', scrollTrigger: { trigger: '.invitation', start: 'top 85%', end: 'bottom 55%', scrub: true } });
+
       // section titles: words rise once
       $$('[data-split]').forEach(function (el) {
         G.from(words(el), { yPercent: 115, duration: 1.1, ease: 'expo.out', stagger: 0.06, scrollTrigger: { trigger: el, start: 'top 88%', once: true } });

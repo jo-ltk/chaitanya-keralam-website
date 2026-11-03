@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import FindKerala from './maps/FindKerala';
 
 declare global {
   interface Window {
@@ -46,7 +47,7 @@ export default function LandingPage() {
       if (!window.gsap) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', '/vendor/gsap.min.js');
       if (!window.ScrollTrigger) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js', '/vendor/ScrollTrigger.min.js');
       if (!window.Lenis) await loadScript('https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js', '/vendor/lenis.min.js');
-      if (!window.CKLanding) await loadScript('/js/main.js');
+      if (!window.CKLanding) await loadScript('/js/main.js?v=2');
       if (cancelled) return;
       if (window.CKLanding) {
         window.CKLanding.destroy();
@@ -66,16 +67,15 @@ export default function LandingPage() {
 
 <header className="nav" id="nav">
   <div className="wrap nav-in">
-    <a className="brand" href="#top" aria-label="Chaitanya Keralam, home"><img src="/assets/logo.png" alt="" width="46" height="44" /><span>Chaitanya Keralam</span></a>
+    <a className="brand" href="#top" aria-label="Chaitanya Keralam, home"><img src="/assets/logo.png" alt="" width="46" height="44" /><span>Chaitanya Keralam<small className="brand-tag">Eco Spiritual Peace Haven / India</small></span></a>
     <nav aria-label="Primary" style={{display: "contents"}}>
       <ul className="nav-links">
-        <li><a href="/">Home</a></li>
         <li><a href="/about">About</a></li>
         <li><a href="/eco-spiritual-tourism">Tourism</a></li>
         <li><a href="/programmes">Programmes</a></li>
         <li><a href="/tesh-homes">TESH Homes</a></li>
-        <li><a href="/programmes#admissions">Admissions</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="/values">Our values</a></li>
+<li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
     <div className="nav-end">
@@ -86,13 +86,12 @@ export default function LandingPage() {
 </header>
 <div className="menu" id="menu" hidden>
   <ul>
-    <li><a href="/">Home</a></li>
     <li><a href="/about">About</a></li>
     <li><a href="/eco-spiritual-tourism">Tourism</a></li>
     <li><a href="/programmes">Programmes</a></li>
     <li><a href="/tesh-homes">TESH Homes</a></li>
-    <li><a href="/programmes#admissions">Admissions</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="/values">Our values</a></li>
+<li><a href="#contact">Contact</a></li>
   </ul>
   <p className="label">Perhaps the only paradise on earth. Come, stay a while.</p>
 </div>
@@ -179,7 +178,7 @@ export default function LandingPage() {
         <li data-reveal><a className="card" href="#plan"><div className="ph r-1x1"><div className="bg s-tea"><img src="/assets/images/munnar-tea.jpg" alt="Munnar tea hills" loading="lazy" decoding="async" /></div><span className="slot">[Image — Munnar tea hills]<small>1600×1600 · 1:1</small></span></div><span className="label">Hills</span><h3>Munnar: tea gardens, cool air and morning walks you will remember for years</h3></a></li>
         <li data-reveal><a className="card" href="#plan"><div className="ph r-1x1"><div className="bg s-forest"><img src="/assets/images/gallery-rainforest.jpg" alt="Wayanad forest" loading="lazy" decoding="async" /></div><span className="slot">[Image — Wayanad forest]<small>1600×1600 · 1:1</small></span></div><span className="label">Forests</span><h3>Wayanad: forest paths, spice gardens and quiet hill villages</h3></a></li>
         <li data-reveal><a className="card" href="#plan"><div className="ph r-1x1"><div className="bg s-coast"><img src="/assets/images/gallery-coast.jpg" alt="Varkala cliffs and beach" loading="lazy" decoding="async" /></div><span className="slot">[Image — Varkala cliffs and beach]<small>1600×1600 · 1:1</small></span></div><span className="label">Coast</span><h3>Varkala: sea breeze on the red cliffs and a calm evening by the shore</h3></a></li>
-        <li data-reveal><a className="card" href="#plan"><div className="ph r-1x1"><div className="bg s-falls"><img src="/assets/images/athirappilly.jpg" alt="Athirappilly falls" loading="lazy" decoding="async" /></div><span className="slot">[Image — Athirappilly falls]<small>1600×1600 · 1:1</small></span></div><span className="label">Waterfalls</span><h3>Athirappilly: feel the cool spray of the great waterfall</h3></a></li>
+        <li data-reveal><a className="card" href="#plan"><div className="ph r-1x1"><div className="bg s-falls"><img src="/assets/images/athirappilly-falls.jpg" alt="Athirappilly falls" loading="lazy" decoding="async" /></div><span className="slot">[Image — Athirappilly falls]<small>1600×1600 · 1:1</small></span></div><span className="label">Waterfalls</span><h3>Athirappilly: feel the cool spray of the great waterfall</h3></a></li>
         <li data-reveal><a className="card" href="#plan"><div className="ph r-1x1"><div className="bg s-culture"><img src="/assets/images/gallery-culture.jpg" alt="Fort Kochi streets" loading="lazy" decoding="async" /></div><span className="slot">[Image — Fort Kochi streets]<small>1600×1600 · 1:1</small></span></div><span className="label">Heritage</span><h3>Kochi: old churches, spice markets and the Chinese fishing nets at sunset</h3></a></li>
       </ul>
       <a className="btn btn-line view-all" href="#plan"><span>All destinations</span><span className="arrow" aria-hidden="true">→</span></a>
@@ -196,7 +195,7 @@ export default function LandingPage() {
         <p>Wake to birdsong, walk beneath old trees and breathe the clean air of the Western Ghats. Here, nature restores you slowly and gently.</p>
         <a className="tlink" href="#nature"><span>Travel gently with us</span><span className="arrow" aria-hidden="true">→</span></a>
       </div>
-      <div className="ph r-3x2 chapter-inset" data-reveal-img><div className="bg s-falls"><img src="/assets/images/gallery-waterfalls.jpg" alt="Waterfall in the forest" loading="lazy" decoding="async" /></div><span className="slot">[Image — Waterfall in the forest]<small>1500×1000 · 3:2</small></span></div>
+      <div className="ph r-3x2 chapter-inset" data-reveal-img><div className="bg s-falls"><img src="/assets/images/athirappilly-aerial.png" alt="Aerial view of Athirappilly waterfall in the forest" loading="lazy" decoding="async" /></div><span className="slot">[Image — Athirappilly waterfall, aerial]<small>1280×720 · 16:9</small></span></div>
     </div>
   </section>
 
@@ -222,6 +221,13 @@ export default function LandingPage() {
   </section>
 
   
+  <section className="dark invitation" id="invitation" aria-labelledby="invH">
+    <div className="wrap invitation-in">
+      <span className="kicker">Global invitation</span>
+      <h2 id="invH">“Inviting global entrepreneurs and visionary leaders for global peace and sustainable development.”</h2>
+    </div>
+  </section>
+
   <section className="section moment" aria-label="Sunrise yoga amid Kerala tea hills" style={{paddingTop: 0, paddingBottom: 0}}>
     <div className="wrap">
       <figure>
@@ -233,12 +239,12 @@ export default function LandingPage() {
 
   <section className="section" id="experiences" aria-labelledby="expH" style={{paddingTop: 0}}>
     <div className="wrap">
-      <div className="head-row"><h2 className="h-section" id="expH" data-split>Values our elders lived by</h2><p className="lead" data-reveal>Four simple values for a balanced life, and the ones we hope to pass on to our children.</p></div>
+      <div className="head-row"><h2 className="h-section" id="expH" data-split>Values our elders lived by</h2><p className="lead" data-reveal>Four simple values for a balanced life, and the ones we hope to pass on to our children.</p><a className="tlink" href="/values"><span>What these values mean</span><span className="arrow" aria-hidden="true">→</span></a></div>
       <ul className="rows">
-        <li><a className="row" href="#plan" data-img="0"><span className="row-no">01</span><div className="ph r-16x9"><div className="bg s-backwater"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/anbu-love-compassion-1793008816345.png" alt="Shared meal, hands and banana leaf" loading="lazy" decoding="async" /></div><span className="slot">[Image — Shared meal, hands and banana leaf]<small>1600×900</small></span></div><span className="row-t">Anbu · Love and compassion</span><span className="arrow" aria-hidden="true">→</span></a></li>
-        <li><a className="row" href="#plan" data-img="1"><span className="row-no">02</span><div className="ph r-16x9"><div className="bg s-temple"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/unmai-truth-integrity-1793009294446.png" alt="Still water reflecting the sky" loading="lazy" decoding="async" /></div><span className="slot">[Image — Still water reflecting the sky]<small>1600×900</small></span></div><span className="row-t">Unmai · Truth and integrity</span><span className="arrow" aria-hidden="true">→</span></a></li>
-        <li><a className="row" href="#plan" data-img="2"><span className="row-no">03</span><div className="ph r-16x9"><div className="bg s-dusk"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/patru-commitment-devotion-1793009464320.png" alt="Lighting the lamp at dawn" loading="lazy" decoding="async" /></div><span className="slot">[Image — Lighting the lamp at dawn]<small>1600×900</small></span></div><span className="row-t">Patru · Commitment and devotion</span><span className="arrow" aria-hidden="true">→</span></a></li>
-        <li><a className="row" href="#plan" data-img="3"><span className="row-no">04</span><div className="ph r-16x9"><div className="bg s-forest"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/pagutharivu-rational-thinking-1793009636243.png" alt="An elder and a young person in conversation" loading="lazy" decoding="async" /></div><span className="slot">[Image — An elder and a young person in conversation]<small>1600×900</small></span></div><span className="row-t">Pagutharivu · Rational thinking and discernment</span><span className="arrow" aria-hidden="true">→</span></a></li>
+        <li><a className="row" href="#plan" data-img="0"><span className="row-no">01</span><div className="ph r-16x9"><div className="bg s-backwater"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/anbu-love-compassion-1793008816345.png" alt="Shared meal, hands and banana leaf" loading="lazy" decoding="async" /></div><span className="slot">[Image — Shared meal, hands and banana leaf]<small>1600×900</small></span></div><span className="row-c"><span className="row-t">Anbu · love and compassion</span><span className="row-d">Warmth that turns a stranger into a guest and a guest into family, through kindness that asks nothing back.</span></span><span className="arrow" aria-hidden="true">→</span></a></li>
+        <li><a className="row" href="#plan" data-img="1"><span className="row-no">02</span><div className="ph r-16x9"><div className="bg s-temple"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/unmai-truth-integrity-1793009294446.png" alt="Still water reflecting the sky" loading="lazy" decoding="async" /></div><span className="slot">[Image — Still water reflecting the sky]<small>1600×900</small></span></div><span className="row-c"><span className="row-t">Unmai · truth and integrity</span><span className="row-d">Honest in word and deed, holding to what is right even when it is hard, because trust is built on it.</span></span><span className="arrow" aria-hidden="true">→</span></a></li>
+        <li><a className="row" href="#plan" data-img="2"><span className="row-no">03</span><div className="ph r-16x9"><div className="bg s-dusk"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/patru-commitment-devotion-1793009464320.png" alt="Lighting the lamp at dawn" loading="lazy" decoding="async" /></div><span className="slot">[Image — Lighting the lamp at dawn]<small>1600×900</small></span></div><span className="row-c"><span className="row-t">Patru · commitment and devotion</span><span className="row-d">Showing up each day with care for our work, our people and our practice, and seeing every promise through.</span></span><span className="arrow" aria-hidden="true">→</span></a></li>
+        <li><a className="row" href="#plan" data-img="3"><span className="row-no">04</span><div className="ph r-16x9"><div className="bg s-forest"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/pagutharivu-rational-thinking-1793009636243.png" alt="An elder and a young person in conversation" loading="lazy" decoding="async" /></div><span className="slot">[Image — An elder and a young person in conversation]<small>1600×900</small></span></div><span className="row-c"><span className="row-t">Pagutharivu · rational thinking and discernment</span><span className="row-d">A clear mind that weighs and questions, so the heart is guided by wisdom and good judgement in all things.</span></span><span className="arrow" aria-hidden="true">→</span></a></li>
       </ul>
     </div>
     <div className="hover-img" id="hoverImg" aria-hidden="true">
@@ -286,6 +292,23 @@ export default function LandingPage() {
   </section>
 
   
+  <section className="section" id="maps" aria-labelledby="mapsH">
+    <div className="wrap">
+      <div className="head-row"><h2 className="h-section" id="mapsH" data-split>Find Kerala</h2><p className="lead" data-reveal>From the world to India, and into Kerala itself.</p></div>
+      <FindKerala />
+      <p className="geo-credit">Map data: <a href="https://www.amcharts.com/svg-maps/" target="_blank" rel="noopener noreferrer">amCharts</a>, <a href="https://github.com/datameet/maps" target="_blank" rel="noopener noreferrer">DataMeet</a></p>
+    </div>
+  </section>
+
+  <section className="dark official" id="official" aria-labelledby="offH">
+    <div className="ph"><div className="bg s-coast" data-inner="6"><img src="/assets/images/panorama-dusk.jpg" alt="" loading="lazy" decoding="async" /></div></div>
+    <div className="wrap official-in">
+      <span className="kicker">Plan with confidence</span>
+      <h2 id="offH">Official Kerala Tourism</h2>
+      <a className="btn btn-white" href="https://www.keralatourism.org/" target="_blank" rel="noopener noreferrer"><span>Official Kerala Tourism website</span><span className="arrow" aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
   <section className="section" id="plan" aria-labelledby="planH">
     <div className="wrap contact-grid">
       <div className="contact-intro">
@@ -328,13 +351,13 @@ export default function LandingPage() {
   <div className="wrap">
     <div className="foot-top">
       <div className="foot-brand">
-        <a className="brand" href="#top"><img src="/assets/logo.png" alt="" width="60" height="58" style={{width: "60px"}} /><span>Chaitanya Keralam</span></a>
+        <a className="brand" href="#top"><img src="/assets/logo.png" alt="" width="60" height="58" style={{width: "60px"}} /><span>Chaitanya Keralam<small className="brand-tag">Eco Spiritual Peace Haven / India</small></span></a>
         <p className="foot-promise">Perhaps the only paradise on earth.<br />One with nature.<br />God's own country.</p>
         <p className="label">Eco-Spiritual Peace Tourism · Anbu · Unmai · Patru · Pagutharivu</p>
       </div>
-      <div><h4>Explore</h4><ul><li><a href="#destinations">Places</a></li><li><a href="#nature">Our vision</a></li><li><a href="#experiences">Our values</a></li></ul></div>
+      <div><h4>Explore</h4><ul><li><a href="#destinations">Places</a></li><li><a href="#nature">Our vision</a></li><li><a href="#experiences">Our values</a></li><li><a href="/values">What our values mean</a></li><li><a href="#maps">Maps</a></li><li><a href="https://www.keralatourism.org/" target="_blank" rel="noopener noreferrer">Kerala Tourism</a></li></ul></div>
       <div><h4>Journeys</h4><ul><li><a href="#stories">Ayurveda & rest</a></li><li><a href="#stories">Family homestays</a></li><li><a href="#stories">Youth & community</a></li><li><a href="/programmes#admissions">Apply now</a></li></ul></div>
-      <div><h4>Follow</h4><ul><li><a href="#plan">Instagram</a></li><li><a href="#plan">YouTube</a></li><li><a href="#plan">Facebook</a></li></ul></div>
+      <div><h4>Follow</h4><ul className="social"><li><a href="#plan"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg><span>Instagram</span></a></li><li><a href="#plan"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8c.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8ZM10 15V9l5.2 3Z" /></svg><span>YouTube</span></a></li><li><a href="#plan"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13.5 21v-8h2.7l.4-3.2h-3.1V7.8c0-.9.3-1.5 1.6-1.5h1.7V3.4c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.4H7.7V13h2.7v8Z" /></svg><span>Facebook</span></a></li></ul></div>
     </div>
     <p className="water" id="water" aria-hidden="true">Keralam</p>
     <div className="legal"><span>© [Year] Chaitanya Keralam</span><span>Privacy · Terms</span></div>
