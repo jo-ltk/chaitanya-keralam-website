@@ -5,23 +5,31 @@ export const metadata: Metadata = { title: 'Our Values' };
 const values = [
   {
     name: 'Anbu',
-    meaning: 'love and compassion',
-    text: 'Anbu is the warmth that makes a stranger a guest and a guest family. It is care for people, for animals and for the land, shown through kindness that expects nothing back. At Chaitanya Keralam it shapes how we welcome visitors and how we treat one another.',
+    tamil: 'அன்பு',
+    meaning: 'Love / Compassion',
+    text: 'Loving-kindness, empathy, and unconditional affection toward family, fellow humans, and all living creatures.',
+    context: 'In classical Tamil philosophy like the Thirukkural, Anbu is considered the foundational virtue of human life, the fuel that makes a human soul truly alive.',
   },
   {
     name: 'Unmai',
-    meaning: 'truth and integrity',
-    text: 'Unmai means being honest in word and deed, and holding to what is right even when it is difficult. It is the foundation of trust: in how we describe our journeys, how we deal with partners and how we keep our promises.',
+    tamil: 'உண்மை',
+    meaning: 'Truth / Honesty',
+    text: 'Truthfulness, reality, sincerity, and integrity in thoughts, words, and actions.',
+    context: 'Standing firmly by facts and inner truth without deceit or pretense.',
   },
   {
     name: 'Patru',
-    meaning: 'commitment and devotion',
-    text: 'Patru is steady dedication to a purpose greater than oneself. It is showing up every day, with care, for our work, our community and our spiritual practice, and seeing a commitment through to the end.',
+    tamil: 'பற்று',
+    meaning: 'Attachment / Devotion / Loyalty',
+    text: 'A deep-seated devotion, attachment, or commitment to a principle, language (Tamil-patru), country (Nattu-patru), or person.',
+    context: "It defines a human's sense of duty and loyalty toward what they hold dear, giving direction to one's love and truth.",
   },
   {
     name: 'Pagutharivu',
-    meaning: 'rational thinking and discernment',
-    text: 'Pagutharivu is the clear mind that weighs, questions and chooses wisely. It balances heart with reason, so that compassion and devotion are guided by understanding and good judgement.',
+    tamil: 'பகுத்தறிவு',
+    meaning: 'Rationalism / Discernment',
+    text: 'Critical thinking, logical reasoning, and analytical intelligence. It literally means the "ability to divide/analyze (pagu) knowledge (arivu)".',
+    context: 'A cornerstone of the modern Tamil social reform movement (popularized by leaders like Periyar), Pagutharivu implores individuals to question dogma, reject blind superstitions, and evaluate everything using scientific logic and cause-and-effect reasoning.',
   },
 ];
 
@@ -35,11 +43,19 @@ export default function Page() {
       </header>
       {values.map((v) => (
         <article key={v.name} id={v.name.toLowerCase()}>
-          <h2>{v.name}</h2>
+          <h2>{v.name} ({v.tamil})</h2>
           <p className="meaning">{v.meaning}</p>
           <p>{v.text}</p>
+          <p>{v.context}</p>
         </article>
       ))}
+      <section className="further-reading">
+        <h2>Further reading</h2>
+        <p>
+          These values are rooted in classical Tamil thought. Read more about the{' '}
+          <a href="https://en.wikipedia.org/wiki/Sangam_literature" target="_blank" rel="noopener noreferrer">Sangam literature</a>.
+        </p>
+      </section>
       <p><a href="/#experiences">Back to the home page</a></p>
     </main>
   );

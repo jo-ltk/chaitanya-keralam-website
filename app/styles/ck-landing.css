@@ -611,3 +611,10 @@ a:hover > .arrow, button:hover > .arrow, .row:hover .arrow { transform: translat
 .foot .social svg { width: 20px; height: 20px; flex: none; }
 
 .foot-contact li { overflow-wrap: anywhere; }
+
+.roots-banner { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 24px 40px; flex-wrap: wrap; margin-top: clamp(40px, 5vw, 72px); padding: clamp(28px, 4vw, 48px) clamp(24px, 4vw, 56px); background: var(--forest); color: var(--on); border-radius: 4px; }
+.roots-tamil { position: absolute; right: 4%; top: 50%; transform: translateY(-50%); font: 700 clamp(48px, 9vw, 120px)/1 var(--font); color: var(--on-faint); white-space: nowrap; pointer-events: none; }
+.roots-copy { position: relative; max-width: 560px; }
+.roots-kicker { font: 600 13px/18px var(--font); letter-spacing: .14em; text-transform: uppercase; color: var(--on-muted); margin: 0 0 8px; }
+.roots-copy h3 { font: 600 clamp(28px, 3.4vw, 44px)/1.1 var(--font); margin: 0 0 10px; }
+.roots-copy p:last-child { margin: 0; color: var(--on-muted); }
