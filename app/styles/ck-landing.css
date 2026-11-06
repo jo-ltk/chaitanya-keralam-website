@@ -618,3 +618,50 @@ a:hover > .arrow, button:hover > .arrow, .row:hover .arrow { transform: translat
 .roots-kicker { font: 600 13px/18px var(--font); letter-spacing: .14em; text-transform: uppercase; color: var(--on-muted); margin: 0 0 8px; }
 .roots-copy h3 { font: 600 clamp(28px, 3.4vw, 44px)/1.1 var(--font); margin: 0 0 10px; }
 .roots-copy p:last-child { margin: 0; color: var(--on-muted); }
+
+/* ---------- inner pages (About and others): composed only from landing-page values ---------- */
+.page-hero { position: relative; min-height: clamp(460px, 72svh, 820px); overflow: hidden; display: flex; align-items: flex-end; background: var(--night); color: var(--on); }
+.page-hero > .ph { position: absolute; inset: 0; }
+.page-hero > .ph .bg { inset: -6% 0; }
+.page-hero::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(180deg, rgba(5,10,8,0.5) 0%, rgba(5,10,8,0) 24%), linear-gradient(0deg, rgba(5,10,8,0.78) 0%, rgba(5,10,8,0.15) 55%, rgba(5,10,8,0) 75%); }
+.page-hero-in { position: relative; z-index: 2; display: grid; gap: 20px; justify-items: start; padding-top: 140px; padding-bottom: clamp(28px, 5vw, 72px); }
+.page-hero .kicker, .page-hero .lead, .page-hero .label { color: var(--on-muted); }
+.page-hero .label a { text-decoration: none; }
+.page-hero .label a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.page-hero-links { display: flex; flex-wrap: wrap; gap: 16px 32px; }
+.page-title { font: 300 clamp(44px, 6.6vw, 124px)/1.02 var(--font); letter-spacing: -0.025em; max-width: 14ch; }
+.page-title.wide { max-width: 20ch; }
+@media (max-width: 760px) {
+  .page-hero { min-height: 520px; }
+  .page-hero-in { padding-bottom: 28px; gap: 16px; }
+  .page-title { font-size: clamp(38px, 11vw, 56px); line-height: 1.04; }
+}
+@media (max-width: 375px) { .page-title { font-size: 36px; } }
+@media (max-width: 340px) { .page-title { font-size: 32px; } }
+
+/* static hairline list (mission, learning): numbered rows without links or images */
+.rows-static .row { grid-template-columns: 64px minmax(0, 1fr); align-items: start; }
+.rows-static .row:hover .row-t { transform: none; }
+.rows-static .row-no { padding-top: 0.6em; }
+@media (max-width: 760px) {
+  .rows-static { border-top: 1px solid var(--line); gap: 0; }
+  .rows-static .row { grid-template-columns: 40px minmax(0, 1fr); gap: 4px 12px; padding: 20px 0; }
+  .rows-static .row-no { display: block; padding-top: 0.5em; }
+}
+
+/* cards that are not links (About approach) */
+.card-static { display: block; }
+.tbc { display: inline-block; margin-left: 8px; font: 500 12px/16px var(--font); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); }
+.invitation-in .lead { margin-inline: auto; text-align: center; max-width: 62ch; }
+.invitation-in .lead + .lead { margin-top: 0; }
+.banner .kicker, .banner .lead { color: var(--on-muted); }
+.story-body { display: grid; gap: 6px; }
+@media (max-width: 900px) { .story-item > div { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 16px; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--line); } .story-item > div .ph .slot { display: none; } .story-item > div .ph { aspect-ratio: 1 / 1; } }
+@media (max-width: 760px) { .story-item > div { grid-template-columns: 96px minmax(0, 1fr); gap: 14px; padding: 16px 0; } }
+@media (max-width: 375px) { .story-item > div { grid-template-columns: 84px minmax(0, 1fr); } }
+.cards-all li { display: block !important; }
+.story-item > div { display: grid; gap: 18px; }
+/* larger inset image in a chapter (About): fills the text column on large screens */
+@media (min-width: 1025px) { .chapter .chapter-inset.chapter-inset-lg { width: min(100%, 640px); align-self: start; margin-top: clamp(28px, 3vw, 48px); } }
+/* tighter chapter (About): no extra empty space under the content */
+@media (min-width: 1025px) { .chapter.chapter-tight { padding-bottom: clamp(40px, 4vw, 64px); } .chapter-tight .chapter-stage { min-height: 0; } .chapter-tight .chapter-media { min-height: min(72vh, 780px); } }

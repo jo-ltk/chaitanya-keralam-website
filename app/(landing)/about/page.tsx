@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import About from '@/components/site/About';
+import AboutPage from '@/components/landing/AboutPage';
 
 export const metadata: Metadata = { title: "About Us" };
 
 export default function Page() {
-  return <About />;
+  return <AboutPage />;
 }
