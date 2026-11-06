@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import EcoSpiritualTourism from '@/components/site/EcoSpiritualTourism';
+import TourismPage from '@/components/landing/TourismPage';
 
 export const metadata: Metadata = { title: "Eco-Spiritual Peace Tourism" };
 
 export default function Page() {
-  return <EcoSpiritualTourism />;
+  return <TourismPage />;
 }

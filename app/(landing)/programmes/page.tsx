@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import Programmes from '@/components/site/Programmes';
+import ProgrammesPage from '@/components/landing/ProgrammesPage';
 
 export const metadata: Metadata = { title: "TESH Skill Development Programmes" };
 
 export default function Page() {
-  return <Programmes />;
+  return <ProgrammesPage />;
 }

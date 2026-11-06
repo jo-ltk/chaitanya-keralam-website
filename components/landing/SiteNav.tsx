@@ -2,6 +2,7 @@
 /* Landing-page navigation for inner pages (same markup/classes as components/landing/LandingPage.tsx).
    Transparent over a dark .page-hero, solid after it. */
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 const LINKS = [
@@ -16,6 +17,7 @@ const LINKS = [
 export default function SiteNav({ overDarkHero = true }: { overDarkHero?: boolean }) {
   const [solid, setSolid] = useState(!overDarkHero);
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
   const btn = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -49,7 +51,7 @@ export default function SiteNav({ overDarkHero = true }: { overDarkHero?: boolea
           </Link>
           <nav aria-label="Primary" style={{ display: 'contents' }}>
             <ul className="nav-links">
-              {LINKS.map((l) => <li key={l.href}><Link href={l.href} aria-current={l.href === '/about' ? 'page' : undefined}>{l.label}</Link></li>)}
+              {LINKS.map((l) => <li key={l.href}><Link href={l.href} aria-current={l.href === pathname ? 'page' : undefined}>{l.label}</Link></li>)}
             </ul>
           </nav>
           <div className="nav-end">

@@ -65,8 +65,9 @@ export function useCKMotion(rootRef: React.RefObject<HTMLElement>) {
 
       const ctx = gsap.context(() => {
         // hero intro (nav lives outside <main>, so select from the document)
-        gsap.from(document.querySelectorAll('.nav-in > *'), { y: -16, opacity: 0, duration: 1, ease: 'power3.out', stagger: 0.08, delay: 0.2 });
-        gsap.from($$('.page-hero .kicker, .page-hero .label, .page-hero .lead, .page-hero .tlink'),
+        // nav entrance only over a dark hero; on paper-hero pages the solid nav stays still (design system 7.1 A)
+        if (root.querySelector('.page-hero')) gsap.from(document.querySelectorAll('.nav-in > *'), { y: -16, opacity: 0, duration: 1, ease: 'power3.out', stagger: 0.08, delay: 0.2 });
+        gsap.from($$('.page-hero .kicker, .page-hero .label, .page-hero .lead, .page-hero .tlink, .page-hero .btn'),
           { y: 20, opacity: 0, duration: 1, ease: 'power3.out', stagger: 0.1, delay: 1 });
 
         $$('[data-chars]').forEach((el) => {
