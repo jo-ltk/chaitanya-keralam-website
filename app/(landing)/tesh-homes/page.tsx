@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import TeshHomes from '@/components/site/TeshHomes';
+import TeshHomesPage from '@/components/landing/TeshHomesPage';
 
 export const metadata: Metadata = { title: "TESH Homes, Careers & Partnerships" };
 
 export default function Page() {
-  return <TeshHomes />;
+  return <TeshHomesPage />;
 }
