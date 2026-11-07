@@ -110,7 +110,7 @@ chaitanya-keralam/
 
 - **WAC (webandcrafts.com)**: editorial white sections, square buttons, case-study image grid, "What we do" list, the contact form with tabs. This is why buttons and inputs are square and why paper sections dominate.
 - **Kerala Tourism**: the cinematic full-screen hero with chapter controls.
-- **Brand lines (must stay prominent on the site):** "Perhaps the only paradise on earth." · "One with nature." · "God's own country." The core theme is **Eco-Spiritual Peace Tourism** and the four values **Anbu** (Love and compassion), **Unmai** (Truth and integrity), **Patru** (Commitment and devotion), **Pagutharivu** (Rational thinking and discernment).
+- **Brand lines (must stay prominent on the site):** "Perhaps the only paradise on earth!" · "One with nature." · "God's own country." The core theme is **Eco-Spiritual Peace Tourism** and the four values **Anbu** (Love and compassion), **Unmai** (Truth and integrity), **Patru** (Commitment and devotion), **Pagutharivu** (Rational thinking and discernment).
 
 ---
 
@@ -708,7 +708,7 @@ Same footer on every page. Dark (`footer.dark.foot`), with brand + the three bra
     <div class="foot-top">
       <div class="foot-brand">
         <a class="brand" href="/"><img src="/assets/logo.png" alt="" width="60" height="58" style="width:60px"><span>Chaitanya Keralam</span></a>
-        <p class="foot-promise">Perhaps the only paradise on earth.<br>One with nature.<br>God's own country.</p>
+        <p class="foot-promise">Perhaps the only paradise on earth!<br>One with nature.<br>God's own country.</p>
         <p class="label">Eco-Spiritual Peace Tourism · Anbu · Unmai · Patru · Pagutharivu</p>
       </div>
       <div><h4>Explore</h4><ul><li><a href="/#destinations">Places</a></li>…</ul></div>
@@ -1513,7 +1513,7 @@ export function SiteNav({ overDarkHero }: { overDarkHero: boolean }) {
     </header>
     <div className="menu" id="menu" hidden={!open} onClick={e => { if ((e.target as HTMLElement).closest('a')) setOpen(false); }}>
       <ul>{LINKS.map(l => <li key={l.href}><Link href={l.href}>{l.label}</Link></li>)}<li><Link href="/#plan">Plan a visit</Link></li></ul>
-      <p className="label">Perhaps the only paradise on earth. Come, stay a while.</p>
+      <p className="label">Perhaps the only paradise on earth! Come, stay a while.</p>
     </div>
   </>);
 }
@@ -1534,7 +1534,7 @@ export function SiteFooter() {
         <div className="foot-top">
           <div className="foot-brand">
             <Link className="brand" href="/"><img src="/assets/logo.png" alt="" width={60} height={58} style={{ width: 60 }} /><span>Chaitanya Keralam</span></Link>
-            <p className="foot-promise">Perhaps the only paradise on earth.<br />One with nature.<br />God&apos;s own country.</p>
+            <p className="foot-promise">Perhaps the only paradise on earth!<br />One with nature.<br />God&apos;s own country.</p>
             <p className="label">Eco-Spiritual Peace Tourism · Anbu · Unmai · Patru · Pagutharivu</p>
           </div>
           {COLS.map(c => (
@@ -2100,8 +2100,8 @@ After filtering changes the list, call `ScrollTrigger.refresh()` (new items chan
 ## Part 14. Copy and content rules
 
 1. **Do not change the meaning of existing copy.** You may shorten a heading only if the full text stays elsewhere on the page.
-2. Brand voice (from the landing page): warm, unhurried, family-centred, respectful of every faith, concrete Kerala images (houseboats, chai, sadya on a banana leaf, temple and church bells, the azaan, misty tea hills). Second person ("you"), sentence case, no exclamation marks, no emoji, no superlatives like "best ever".
-3. Brand lines and values: always write them exactly: "Perhaps the only paradise on earth." / "One with nature." / "God's own country." / "Eco-Spiritual Peace Tourism" / "Anbu · Love and compassion", "Unmai · Truth and integrity", "Patru · Commitment and devotion", "Pagutharivu · Rational thinking and discernment".
+2. Brand voice (from the landing page): warm, unhurried, family-centred, respectful of every faith, concrete Kerala images (houseboats, chai, sadya on a banana leaf, temple and church bells, the azaan, misty tea hills). Second person ("you"), sentence case, no exclamation marks (the one exception is the client-approved brand line "Perhaps the only paradise on earth!"), no emoji, no superlatives like "best ever".
+3. Brand lines and values: always write them exactly: "Perhaps the only paradise on earth!" / "One with nature." / "God's own country." / "Eco-Spiritual Peace Tourism" / "Anbu · Love and compassion", "Unmai · Truth and integrity", "Patru · Commitment and devotion", "Pagutharivu · Rational thinking and discernment".
 4. Never invent facts, numbers, testimonials, awards, prices, partners or dates. If a design slot needs content that doesn't exist, use a bracketed placeholder: `[Testimonial from a guest]`, `[Price]`.
 5. Button labels: verb first, sentence case, 1–5 words.
 6. Numbers in `.facts`: tabular numerals (already set), no units inside the `<b>` (units go in the label).

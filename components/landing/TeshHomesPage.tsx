@@ -285,7 +285,7 @@ export default function TeshHomesPage() {
                   <img src="/assets/logo.png" alt="" width={72} height={70} />
                   <span>Chaitanya Keralam<small>TESH Homes · Proposed initiative</small></span>
                 </div>
-                <p className="enq-promise">Perhaps the only paradise on earth. One with nature. God&apos;s own country.</p>
+                <p className="enq-promise">Perhaps the only paradise on earth! One with nature. God&apos;s own country.</p>
               </div>
             </div>
             <div data-reveal><Enquiry /></div>

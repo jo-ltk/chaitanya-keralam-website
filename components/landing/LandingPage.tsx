@@ -93,7 +93,7 @@ export default function LandingPage() {
     <li><a href="/values">Our values</a></li>
 <li><a href="#contact">Contact</a></li>
   </ul>
-  <p className="label">Perhaps the only paradise on earth. Come, stay a while.</p>
+  <p className="label">Perhaps the only paradise on earth! Come, stay a while.</p>
 </div>
 
 <main id="top">
@@ -114,7 +114,7 @@ export default function LandingPage() {
       <div className="wrap hero-grid">
         <div>
           <div className="hero-titles" aria-live="polite">
-            <h1 className="hero-title is-active" data-title="0">Perhaps the only paradise on earth.</h1>
+            <h1 className="hero-title is-active" data-title="0">Perhaps the only paradise on earth!</h1>
             <p className="hero-title" data-title="1" aria-hidden="true">One with nature.</p>
             <p className="hero-title" data-title="2" aria-hidden="true">God's own country.</p>
           </div>
@@ -357,7 +357,7 @@ export default function LandingPage() {
     <div className="foot-top">
       <div className="foot-brand">
         <a className="brand" href="#top"><img src="/assets/logo.png" alt="" width="60" height="58" style={{width: "60px"}} /><span>Chaitanya Keralam<small className="brand-tag">Eco Spiritual Peace Haven / India</small></span></a>
-        <p className="foot-promise">Perhaps the only paradise on earth.<br />One with nature.<br />God's own country.</p>
+        <p className="foot-promise">Perhaps the only paradise on earth!<br />One with nature.<br />God's own country.</p>
         <p className="label">Eco-Spiritual Peace Tourism · Anbu · Unmai · Patru · Pagutharivu</p>
       </div>
       <div><h4>Explore</h4><ul><li><a href="#destinations">Places</a></li><li><a href="#nature">Our vision</a></li><li><a href="#experiences">Our values</a></li><li><a href="/values">What our values mean</a></li><li><a href="#maps">Maps</a></li><li><a href="https://www.keralatourism.org/" target="_blank" rel="noopener noreferrer">Kerala Tourism</a></li></ul></div>

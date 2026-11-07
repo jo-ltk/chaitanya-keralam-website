@@ -63,7 +63,7 @@ export default function SiteNav({ overDarkHero = true }: { overDarkHero?: boolea
       </header>
       <div className="menu" id="menu" hidden={!open} onClick={(e) => { if ((e.target as HTMLElement).closest('a')) setOpen(false); }}>
         <ul>{LINKS.map((l) => <li key={l.href}><Link href={l.href}>{l.label}</Link></li>)}</ul>
-        <p className="label">Perhaps the only paradise on earth. Come, stay a while.</p>
+        <p className="label">Perhaps the only paradise on earth! Come, stay a while.</p>
       </div>
     </>
   );

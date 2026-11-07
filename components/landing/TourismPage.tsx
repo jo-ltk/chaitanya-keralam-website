@@ -67,6 +67,41 @@ const WORK = [
     scene: 'tea' as Scene, src: `${HOME}/exploring-cardamom-in-the-spice-forest.webp`, alt: 'Exploring cardamom in a spice forest' },
 ];
 
+/* Client-supplied photographs (Nov 2026) */
+const PALAYAM = [
+  { label: 'Church', text: 'A Gothic church tower lit up against the night sky.',
+    scene: 'temple' as Scene, src: `${IMG}/palayam-church.jpg`, alt: 'The church at Palayam, Thiruvananthapuram, lit up at night' },
+  { label: 'Temple', text: 'A temple gopuram with Lord Ganesha, glowing after dusk.',
+    scene: 'temple' as Scene, src: `${IMG}/palayam-temple.jpg`, alt: 'The temple gopuram at Palayam, Thiruvananthapuram, with Lord Ganesha, lit up at night' },
+  { label: 'Mosque', text: 'Twin minarets of the mosque, lit in white and blue.',
+    scene: 'temple' as Scene, src: `${IMG}/palayam-mosque.jpg`, alt: 'The mosque at Palayam, Thiruvananthapuram, with its minarets lit at night' },
+];
+
+const KOCHI = [
+  { label: 'Bolgatty Palace', text: 'A palace built by the Dutch, shaded by old trees.',
+    scene: 'culture' as Scene, src: `${IMG}/kochi-bolgatty-palace.jpg`, alt: 'Bolgatty Palace in Kochi, with a red tiled roof and wooden verandas among tall trees' },
+  { label: 'Dutch architecture', text: 'Whitewashed arches beneath sloping tiled roofs.',
+    scene: 'culture' as Scene, src: `${IMG}/kochi-dutch-architecture.jpg`, alt: 'A Dutch-style building with white arches and a sloping tiled roof' },
+  { label: 'Paradesi Synagogue', text: 'Hand-painted blue floor tiles and glass lamps in Mattancherry.',
+    scene: 'culture' as Scene, src: `${IMG}/kochi-paradesi-synagogue.jpg`, alt: 'Inside the Paradesi Synagogue, Kochi: blue tiled floor, wooden benches and hanging glass lamps' },
+];
+
+function PhotoCards({ items }: { items: typeof PALAYAM }) {
+  return (
+    <ul className="cards">
+      {items.map((p) => (
+        <li key={p.label} data-reveal>
+          <div className="card">
+            <Ph ratio="4x5" scene={p.scene} src={p.src} alt={p.alt} slot={`Portrait — ${p.alt}`} meta="1200×1500 · 4:5" />
+            <span className="label">{p.label}</span>
+            <h3>{p.text}</h3>
+          </div>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 /* Tabbed themes: own component so switching tabs never re-renders the split headings elsewhere */
 function Themes() {
   const [cur, setCur] = useState(0);
@@ -163,6 +198,18 @@ export default function TourismPage() {
           </div>
         </section>
 
+        {/* 3b · Palayam: church, temple and mosque as neighbours */}
+        <section className="section" id="palayam" aria-labelledby="palH">
+          <div className="wrap">
+            <span className="label">Palayam, Thiruvananthapuram</span>
+            <div className="head-row">
+              <h2 className="h-section" id="palH" data-split>A church, a temple and a mosque</h2>
+              <p className="lead" data-reveal>In the heart of Thiruvananthapuram, a church, a temple and a mosque stand as neighbours at Palayam. Bells and prayers share one sky.</p>
+            </div>
+            <PhotoCards items={PALAYAM} />
+          </div>
+        </section>
+
         {/* 4 · Why Kerala (mirrored chapter) */}
         <section className="dark chapter ch-2 chapter-tight" id="why-kerala" aria-labelledby="ch2">
           <div className="wrap chapter-stage">
@@ -189,6 +236,18 @@ export default function TourismPage() {
               <div className="fact"><span>Ancient trade hub</span><b>Muziris</b><span>A legendary port on the spice route and Kerala&apos;s gateway for many world religions</span></div>
               <div className="fact"><span>Ports of the Indian Ocean</span><b>Pattanam</b><span>Linked with Muziris on the project presentation&apos;s map of ancient trade ports, 100 BC – 300 AD</span></div>
             </div>
+          </div>
+        </section>
+
+        {/* 5b · Kochi: Dutch and Jewish heritage */}
+        <section className="section" id="kochi" aria-labelledby="kochiH" style={{ paddingTop: 0 }}>
+          <div className="wrap">
+            <span className="label">Kochi</span>
+            <div className="head-row">
+              <h2 className="h-section" id="kochiH" data-split>Kochi&apos;s Dutch and Jewish heritage</h2>
+              <p className="lead" data-reveal>Centuries of trade brought Dutch and Jewish communities to Kochi. The palaces and places of worship they left behind are still part of the city.</p>
+            </div>
+            <PhotoCards items={KOCHI} />
           </div>
         </section>
 

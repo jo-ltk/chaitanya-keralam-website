@@ -8,7 +8,7 @@ export default function SiteFooter() {
         <div className="foot-top">
           <div className="foot-brand">
             <Link className="brand" href="/"><img src="/assets/logo.png" alt="" width={60} height={58} style={{ width: 60 }} /><span>Chaitanya Keralam<small className="brand-tag">Eco Spiritual Peace Haven / India</small></span></Link>
-            <p className="foot-promise">Perhaps the only paradise on earth.<br />One with nature.<br />God&apos;s own country.</p>
+            <p className="foot-promise">Perhaps the only paradise on earth!<br />One with nature.<br />God&apos;s own country.</p>
             <p className="label">Eco-Spiritual Peace Tourism · Anbu · Unmai · Patru · Pagutharivu</p>
           </div>
           <div><h4>Explore</h4><ul>
