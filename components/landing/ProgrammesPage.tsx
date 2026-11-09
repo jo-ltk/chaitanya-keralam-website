@@ -26,6 +26,7 @@ function Ph({ ratio, scene, src, alt, slot, meta, inner, reveal, className = '' 
 
 const Arrow = () => <span className="arrow" aria-hidden="true">→</span>;
 const HOME = '/images/home';
+const PROG = '/images/programmes';
 
 const GLANCE = [
   { code: '3M', title: '3-Month Foundation', meta: '240 training hours · Offline', href: '/programmes/3-month-foundation' },
@@ -37,34 +38,34 @@ const AREAS = [
   { title: 'Eco-Spiritual Peace Tourism & Travel',
     text: 'Knowledge and practical skills related to tourism experiences — exploring the connection between nature, ecology, spirituality, peace, wellness, culture and responsible travel.',
     topics: ['Tourism experiences', 'Travel planning', 'Destination development', 'Interpretation', 'Responsible tourism'],
-    scene: 'backwater' as Scene, src: `${HOME}/kerala-backwaters-storytime.webp`, alt: 'Travellers listening to stories by the backwaters' },
+    scene: 'backwater' as Scene, src: `${PROG}/tourism-area.png`, alt: 'Travellers listening to stories by the backwaters' },
   { title: 'Eco-Spiritual Hospitality',
     text: 'Practical hospitality skills for eco-friendly and wellness-oriented tourism environments.',
     topics: ['Guest relations', 'Front office', 'Housekeeping', 'Food & beverage service', 'Guest experience', 'Wellness hospitality', 'Retreat hospitality', 'Eco-hospitality'],
-    scene: 'dusk' as Scene, src: `${HOME}/tropical-veranda-table-setting.webp`, alt: 'A table set for guests on a Kerala veranda' },
+    scene: 'dusk' as Scene, src: `${PROG}/hospitality-area.jpg`, alt: 'A table set for guests on a Kerala veranda' },
   { title: 'International Caregiving',
     text: 'Foundational and progressive caregiving skills that can support opportunities in care-related services. Caregiving is integrated as a specialised skill area within the broader eco-spiritual tourism and hospitality programme.',
     topics: ['Personal care', 'Daily living support', 'Elderly care', 'Vulnerable person care', 'Mobility support', 'Nutrition and safe assistance', 'Emotional and social wellbeing', 'Communication', 'Basic first aid and emergency awareness', 'Care documentation'],
-    scene: 'temple' as Scene, src: `${HOME}/warm-wellness-stretch-in-a-sunlit-garden-room.webp`, alt: 'Gentle wellness exercise in a sunlit garden room' },
+    scene: 'temple' as Scene, src: `${PROG}/caregiving-area.png`, alt: 'Gentle wellness exercise in a sunlit garden room' },
   { title: 'Global Entrepreneurship & Leadership',
     text: 'The mindset and practical abilities required to become an entrepreneur and responsible leader.',
     topics: ['Entrepreneurial mindset', 'Opportunity identification', 'Market research', 'Business models', 'Business planning', 'Costing and pricing', 'Digital marketing', 'Team management', 'Communication', 'Leadership', 'Project development'],
-    scene: 'culture' as Scene, src: `${HOME}/kerala-heritage-home-planning.webp`, alt: 'Young people planning a project in a Kerala heritage home' },
+    scene: 'culture' as Scene, src: `${PROG}/entrepreneurship-area.png`, alt: 'Young people planning a project in a Kerala heritage home' },
 ];
 
 const LEVELS = [
   { code: '3M', level: 'Foundation level', title: '3-Month Foundation', duration: '3 months', hours: '240 training hours', eligibility: 'Plus Two / Higher Secondary or equivalent',
     focus: 'Introduces the basic concepts and practical skills of tourism & travel, eco-spiritual peace tourism, hospitality, basic caregiving, eco-hospitality, entrepreneurship, personal leadership and digital skills.',
     progression: 'Learn · Practise · Assist', href: '/programmes/3-month-foundation',
-    scene: 'tea' as Scene, src: `${HOME}/tropical-creative-study-gathering.webp`, alt: 'Students learning together on a tropical veranda' },
+    scene: 'tea' as Scene, src: `${PROG}/level-3-month.png`, alt: 'Students learning together on a tropical veranda' },
   { code: '6M', level: 'Professional level', title: '6-Month Professional', duration: '6 months', hours: '480 training hours', eligibility: 'Plus Two / Higher Secondary or equivalent',
     focus: 'Develops stronger operational skills in eco-spiritual tourism, destination development, tour and itinerary planning, sustainable tourism, hospitality operations, international caregiving, entrepreneurship, business development, team leadership and TESH Home practical training.',
     progression: 'Learn · Practise · Operate · Take responsibility', href: '/programmes/6-month-professional',
-    scene: 'dusk' as Scene, src: `${HOME}/warm-kerala-veranda-welcome.webp`, alt: 'A warm welcome on a Kerala veranda' },
+    scene: 'dusk' as Scene, src: `${PROG}/level-6-month.png`, alt: 'A warm welcome on a Kerala veranda' },
   { code: '1Y', level: 'Advanced level', title: '1-Year Advanced', duration: '12 months', hours: '960 training hours', eligibility: null,
     focus: 'Develops higher-level capabilities in tourism and destination management, tour operations, tourism experience design, advanced hospitality management, eco-resort and wellness management, advanced caregiving, entrepreneurship, business management, financial skills, digital marketing, leadership and supervision, TESH Home management, and business and management projects.',
     progression: 'Supervise · Lead · Manage · Create', href: '/programmes/1-year-advanced',
-    scene: 'culture' as Scene, src: '/images/tesh-homes/Collaborative%20Learning%20in%20a%20Sunlit%20Lab.png', alt: 'Collaborative learning in a sunlit lab' },
+    scene: 'culture' as Scene, src: `${PROG}/level-1-year.png`, alt: 'Collaborative learning in a sunlit lab' },
 ];
 
 const FORMATS = [
@@ -114,7 +115,7 @@ function Areas() {
         </div>
       <div className="area-panel" id="area-panel" role="tabpanel" aria-labelledby={`area-tab-${cur}`} key={a.title}>
     <div className="ph r-16x9 area-img">
-      <div className={`bg s-${a.scene}`}><img className="theme-img" src={a.src} alt={a.alt} loading="lazy" decoding="async" /></div>
+      <div className={`bg s-${a.scene}`}>{a.src && <img className="theme-img" src={a.src} alt={a.alt} loading="lazy" decoding="async" />}</div>
       <span className="slot">[Image — {a.alt}]<small>1600×900 · 16:9</small></span>
     </div>
         <div className="theme-copy">
@@ -192,7 +193,7 @@ export default function ProgrammesPage() {
         {/* 2 · Panorama + on-page index */}
         <section className="section" aria-label="On this page" style={{ paddingTop: 0 }}>
           <div className="wrap">
-            <Ph ratio="21x9" scene="tea" src={`${HOME}/tropical-veranda-study-circle.webp`} alt="A study circle on a tropical veranda" slot="Panorama — Study circle on a veranda" meta="2880×1234 · 21:9" inner={6} reveal />
+            <Ph ratio="21x9" scene="tea" src={`${PROG}/panorama-study-circle.png`} alt="A study circle on a tropical veranda" slot="Panorama — Study circle on a veranda" meta="2880×1234 · 21:9" inner={6} reveal />
             <nav className="page-index" aria-label="On this page">
               <ul>
                 <li><a className="tlink" href="#areas"><span>Learning areas</span><Arrow /></a></li>
@@ -249,13 +250,13 @@ export default function ProgrammesPage() {
         <section className="dark chapter ch-3 chapter-tight" aria-labelledby="ch3">
           <div className="wrap chapter-stage">
             <span className="kicker chapter-no">Learning format</span>
-            <Ph ratio="4x5" scene="culture" src="/images/learning-format-computer-lab.png" alt="Guidance in a sunlit Kerala computer lab" slot="Portrait — Guidance in a sunlit computer lab" meta="1200×1500 · 4:5" inner={7} className="chapter-media" />
+            <Ph ratio="4x5" scene="culture" src={`${PROG}/doing-chapter-main.png`} alt="Guidance in a sunlit Kerala computer lab" slot="Portrait — Guidance in a sunlit computer lab" meta="1200×1500 · 4:5" inner={7} className="chapter-media" />
             <h2 className="chapter-word" id="ch3" data-drift="-6">Doing</h2>
             <div className="chapter-copy" data-reveal>
               <p>Learn by doing. TESH programmes are designed around practical and experiential learning. Training may include the formats below.</p>
               <a className="tlink" href="#format"><span>See the formats</span><Arrow /></a>
             </div>
-            <Ph ratio="3x2" scene="tea" src={`${HOME}/warm-tea-on-a-tropical-veranda.webp`} alt="Warm tea on a tropical veranda" slot="Image — Tea on a veranda" meta="1500×1000 · 3:2" reveal className="chapter-inset chapter-inset-lg" />
+            <Ph ratio="3x2" scene="tea" src={`${PROG}/doing-chapter-tea.jpg`} alt="Warm tea on a tropical veranda" slot="Image — Tea on a veranda" meta="1500×1000 · 3:2" reveal className="chapter-inset chapter-inset-lg" />
           </div>
         </section>
 
