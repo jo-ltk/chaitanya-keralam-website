@@ -40,7 +40,7 @@ const THEMES = [
   { title: 'Spirituality and heritage', text: 'Sacred landscapes, pilgrimage traditions, cultural heritage and respectful understanding of different traditions.',
     scene: 'culture' as Scene, src: `${IMG}/theme-spirituality-heritage.jpg`, alt: 'Guruvayur Temple heritage' },
   { title: 'Wellness and peace', text: 'Meditation, reflection, nature-based wellness and retreat experiences.',
-    scene: 'temple' as Scene, alt: 'A serene tropical wellness retreat' },
+    scene: 'temple' as Scene, src: `${IMG}/theme-wellness-peace.png`, alt: 'A backwater boathouse retreat, calm and still' },
   { title: 'Kerala culture and hospitality', text: 'Traditional architecture, cuisine, arts, crafts, community knowledge and hospitality.',
     scene: 'dusk' as Scene, src: `${IMG}/theme-culture-hospitality.jpg`, alt: 'A traditional Kerala veranda table setting' },
   { title: 'Responsible tourism', text: 'Waste reduction, water and energy conservation, cultural respect and community participation.',
@@ -230,7 +230,7 @@ export default function TourismPage() {
               <h2 className="h-section" id="herH" data-split>A land of rivers, forests and open doors</h2>
               <p className="lead" data-reveal>Kerala&apos;s heritage has been shaped by ancient trade and cultural exchange, Ayurveda and traditional wellness, spiritual traditions and indigenous knowledge, and hospitality and community living.</p>
             </div>
-            <Ph ratio="21x9" scene="backwater" src={`${IMG}/heritage-panorama.jpg`} alt="Kodungallur, the Muziris heritage backwater village" slot="Panorama — Village on the backwaters" meta="2880×1234 · 21:9" inner={6} reveal />
+            <Ph ratio="21x9" scene="backwater" src={`${IMG}/heritage-panorama.png`} alt="A backwater boathouse vista, Kerala" slot="Panorama — Village on the backwaters" meta="2880×1234 · 21:9" inner={6} reveal />
             <div className="facts facts-words" data-reveal>
               <div className="fact"><span>Ancient trade hub</span><b>Muziris</b><span>A legendary port on the spice route and Kerala&apos;s gateway for many world religions</span></div>
               <div className="fact"><span>Ports of the Indian Ocean</span><b>Pattanam</b><span>Linked with Muziris on the project presentation&apos;s map of ancient trade ports, 100 BC – 300 AD</span></div>
