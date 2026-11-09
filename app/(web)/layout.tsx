@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
-import './styles/kneds-tokens.css';
-import './styles/kneds-components.css';
+import '@/app/styles/kneds-tokens.css';
+import '@/app/styles/kneds-components.css';
 
 export const metadata: Metadata = {
   title: { default: 'Chaitanya Keralam — Eco-Spiritual Peace Tourism', template: '%s — Chaitanya Keralam' },

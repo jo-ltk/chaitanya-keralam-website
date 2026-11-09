@@ -1,5 +1,5 @@
 import Script from 'next/script';
-import '../styles/site.css';
+import '@/app/styles/site.css';
 import WhatsAppButton from '@/components/WhatsAppButton';
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {

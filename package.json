@@ -8,22 +8,31 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "seed": "tsx supabase/seed.ts",
-    "create-admin": "tsx scripts/create_super_admin.ts"
+    "create-admin": "tsx scripts/create_super_admin.ts",
+    "payload": "payload",
+    "payload:importmap": "payload generate:importmap"
   },
   "dependencies": {
+    "@payloadcms/db-sqlite": "^3.93.0",
+    "@payloadcms/next": "^3.93.0",
+    "@payloadcms/richtext-lexical": "^3.93.0",
+    "@payloadcms/ui": "^3.93.0",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.118.0",
+    "graphql": "^16.15.0",
     "gsap": "^3.15.0",
-    "next": "14.2.35",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "next": "15.4.11",
+    "payload": "^3.93.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "resend": "^6.34.1",
+    "sharp": "^0.35.5",
     "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/node": "20.16.11",
-    "@types/react": "18.3.11",
-    "@types/react-dom": "18.3.1",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "tsx": "^4.23.15",
     "typescript": "5.6.3"
   },

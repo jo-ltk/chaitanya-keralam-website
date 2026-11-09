@@ -10,7 +10,8 @@ export function generateStaticParams() {
   return PAGES.map((pageId) => ({ pageId }));
 }
 
-export default function Page({ params }: { params: { pageId: string } }) {
-  if (!PAGES.includes(params.pageId)) notFound();
-  return <AdminApp view="pageEdit" page={params.pageId} />;
+export default async function Page({ params }: { params: Promise<{ pageId: string }> }) {
+  const { pageId } = await params;
+  if (!PAGES.includes(pageId)) notFound();
+  return <AdminApp view="pageEdit" page={pageId} />;
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import '../styles/admin.css';
+import '@/app/styles/admin.css';
 
 /* PROTOTYPE: this interface uses sample data and simulates every action.
    Before going live, protect /admin on the server (see README: "Making the admin panel real"). */

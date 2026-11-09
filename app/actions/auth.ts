@@ -8,7 +8,7 @@ import type { AdminRole } from '@/lib/supabase/types';
 
 export async function loginAction(data: { email: string; pw: string }) {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
       email: data.email.trim(),
       password: data.pw,
@@ -49,7 +49,7 @@ export async function loginAction(data: { email: string; pw: string }) {
 
 export async function verifyMfaAction(data: { factorId: string; code: string }) {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { error } = await supabase.auth.mfa.challengeAndVerify({
       factorId: data.factorId,
       code: data.code.trim(),
@@ -67,7 +67,7 @@ export async function verifyMfaAction(data: { factorId: string; code: string }) 
 
 export async function setupMfaAction() {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data, error } = await supabase.auth.mfa.enroll({
       factorType: 'totp',
       issuer: 'Chaitanya Keralam Admin',
@@ -91,7 +91,7 @@ export async function setupMfaAction() {
 
 export async function confirmMfaSetupAction(data: { factorId: string; code: string }) {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { error } = await supabase.auth.mfa.challengeAndVerify({
       factorId: data.factorId,
       code: data.code.trim(),
@@ -109,7 +109,7 @@ export async function confirmMfaSetupAction(data: { factorId: string; code: stri
 
 export async function forgotPasswordAction(email: string) {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const origin = process.env.NEXT_PUBLIC_SITE_URL || 'https://chaitanyakeralam.org';
     const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
       redirectTo: `${origin}/admin/reset-password`,
@@ -127,7 +127,7 @@ export async function forgotPasswordAction(email: string) {
 
 export async function resetPasswordAction(password: string) {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { error } = await supabase.auth.updateUser({
       password,
     });
@@ -144,7 +144,7 @@ export async function resetPasswordAction(password: string) {
 
 export async function signOutAction() {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     await supabase.auth.signOut();
     return { success: true };
   } catch {
@@ -154,7 +154,7 @@ export async function signOutAction() {
 
 export async function inviteUserAction(data: { email: string; role: AdminRole }) {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return { success: false, error: 'Unauthorized' };
 
@@ -296,7 +296,7 @@ export async function acceptInviteAction(data: { token: string; name: string; pw
       .eq('id', inv.id);
 
     // Sign in on server
-    const supabase = createClient();
+    const supabase = await createClient();
     await supabase.auth.signInWithPassword({
       email: inv.email,
       password: data.pw,

@@ -10,3 +10,7 @@ npm-debug.log*
 .vercel
 *.txt
 .admin_tmpl.txt
+
+payload.db*
+/media
+payload-types.ts

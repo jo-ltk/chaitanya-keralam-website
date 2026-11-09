@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import '../styles/ck-landing.css';
+import '@/app/styles/ck-landing.css';
 import WhatsAppButton from '@/components/WhatsAppButton';
 
 export default function LandingLayout({ children }: { children: ReactNode }) {

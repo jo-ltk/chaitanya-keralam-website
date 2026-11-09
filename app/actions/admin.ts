@@ -6,7 +6,7 @@ import { createAdminClient } from '@/lib/supabase/admin';
 import type { AdminRole } from '@/lib/supabase/types';
 
 async function getCallerProfile() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
   const { data: profile } = await supabase
@@ -29,7 +29,7 @@ export async function saveDraftPageAction(data: {
   const caller = await getCallerProfile();
   if (!caller) return { success: false, error: 'Unauthorized' };
   if (!['super', 'editor'].includes(caller.role)) return { success: false, error: 'Permission denied' };
-  const supabase = createClient();
+  const supabase = await createClient();
   const draftContent = { ...data.fields, saved_at: new Date().toISOString(), saved_by: caller.name };
   const { error } = await supabase.from('page_sections')
     .update({ draft_content: draftContent, updated_at: new Date().toISOString() })
@@ -46,7 +46,7 @@ export async function saveSectionOrderAction(data: { pageId: string; order: stri
   const caller = await getCallerProfile();
   if (!caller) return { success: false, error: 'Unauthorized' };
   if (!['super', 'editor'].includes(caller.role)) return { success: false, error: 'Permission denied' };
-  const supabase = createClient();
+  const supabase = await createClient();
   const updates = data.order.map((sectionId, idx) =>
     supabase.from('page_sections')
       .update({ order_index: idx, updated_at: new Date().toISOString() })
@@ -62,7 +62,7 @@ export async function toggleSectionVisibilityAction(data: { pageId: string; sect
   const caller = await getCallerProfile();
   if (!caller) return { success: false, error: 'Unauthorized' };
   if (!['super', 'editor'].includes(caller.role)) return { success: false, error: 'Permission denied' };
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase.from('page_sections')
     .update({ is_hidden: data.hidden, updated_at: new Date().toISOString() })
     .eq('page_id', data.pageId).eq('section_id', data.sectionId);
@@ -74,7 +74,7 @@ export async function publishPageAction(pageId: string) {
   const caller = await getCallerProfile();
   if (!caller) return { success: false, error: 'Unauthorized' };
   if (!['super', 'editor'].includes(caller.role)) return { success: false, error: 'Permission denied' };
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: sections } = await supabase.from('page_sections')
     .select('id, draft_content, version').eq('page_id', pageId).not('draft_content', 'is', null);
   if (sections && sections.length > 0) {
@@ -106,7 +106,7 @@ export async function unpublishPageAction(pageId: string) {
   if (!caller) return { success: false, error: 'Unauthorized' };
   if (caller.role !== 'super') return { success: false, error: 'Only Super Admins can unpublish pages' };
   if (pageId === 'home') return { success: false, error: 'Cannot unpublish the home page' };
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: page, error } = await supabase.from('pages')
     .update({ status: 'unpub', updated_by: caller.name, updated_at: new Date().toISOString() })
     .eq('id', pageId).select('name').single();
@@ -117,14 +117,14 @@ export async function unpublishPageAction(pageId: string) {
 }
 
 export async function getPagesAction() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase.from('pages').select('*').order('id');
   if (error) return { success: false, error: error.message };
   return { success: true, pages: data };
 }
 
 export async function getPageSectionsAction(pageId: string) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase.from('page_sections')
     .select('*').eq('page_id', pageId).order('order_index');
   if (error) return { success: false, error: error.message };
@@ -134,7 +134,7 @@ export async function getPageSectionsAction(pageId: string) {
 // ─── Carousel ───────────────────────────────────────────────────────────────
 
 export async function getCarouselSlidesAction() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase.from('carousel_slides').select('*').order('order_index');
   if (error) return { success: false, error: error.message };
   return { success: true, slides: data };
@@ -149,7 +149,7 @@ export async function updateCarouselSlideAction(data: {
   const caller = await getCallerProfile();
   if (!caller) return { success: false, error: 'Unauthorized' };
   if (!['super', 'editor'].includes(caller.role)) return { success: false, error: 'Permission denied' };
-  const supabase = createClient();
+  const supabase = await createClient();
   const { id, ...fields } = data;
   const { error } = await supabase.from('carousel_slides')
     .update({ ...fields, status: 'draft', updated_at: new Date().toISOString() }).eq('id', id);
@@ -161,7 +161,7 @@ export async function reorderCarouselSlidesAction(orderedIds: string[]) {
   const caller = await getCallerProfile();
   if (!caller) return { success: false, error: 'Unauthorized' };
   if (!['super', 'editor'].includes(caller.role)) return { success: false, error: 'Permission denied' };
-  const supabase = createClient();
+  const supabase = await createClient();
   const updates = orderedIds.map((id, idx) =>
     supabase.from('carousel_slides')
       .update({ order_index: idx, updated_at: new Date().toISOString() }).eq('id', id)
@@ -176,7 +176,7 @@ export async function publishCarouselAction() {
   const caller = await getCallerProfile();
   if (!caller) return { success: false, error: 'Unauthorized' };
   if (!['super', 'editor'].includes(caller.role)) return { success: false, error: 'Permission denied' };
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase.from('carousel_slides')
     .update({ status: 'pub', updated_at: new Date().toISOString() }).eq('status', 'draft');
   if (error) return { success: false, error: error.message };
@@ -188,7 +188,7 @@ export async function publishCarouselAction() {
 // ─── Programmes ─────────────────────────────────────────────────────────────
 
 export async function getProgrammesAction() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase.from('programmes').select('*').order('order_index');
   if (error) return { success: false, error: error.message };
   return { success: true, programmes: data };
@@ -198,7 +198,7 @@ export async function updateProgrammeAction(data: { id: string; fields: Record<s
   const caller = await getCallerProfile();
   if (!caller) return { success: false, error: 'Unauthorized' };
   if (!['super', 'editor'].includes(caller.role)) return { success: false, error: 'Permission denied' };
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase.from('programmes')
     .update({ ...data.fields, status: 'draft', updated_at: new Date().toISOString() }).eq('id', data.id);
   if (error) return { success: false, error: error.message };
@@ -210,7 +210,7 @@ export async function submitProgrammeForReviewAction(programmeId: string) {
   const caller = await getCallerProfile();
   if (!caller) return { success: false, error: 'Unauthorized' };
   if (!['super', 'editor'].includes(caller.role)) return { success: false, error: 'Permission denied' };
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase.from('programmes')
     .update({ status: 'review', updated_at: new Date().toISOString() }).eq('id', programmeId);
   if (error) return { success: false, error: error.message };
@@ -222,7 +222,7 @@ export async function publishProgrammeAction(programmeId: string) {
   const caller = await getCallerProfile();
   if (!caller) return { success: false, error: 'Unauthorized' };
   if (caller.role !== 'super') return { success: false, error: 'Only Super Admins can approve and publish programmes' };
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: prog, error } = await supabase.from('programmes')
     .update({ status: 'pub', updated_at: new Date().toISOString() })
     .eq('id', programmeId).select('name').single();
@@ -235,7 +235,7 @@ export async function publishProgrammeAction(programmeId: string) {
 // ─── Announcements ──────────────────────────────────────────────────────────
 
 export async function getAnnouncementsAction() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase.from('announcements').select('*').order('order_index');
   if (error) return { success: false, error: error.message };
   return { success: true, announcements: data };
@@ -248,7 +248,7 @@ export async function saveAnnouncementAction(data: {
   const caller = await getCallerProfile();
   if (!caller) return { success: false, error: 'Unauthorized' };
   if (!['super', 'editor'].includes(caller.role)) return { success: false, error: 'Permission denied' };
-  const supabase = createClient();
+  const supabase = await createClient();
   const payload = {
     title: data.title, date: data.date, body: data.body,
     category: data.category || 'General', status: data.status,
@@ -271,7 +271,7 @@ export async function deleteAnnouncementAction(id: string) {
   const caller = await getCallerProfile();
   if (!caller) return { success: false, error: 'Unauthorized' };
   if (caller.role !== 'super') return { success: false, error: 'Only Super Admins can delete announcements' };
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase.from('announcements').delete().eq('id', id);
   if (error) return { success: false, error: error.message };
   return { success: true };
@@ -297,7 +297,7 @@ export async function suspendUserAction(userId: string, suspend: boolean) {
   if (!caller) return { success: false, error: 'Unauthorized' };
   if (caller.role !== 'super') return { success: false, error: 'Only Super Admins can suspend accounts' };
   if (userId === caller.userId) return { success: false, error: 'Cannot suspend your own account' };
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: profile, error } = await supabase.from('profiles')
     .update({ status: suspend ? 'suspended' : 'active', updated_at: new Date().toISOString() })
     .eq('id', userId).select('name, email').single();
@@ -315,7 +315,7 @@ export async function updateUserRoleAction(userId: string, role: AdminRole) {
   if (!caller) return { success: false, error: 'Unauthorized' };
   if (caller.role !== 'super') return { success: false, error: 'Only Super Admins can change roles' };
   if (userId === caller.userId) return { success: false, error: 'Cannot change your own role' };
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: profile, error } = await supabase.from('profiles')
     .update({ role, updated_at: new Date().toISOString() })
     .eq('id', userId).select('email').single();
@@ -341,7 +341,7 @@ export async function revokeInvitationAction(email: string) {
 export async function getActivityLogAction(limit = 50) {
   const caller = await getCallerProfile();
   if (!caller) return { success: false, error: 'Unauthorized' };
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase.from('activity_log')
     .select('*').order('created_at', { ascending: false }).limit(limit);
   if (error) return { success: false, error: error.message };
@@ -351,7 +351,7 @@ export async function getActivityLogAction(limit = 50) {
 // ─── Media ──────────────────────────────────────────────────────────────────
 
 export async function getMediaAction() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase.from('media').select('*').order('created_at', { ascending: false });
   if (error) return { success: false, error: error.message };
   return { success: true, media: data };
@@ -361,7 +361,7 @@ export async function saveMediaMetaAction(data: { id: string; alt: string; credi
   const caller = await getCallerProfile();
   if (!caller) return { success: false, error: 'Unauthorized' };
   if (!['super', 'editor'].includes(caller.role)) return { success: false, error: 'Permission denied' };
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase.from('media')
     .update({ alt: data.alt, credit: data.credit, category: data.category }).eq('id', data.id);
   if (error) return { success: false, error: error.message };
@@ -373,7 +373,7 @@ export async function deleteMediaAction(id: string) {
   const caller = await getCallerProfile();
   if (!caller) return { success: false, error: 'Unauthorized' };
   if (!['super', 'editor'].includes(caller.role)) return { success: false, error: 'Permission denied' };
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: mediaRecord } = await supabase.from('media').select('path, filename').eq('id', id).single();
   if (!mediaRecord) return { success: false, error: 'Media not found' };
   const { data: sections } = await supabase.from('page_sections').select('id, images');
@@ -415,7 +415,7 @@ export async function uploadMediaAction(formData: FormData) {
   const { error: uploadErr } = await adminClient.storage
     .from('site-media').upload(path, arrayBuffer, { contentType: file.type, upsert: false });
   if (uploadErr) return { success: false, error: uploadErr.message };
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: mediaRow, error: dbErr } = await supabase.from('media').insert({
     path, filename, alt, credit, category,
     mime_type: file.type, size_bytes: file.size, created_by: caller.name,

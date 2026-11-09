@@ -7,7 +7,7 @@ import { sendEnquiryNotification } from '@/lib/email';
 import type { AdminRole, EnquiryStatus } from '@/lib/supabase/types';
 
 async function getCallerProfile() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
   const { data: profile } = await supabase.from('profiles').select('id, name, role').eq('id', user.id).single();
@@ -87,7 +87,7 @@ export async function submitEnquiryAction(input: EnquiryInput) {
   // Consent double-check
   if (!data.consent) return { success: false, error: 'Consent is required.' };
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase.from('enquiries').insert({
     type: data.type,
     sub_type: data.sub_type || '',
@@ -121,7 +121,7 @@ export async function getEnquiriesAction(type?: string) {
   const caller = await getCallerProfile();
   if (!caller) return { success: false, error: 'Unauthorized' };
   if (!['super', 'enquiry'].includes(caller.role)) return { success: false, error: 'Permission denied' };
-  const supabase = createClient();
+  const supabase = await createClient();
   let query = supabase.from('enquiries').select('*').order('created_at', { ascending: false });
   if (type) query = query.eq('type', type);
   const { data, error } = await query;
@@ -133,7 +133,7 @@ export async function updateEnquiryStatusAction(id: string, status: EnquiryStatu
   const caller = await getCallerProfile();
   if (!caller) return { success: false, error: 'Unauthorized' };
   if (!['super', 'enquiry'].includes(caller.role)) return { success: false, error: 'Permission denied' };
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase.from('enquiries')
     .update({ status, updated_at: new Date().toISOString() }).eq('id', id);
   if (error) return { success: false, error: error.message };
@@ -146,7 +146,7 @@ export async function addEnquiryNoteAction(id: string, note: string) {
   if (!caller) return { success: false, error: 'Unauthorized' };
   if (!['super', 'enquiry'].includes(caller.role)) return { success: false, error: 'Permission denied' };
   if (!note.trim()) return { success: false, error: 'Note cannot be empty' };
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: enquiry } = await supabase.from('enquiries').select('notes').eq('id', id).single();
   if (!enquiry) return { success: false, error: 'Enquiry not found' };
   const existingNotes = enquiry.notes || '';

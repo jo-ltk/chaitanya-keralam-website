@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import FindKerala from './maps/FindKerala';
+import type { LandingContent } from '@/lib/landing-content';
 
 declare global {
   interface Window {
@@ -36,7 +37,7 @@ function loadScript(src: string, fallback?: string): Promise<void> {
   });
 }
 
-export default function LandingPage() {
+export default function LandingPage({ content }: { content: LandingContent }) {
   const cleanupRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
@@ -61,6 +62,39 @@ export default function LandingPage() {
       if (cleanupRef.current) { cleanupRef.current(); cleanupRef.current = null; }
     };
   }, []);
+
+  const c = content;
+  const chapterMeta = [
+    { cls: 'ch-1', h: 'ch1', href: '#destinations', drift: '-6', mainBg: 's-backwater', insetBg: 's-coast' },
+    { cls: 'ch-2', h: 'ch2', href: '#nature', drift: '6', mainBg: 's-ghats', insetBg: 's-falls' },
+    { cls: 'ch-3', h: 'ch3', href: '#experiences', drift: '-6', mainBg: 's-culture', insetBg: 's-dusk' },
+  ];
+  const cardBg = ['s-backwater', 's-tea', 's-forest', 's-coast', 's-falls', 's-culture'];
+  const rowBg = ['s-backwater', 's-temple', 's-dusk', 's-forest'];
+  const storyBg = ['s-backwater', 's-tea', 's-dusk'];
+  const tel = (v: string) => `tel:${v.replace(/[^\d+]/g, '')}`;
+  const T = c.hero.titles.map((t) => t.value);
+  const arrow = <span className="arrow" aria-hidden="true">→</span>;
+
+  const renderChapter = (i: number) => {
+    const m = chapterMeta[i];
+    const ch = c.chapters[i];
+    if (!ch) return null;
+    return (
+      <section className={`dark chapter ${m.cls}`} aria-labelledby={m.h}>
+        <div className="wrap chapter-stage">
+          <span className="kicker chapter-no">{ch.kicker}</span>
+          <div className="ph r-4x5 chapter-media"><div className={`bg ${m.mainBg}`}><img src={ch.main.url} alt={ch.main.alt} loading="lazy" decoding="async" /></div></div>
+          <h2 className="chapter-word" id={m.h} data-drift={m.drift}>{ch.word}</h2>
+          <div className="chapter-copy" data-reveal>
+            <p>{ch.text}</p>
+            <a className="tlink" href={m.href}><span>{ch.link}</span>{arrow}</a>
+          </div>
+          <div className="ph r-3x2 chapter-inset" data-reveal-img><div className={`bg ${m.insetBg}`}><img src={ch.inset.url} alt={ch.inset.alt} loading="lazy" decoding="async" /></div></div>
+        </div>
+      </section>
+    );
+  };
 
   return (
     <>
@@ -98,43 +132,42 @@ export default function LandingPage() {
 
 <main id="top">
 
-  
   <section className="hero" aria-roledescription="carousel" aria-label="Kerala">
     <div className="slide is-active" data-slide="0">
-      <div className="ph"><div className="bg"><video className="hero-video" src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/kerala-aerial-landscape-1793006981218.mp4" autoPlay muted loop playsInline preload="auto" ref={(v) => { if (v && v.readyState >= 2) v.classList.add('is-ready'); }} onLoadedData={(e) => e.currentTarget.classList.add('is-ready')} /></div><span className="slot">[Full-screen hero video — Kerala aerial landscape]<small>1920×1080 · muted loop · poster image</small></span></div>
+      <div className="ph"><div className="bg"><video className="hero-video" src={c.hero.video} autoPlay muted loop playsInline preload="auto" ref={(v) => { if (v && v.readyState >= 2) v.classList.add('is-ready'); }} onLoadedData={(e) => e.currentTarget.classList.add('is-ready')} /></div></div>
     </div>
     <div className="slide" data-slide="1">
-      <div className="ph"><div className="bg s-ghats"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/western-ghats-mist-1793007116438.jpg" alt="Western Ghats in mist" loading="eager" decoding="async" width="2560" height="1440" /></div><span className="slot">[Full-screen image — Western Ghats in mist]<small>2560×1440</small></span></div>
+      <div className="ph"><div className="bg s-ghats"><img src={c.hero.image1.url} alt={c.hero.image1.alt} loading="eager" decoding="async" width="2560" height="1440" /></div></div>
     </div>
     <div className="slide" data-slide="2">
-      <div className="ph"><div className="bg s-culture"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/diya-temple-festival-1793008151792.png" alt="Festival lamps, temple and people" loading="eager" decoding="async" width="2560" height="1440" /></div><span className="slot">[Full-screen image — Festival lamps, temple and people]<small>2560×1440</small></span></div>
+      <div className="ph"><div className="bg s-culture"><img src={c.hero.image2.url} alt={c.hero.image2.alt} loading="eager" decoding="async" width="2560" height="1440" /></div></div>
     </div>
 
     <div className="hero-ui">
       <div className="wrap hero-grid">
         <div>
           <div className="hero-titles" aria-live="polite">
-            <h1 className="hero-title is-active" data-title="0">Perhaps the only paradise on earth!</h1>
-            <p className="hero-title" data-title="1" aria-hidden="true">One with nature.</p>
-            <p className="hero-title" data-title="2" aria-hidden="true">God's own country.</p>
+            <h1 className="hero-title is-active" data-title="0">{T[0]}</h1>
+            <p className="hero-title" data-title="1" aria-hidden="true">{T[1]}</p>
+            <p className="hero-title" data-title="2" aria-hidden="true">{T[2]}</p>
           </div>
           <div className="hero-sub">
-            <a className="tlink" href="#nature"><span>Begin your Kerala yatra</span><span className="arrow" aria-hidden="true">→</span></a>
+            <a className="tlink" href="#nature"><span>{c.hero.cta}</span>{arrow}</a>
           </div>
           <div className="mobile-segs">
             <div className="segs" role="tablist" aria-label="Choose slide">
-              <button className="seg-hit" type="button" role="tab" aria-label="Slide 1: Perhaps the only paradise on earth" data-go="0"><span className="seg"></span></button>
-              <button className="seg-hit" type="button" role="tab" aria-label="Slide 2: One with nature" data-go="1"><span className="seg"></span></button>
-              <button className="seg-hit" type="button" role="tab" aria-label="Slide 3: God's own country" data-go="2"><span className="seg"></span></button>
+              {T.map((t, i) => (
+                <button key={i} className="seg-hit" type="button" role="tab" aria-label={`Slide ${i + 1}: ${t.replace(/[.!]+$/, '')}`} data-go={i}><span className="seg"></span></button>
+              ))}
             </div>
             <button className="hero-ctrl js-play" type="button" aria-label="Pause slideshow"><svg viewBox="0 0 24 24" aria-hidden="true"><path className="js-play-icon" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></button>
           </div>
         </div>
         <div className="hero-side">
           <button className="next" id="nextCard" type="button" aria-label="Next slide">
-            <div className="ph"><div className="bg s-ghats" id="nextThumb"><img id="nextThumbImg" src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/western-ghats-mist-1793007116438.jpg" alt="" style={{width: "100%", height: "100%", objectFit: "cover", display: "block"}} /></div></div>
+            <div className="ph"><div className="bg s-ghats" id="nextThumb"><img id="nextThumbImg" src={c.hero.image1.url} alt="" style={{width: "100%", height: "100%", objectFit: "cover", display: "block"}} /></div></div>
             <span className="next-body">
-              <span><span className="next-k" style={{display: "block"}}>Next</span><span className="next-t" id="nextTitle">One with nature</span></span>
+              <span><span className="next-k" style={{display: "block"}}>Next</span><span className="next-t" id="nextTitle">{T[1].replace(/\.$/, '')}</span></span>
               <span className="segs" aria-hidden="true"><span className="seg"></span><span className="seg"></span><span className="seg"></span></span>
             </span>
           </button>
@@ -144,175 +177,129 @@ export default function LandingPage() {
     </div>
   </section>
 
-  
   <section className="dark statement">
     <div className="wrap">
-      <span className="kicker">Chaitanya Keralam</span>
-      <p id="statement">Temple bells at dawn, church bells at noon, the azaan at dusk, all under one sky. In Kerala, faith means living in harmony with nature and with one another.</p>
+      <span className="kicker">{c.statement.kicker}</span>
+      <p id="statement">{c.statement.text}</p>
     </div>
   </section>
 
-  
-  <section className="dark chapter ch-1" aria-labelledby="ch1">
-    <div className="wrap chapter-stage">
-      <span className="kicker chapter-no">01 · Perhaps the only paradise on earth</span>
-      <div className="ph r-4x5 chapter-media"><div className="bg s-backwater"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/houseboat-backwaters-1793008580480.png" alt="Houseboat on still backwaters" loading="lazy" decoding="async" /></div><span className="slot">[Portrait — Houseboat on still backwaters]<small>1200×1500 · 4:5</small></span></div>
-      <h2 className="chapter-word" id="ch1" data-drift="-6">Paradise</h2>
-      <div className="chapter-copy" data-reveal>
-        <p>The Kerala of the stories you grew up with: misty hills, coconut groves, backwaters and quiet village temples. Come and see it for yourself, at your own pace.</p>
-        <a className="tlink" href="#destinations"><span>See the places</span><span className="arrow" aria-hidden="true">→</span></a>
-      </div>
-      <div className="ph r-3x2 chapter-inset" data-reveal-img><div className="bg s-coast"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/coconut-grove-water-1793007847586.jpg" alt="Coconut grove by the water" loading="lazy" decoding="async" /></div><span className="slot">[Image — Coconut grove by the water]<small>1500×1000 · 3:2</small></span></div>
-    </div>
-  </section>
+  {renderChapter(0)}
 
-  
   <section className="section" id="destinations" aria-labelledby="destH">
     <div className="wrap">
       <div className="head-row">
-        <h2 className="h-section" id="destH" data-split>Places that stay with you</h2>
-        <a className="tlink" href="#plan"><span>All destinations</span><span className="arrow" aria-hidden="true">→</span></a>
+        <h2 className="h-section" id="destH" data-split>{c.destinations.heading}</h2>
+        <a className="tlink" href="#plan"><span>{c.destinations.link}</span>{arrow}</a>
       </div>
       <ul className="cards">
-        <li data-reveal><a className="card" href="#plan"><div className="ph r-1x1"><div className="bg s-backwater"><img src="/assets/images/gallery-backwaters.jpg" alt="Alappuzha backwaters" loading="lazy" decoding="async" /></div><span className="slot">[Image — Alappuzha backwaters]<small>1600×1600 · 1:1</small></span></div><span className="label">Backwaters</span><h3>Alappuzha: a houseboat, a cup of chai and the backwaters drifting by</h3></a></li>
-        <li data-reveal><a className="card" href="#plan"><div className="ph r-1x1"><div className="bg s-tea"><img src="/assets/images/munnar-tea.jpg" alt="Munnar tea hills" loading="lazy" decoding="async" /></div><span className="slot">[Image — Munnar tea hills]<small>1600×1600 · 1:1</small></span></div><span className="label">Hills</span><h3>Munnar: tea gardens, cool air and morning walks you will remember for years</h3></a></li>
-        <li data-reveal><a className="card" href="#plan"><div className="ph r-1x1"><div className="bg s-forest"><img src="/assets/images/gallery-rainforest.jpg" alt="Wayanad forest" loading="lazy" decoding="async" /></div><span className="slot">[Image — Wayanad forest]<small>1600×1600 · 1:1</small></span></div><span className="label">Forests</span><h3>Wayanad: forest paths, spice gardens and quiet hill villages</h3></a></li>
-        <li data-reveal><a className="card" href="#plan"><div className="ph r-1x1"><div className="bg s-coast"><img src="/assets/images/gallery-coast.jpg" alt="Varkala cliffs and beach" loading="lazy" decoding="async" /></div><span className="slot">[Image — Varkala cliffs and beach]<small>1600×1600 · 1:1</small></span></div><span className="label">Coast</span><h3>Varkala: sea breeze on the red cliffs and a calm evening by the shore</h3></a></li>
-        <li data-reveal><a className="card" href="#plan"><div className="ph r-1x1"><div className="bg s-falls"><img src="/assets/images/athirappilly-falls.jpg" alt="Athirappilly falls" loading="lazy" decoding="async" /></div><span className="slot">[Image — Athirappilly falls]<small>1600×1600 · 1:1</small></span></div><span className="label">Waterfalls</span><h3>Athirappilly: feel the cool spray of the great waterfall</h3></a></li>
-        <li data-reveal><a className="card" href="#plan"><div className="ph r-1x1"><div className="bg s-culture"><img src="/assets/images/gallery-culture.jpg" alt="Fort Kochi streets" loading="lazy" decoding="async" /></div><span className="slot">[Image — Fort Kochi streets]<small>1600×1600 · 1:1</small></span></div><span className="label">Heritage</span><h3>Kochi: old churches, spice markets and the Chinese fishing nets at sunset</h3></a></li>
+        {c.destinations.cards.map((card, i) => (
+          <li key={i} data-reveal><a className="card" href="#plan"><div className="ph r-1x1"><div className={`bg ${cardBg[i % cardBg.length]}`}><img src={card.image.url} alt={card.image.alt} loading="lazy" decoding="async" /></div></div><span className="label">{card.label}</span><h3>{card.title}</h3></a></li>
+        ))}
       </ul>
-      <a className="btn btn-line view-all" href="#plan"><span>All destinations</span><span className="arrow" aria-hidden="true">→</span></a>
+      <a className="btn btn-line view-all" href="#plan"><span>{c.destinations.link}</span>{arrow}</a>
     </div>
   </section>
 
-  
-  <section className="dark chapter ch-2" aria-labelledby="ch2">
-    <div className="wrap chapter-stage">
-      <span className="kicker chapter-no">02 · One with nature</span>
-      <div className="ph r-4x5 chapter-media"><div className="bg s-ghats"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/western-ghats-mist-1793007116438.jpg" alt="Western Ghats Silent Valley" loading="lazy" decoding="async" /></div><span className="slot">[Portrait — Western Ghats, Silent Valley]<small>1200×1500 · 4:5</small></span></div>
-      <h2 className="chapter-word" id="ch2" data-drift="6">Nature</h2>
-      <div className="chapter-copy" data-reveal>
-        <p>Wake to birdsong, walk beneath old trees and breathe the clean air of the Western Ghats. Here, nature restores you slowly and gently.</p>
-        <a className="tlink" href="#nature"><span>Travel gently with us</span><span className="arrow" aria-hidden="true">→</span></a>
-      </div>
-      <div className="ph r-3x2 chapter-inset" data-reveal-img><div className="bg s-falls"><img src="/assets/images/athirappilly-aerial.png" alt="Aerial view of Athirappilly waterfall in the forest" loading="lazy" decoding="async" /></div><span className="slot">[Image — Athirappilly waterfall, aerial]<small>1280×720 · 16:9</small></span></div>
-    </div>
-  </section>
+  {renderChapter(1)}
 
-  
   <section className="section" id="nature" aria-labelledby="natH">
     <div className="wrap story-grid">
       <div className="story-text">
-        <span className="label">Our vision</span>
-        <h2 className="h-section" id="natH" data-split>Eco-Spiritual Peace Tourism</h2>
-        <p className="lead" data-reveal>A yatra for today. See Kerala's beauty, visit holy places of every faith, rest close to nature and return home lighter. Every journey is planned with care for the land and for the people who welcome you.</p>
+        <span className="label">{c.vision.label}</span>
+        <h2 className="h-section" id="natH" data-split>{c.vision.heading}</h2>
+        <p className="lead" data-reveal>{c.vision.lead}</p>
         <div className="facts" data-reveal>
-          <div className="fact"><b>44</b><span>Rivers</span></div>
-          <div className="fact"><b>14</b><span>Districts</span></div>
-          <div className="fact"><b>1</b><span>Western Ghats, a UNESCO World Heritage range</span></div>
+          {c.vision.facts.map((f, i) => (
+            <div key={i} className="fact"><b>{f.value}</b><span>{f.label}</span></div>
+          ))}
         </div>
-        <a className="btn btn-ink" href="#plan" data-reveal><span>Our vision</span><span className="arrow" aria-hidden="true">→</span></a>
+        <a className="btn btn-ink" href="#plan" data-reveal><span>{c.vision.button}</span>{arrow}</a>
       </div>
       <div className="story-media">
-        <div className="ph r-4x5" data-reveal-img><div className="bg s-forest"><img src="/assets/images/forest-path.jpg" alt="Forest path morning light" loading="lazy" decoding="async" /></div><span className="slot">[Image — Forest path, morning light]<small>1200×1500</small></span></div>
-        <div className="ph r-1x1" data-reveal-img><div className="bg s-falls"><img src="/assets/images/gallery-rainforest.jpg" alt="Rain on leaves" loading="lazy" decoding="async" /></div><span className="slot">[Image — Rain on leaves]<small>1000×1000</small></span></div>
+        <div className="ph r-4x5" data-reveal-img><div className="bg s-forest"><img src={c.vision.image1.url} alt={c.vision.image1.alt} loading="lazy" decoding="async" /></div></div>
+        <div className="ph r-1x1" data-reveal-img><div className="bg s-falls"><img src={c.vision.image2.url} alt={c.vision.image2.alt} loading="lazy" decoding="async" /></div></div>
       </div>
     </div>
   </section>
 
-  
   <section className="dark invitation" id="invitation" aria-labelledby="invH">
     <div className="wrap invitation-in">
-      <span className="kicker">Global invitation</span>
-      <h2 id="invH">“Inviting global entrepreneurs and visionary leaders for global peace and sustainable development.”</h2>
+      <span className="kicker">{c.invitation.kicker}</span>
+      <h2 id="invH">{c.invitation.quote}</h2>
     </div>
   </section>
 
-  <section className="section moment" aria-label="Sunrise yoga amid Kerala tea hills" style={{paddingTop: 0, paddingBottom: 0}}>
+  <section className="section moment" aria-label={c.moment.image.alt} style={{paddingTop: 0, paddingBottom: 0}}>
     <div className="wrap">
       <figure>
-        <div className="ph r-3x2" data-reveal-img><div className="bg s-tea" data-inner="6"><img src="/assets/images/sunrise-yoga-tea-hills.png" alt="Sunrise yoga amid Kerala tea hills" loading="lazy" decoding="async" width="1516" height="1037" /></div><span className="slot">[Image — Sunrise yoga amid Kerala tea hills]<small>1516×1037 · 3:2</small></span></div>
-        <figcaption data-reveal><span className="label">Munnar · Dawn</span><p>Sunrise yoga amid the tea hills, where the day begins slowly.</p></figcaption>
+        <div className="ph r-3x2" data-reveal-img><div className="bg s-tea" data-inner="6"><img src={c.moment.image.url} alt={c.moment.image.alt} loading="lazy" decoding="async" width="1516" height="1037" /></div></div>
+        <figcaption data-reveal><span className="label">{c.moment.label}</span><p>{c.moment.caption}</p></figcaption>
       </figure>
     </div>
   </section>
 
   <section className="section" id="experiences" aria-labelledby="expH">
     <div className="wrap">
-      <div className="head-row"><h2 className="h-section" id="expH" data-split>Values our elders lived by</h2><p className="lead" data-reveal>Four simple values for a balanced life, and the ones we hope to pass on to our children.</p><a className="tlink" href="/values"><span>What these values mean</span><span className="arrow" aria-hidden="true">→</span></a></div>
+      <div className="head-row"><h2 className="h-section" id="expH" data-split>{c.values.heading}</h2><p className="lead" data-reveal>{c.values.lead}</p><a className="tlink" href="/values"><span>{c.values.link}</span>{arrow}</a></div>
       <ul className="rows">
-        <li><a className="row" href="#plan" data-img="0"><span className="row-no">01</span><div className="ph r-16x9"><div className="bg s-backwater"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/anbu-love-compassion-1793008816345.png" alt="Shared meal, hands and banana leaf" loading="lazy" decoding="async" /></div><span className="slot">[Image — Shared meal, hands and banana leaf]<small>1600×900</small></span></div><span className="row-c"><span className="row-t">Anbu · Love / Compassion</span><span className="row-d">Loving-kindness, empathy, and unconditional affection toward family, fellow humans, and all living creatures. In classical Tamil philosophy like the Thirukkural, Anbu is considered the foundational virtue of human life, the fuel that makes a human soul truly alive.</span></span><span className="arrow" aria-hidden="true">→</span></a></li>
-        <li><a className="row" href="#plan" data-img="1"><span className="row-no">02</span><div className="ph r-16x9"><div className="bg s-temple"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/unmai-truth-integrity-1793009294446.png" alt="Still water reflecting the sky" loading="lazy" decoding="async" /></div><span className="slot">[Image — Still water reflecting the sky]<small>1600×900</small></span></div><span className="row-c"><span className="row-t">Unmai · Truth / Honesty</span><span className="row-d">Truthfulness, reality, sincerity, and integrity in thoughts, words, and actions. Standing firmly by facts and inner truth without deceit or pretense.</span></span><span className="arrow" aria-hidden="true">→</span></a></li>
-        <li><a className="row" href="#plan" data-img="2"><span className="row-no">03</span><div className="ph r-16x9"><div className="bg s-dusk"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/patru-commitment-devotion-1793009464320.png" alt="Lighting the lamp at dawn" loading="lazy" decoding="async" /></div><span className="slot">[Image — Lighting the lamp at dawn]<small>1600×900</small></span></div><span className="row-c"><span className="row-t">Patru · Attachment / Devotion / Loyalty</span><span className="row-d">A deep-seated devotion, attachment, or commitment to a principle, language (Tamil-patru), country (Nattu-patru), or person. It defines a human's sense of duty and loyalty toward what they hold dear, giving direction to one's love and truth.</span></span><span className="arrow" aria-hidden="true">→</span></a></li>
-        <li><a className="row" href="#plan" data-img="3"><span className="row-no">04</span><div className="ph r-16x9"><div className="bg s-forest"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/pagutharivu-rational-thinking-1793009636243.png" alt="An elder and a young person in conversation" loading="lazy" decoding="async" /></div><span className="slot">[Image — An elder and a young person in conversation]<small>1600×900</small></span></div><span className="row-c"><span className="row-t">Pagutharivu · Rationalism / Discernment</span><span className="row-d">Critical thinking, logical reasoning, and analytical intelligence. It literally means the "ability to divide/analyze (pagu) knowledge (arivu)". A cornerstone of the modern Tamil social reform movement, it implores individuals to question dogma, reject blind superstitions, and evaluate everything using scientific logic and cause-and-effect reasoning.</span></span><span className="arrow" aria-hidden="true">→</span></a></li>
+        {c.values.rows.map((r, i) => (
+          <li key={i}><a className="row" href="#plan" data-img={i}><span className="row-no">{String(i + 1).padStart(2, '0')}</span><div className="ph r-16x9"><div className={`bg ${rowBg[i % rowBg.length]}`}><img src={r.image.url} alt={r.image.alt} loading="lazy" decoding="async" /></div></div><span className="row-c"><span className="row-t">{r.title}</span><span className="row-d">{r.text}</span></span>{arrow}</a></li>
+        ))}
       </ul>
       <aside className="roots-banner" data-reveal>
-        <span className="roots-tamil" aria-hidden="true">சங்க இலக்கியம்</span>
-        <div className="roots-copy"><p className="roots-kicker">Rooted in classical Tamil thought</p><h3>Sangam literature</h3><p>The ancient Tamil poetry where these values first took shape.</p></div>
-        <a className="btn btn-white" href="https://en.wikipedia.org/wiki/Sangam_literature" target="_blank" rel="noopener noreferrer"><span>Read more</span><span className="arrow" aria-hidden="true">→</span></a>
+        <span className="roots-tamil" aria-hidden="true">{c.values.banner.tamil}</span>
+        <div className="roots-copy"><p className="roots-kicker">{c.values.banner.kicker}</p><h3>{c.values.banner.heading}</h3><p>{c.values.banner.text}</p></div>
+        <a className="btn btn-white" href={c.values.banner.url} target="_blank" rel="noopener noreferrer"><span>{c.values.banner.button}</span>{arrow}</a>
       </aside>
     </div>
     <div className="hover-img" id="hoverImg" aria-hidden="true">
-      <div className="ph"><div className="bg s-backwater"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/anbu-love-compassion-1793008816345.png" alt="Shared meal, hands and banana leaf" loading="lazy" decoding="async" /></div></div><div className="ph"><div className="bg s-temple"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/unmai-truth-integrity-1793009294446.png" alt="Still water reflecting the sky" loading="lazy" decoding="async" /></div></div><div className="ph"><div className="bg s-dusk"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/patru-commitment-devotion-1793009464320.png" alt="Lighting the lamp at dawn" loading="lazy" decoding="async" /></div></div>
-      <div className="ph"><div className="bg s-forest"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/pagutharivu-rational-thinking-1793009636243.png" alt="An elder and a young person in conversation" loading="lazy" decoding="async" /></div></div>
+      {c.values.rows.map((r, i) => (
+        <div key={i} className="ph"><div className={`bg ${rowBg[i % rowBg.length]}`}><img src={r.image.url} alt={r.image.alt} loading="lazy" decoding="async" /></div></div>
+      ))}
     </div>
   </section>
 
-  
-  <section className="dark chapter ch-3" aria-labelledby="ch3">
-    <div className="wrap chapter-stage">
-      <span className="kicker chapter-no">03 · God's own country</span>
-      <div className="ph r-4x5 chapter-media"><div className="bg s-culture"><img src="/assets/images/temple-lamps.png" alt="Lamps at a temple festival" loading="lazy" decoding="async" /></div><span className="slot">[Portrait — Lamps at a temple festival]<small>1200×1500 · 4:5</small></span></div>
-      <h2 className="chapter-word" id="ch3" data-drift="-6">God's own</h2>
-      <div className="chapter-copy" data-reveal>
-        <p>Onam, Christmas and Eid, celebrated together by neighbours of every faith. Temples, churches and mosques on the same street. This is God's own country.</p>
-        <a className="tlink" href="#experiences"><span>Our values</span><span className="arrow" aria-hidden="true">→</span></a>
-      </div>
-      <div className="ph r-3x2 chapter-inset" data-reveal-img><div className="bg s-dusk"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/oil-lamps-flowers-1793010878547.png" alt="Oil lamps and flowers" loading="lazy" decoding="async" /></div><span className="slot">[Image — Oil lamps and flowers]<small>1500×1000 · 3:2</small></span></div>
-    </div>
-  </section>
+  {renderChapter(2)}
 
-  
   <section className="section" id="stories" aria-labelledby="stH">
     <div className="wrap">
       <div className="head-row">
-        <h2 className="h-section" id="stH" data-split>Journeys with meaning</h2>
-        <a className="tlink" href="#plan"><span>Plan a journey</span><span className="arrow" aria-hidden="true">→</span></a>
+        <h2 className="h-section" id="stH" data-split>{c.stories.heading}</h2>
+        <a className="tlink" href="#plan"><span>{c.stories.link}</span>{arrow}</a>
       </div>
       <ul className="stories">
-        <li className="story-item" data-reveal><a href="#plan"><div className="ph r-3x2"><div className="bg s-backwater"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/ayurveda-foot-massage-1793010154542.png" alt="Ayurveda and yoga by the water" loading="lazy" decoding="async" /></div><span className="slot">[Image — Ayurveda and yoga by the water]<small>1500×1000</small></span></div><div><span className="label">Ayurveda & rest</span><h3>Ayurveda the traditional way: herbal oils, simple food and quiet, restful days</h3></div></a></li>
-        <li className="story-item" data-reveal><a href="#plan"><div className="ph r-3x2"><div className="bg s-tea"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/family-homestay-1793010296886.png" alt="Visitors with a local family homestay" loading="lazy" decoding="async" /></div><span className="slot">[Image — Visitors with a local family, homestay]<small>1500×1000</small></span></div><div><span className="label">Family homestays</span><h3>Stay with Kerala families, eat a sadya on a banana leaf and leave the land as you found it</h3></div></a></li>
-        <li className="story-item" data-reveal><a href="#plan"><div className="ph r-3x2"><div className="bg s-dusk"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/youth-community-1793010493930.png" alt="Young people training in hospitality" loading="lazy" decoding="async" /></div><span className="slot">[Image — Young people training in hospitality]<small>1500×1000</small></span></div><div><span className="label">Youth & community</span><h3>Your journey helps young people of Kerala build careers in hospitality and tourism</h3></div></a></li>
+        {c.stories.items.map((s, i) => (
+          <li key={i} className="story-item" data-reveal><a href="#plan"><div className="ph r-3x2"><div className={`bg ${storyBg[i % storyBg.length]}`}><img src={s.image.url} alt={s.image.alt} loading="lazy" decoding="async" /></div></div><div><span className="label">{s.label}</span><h3>{s.title}</h3></div></a></li>
+        ))}
       </ul>
     </div>
   </section>
 
-  
   <section className="banner" aria-labelledby="banH">
-    <div className="ph"><div className="bg s-backwater" data-inner="8"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/sunset-backwaters-1793010741262.png" alt="Sunset over the backwaters" loading="lazy" decoding="async" style={{width: "100%", height: "100%", objectFit: "cover", display: "block"}} /></div><span className="slot" style={{top: "22%"}}>[Full-screen image — Sunset over the backwaters]<small>2560×1440</small></span></div>
+    <div className="ph"><div className="bg s-backwater" data-inner="8"><img src={c.banner.image.url} alt={c.banner.image.alt} loading="lazy" decoding="async" style={{width: "100%", height: "100%", objectFit: "cover", display: "block"}} /></div></div>
     <div className="wrap banner-in">
-      <h2 id="banH" data-chars>God's own country awaits.</h2>
-      <a className="btn btn-white" href="#plan"><span>Plan a journey for your family</span><span className="arrow" aria-hidden="true">→</span></a>
+      <h2 id="banH" data-chars>{c.banner.heading}</h2>
+      <a className="btn btn-white" href="#plan"><span>{c.banner.button}</span>{arrow}</a>
     </div>
   </section>
 
-  
   <section className="section" id="maps" aria-labelledby="mapsH">
     <div className="wrap">
-      <div className="head-row"><h2 className="h-section" id="mapsH" data-split>Find Kerala</h2><p className="lead" data-reveal>From the world to India, and into Kerala itself.</p></div>
+      <div className="head-row"><h2 className="h-section" id="mapsH" data-split>{c.maps.heading}</h2><p className="lead" data-reveal>{c.maps.lead}</p></div>
       <FindKerala />
       <p className="geo-credit">Map data: <a href="https://www.amcharts.com/svg-maps/" target="_blank" rel="noopener noreferrer">amCharts</a>, <a href="https://github.com/datameet/maps" target="_blank" rel="noopener noreferrer">DataMeet</a></p>
     </div>
   </section>
 
   <section className="dark official" id="official" aria-labelledby="offH">
-    <div className="ph"><div className="bg s-coast" data-inner="6"><img src="/assets/images/panorama-dusk.jpg" alt="" loading="lazy" decoding="async" /></div></div>
+    <div className="ph"><div className="bg s-coast" data-inner="6"><img src={c.official.image.url} alt={c.official.image.alt} loading="lazy" decoding="async" /></div></div>
     <div className="wrap official-in">
-      <span className="kicker">Plan with confidence</span>
-      <h2 id="offH">Official Kerala Tourism</h2>
+      <span className="kicker">{c.official.kicker}</span>
+      <h2 id="offH">{c.official.heading}</h2>
       <div className="official-links">
-        <a className="btn btn-white" href="https://www.keralatourism.org/" target="_blank" rel="noopener noreferrer"><span>Official Kerala Tourism website</span><span className="arrow" aria-hidden="true">→</span></a>
-        <a className="btn btn-white" href="https://www.kochimuzirisbiennale.org/" target="_blank" rel="noopener noreferrer"><span>Kochi-Muziris Biennale</span><span className="arrow" aria-hidden="true">→</span></a>
+        <a className="btn btn-white" href={c.official.link1Url} target="_blank" rel="noopener noreferrer"><span>{c.official.link1}</span>{arrow}</a>
+        <a className="btn btn-white" href={c.official.link2Url} target="_blank" rel="noopener noreferrer"><span>{c.official.link2}</span>{arrow}</a>
       </div>
     </div>
   </section>
@@ -320,11 +307,11 @@ export default function LandingPage() {
   <section className="section" id="plan" aria-labelledby="planH">
     <div className="wrap contact-grid">
       <div className="contact-intro">
-        <h2 id="planH" data-split>Let us plan your Kerala journey</h2>
-        <p data-reveal>Travelling with family, as a couple, or on a pilgrimage? Tell us what you have in mind. We will plan an unhurried journey with comfortable stays, good food and time to rest.</p>
-        <a className="guide" href="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/chaitanya-keralam-guide.pdf" data-reveal>
+        <h2 id="planH" data-split>{c.plan.heading}</h2>
+        <p data-reveal>{c.plan.text}</p>
+        <a className="guide" href={c.plan.guideUrl} data-reveal>
           <div className="ph"><div className="bg s-tea"></div></div>
-          <span className="guide-t"><b>Download our Kerala family travel guide</b><span>PDF · [size] <span aria-hidden="true">↓</span></span></span>
+          <span className="guide-t"><b>{c.plan.guideTitle}</b><span>PDF · [size] <span aria-hidden="true">↓</span></span></span>
         </a>
       </div>
       <div data-reveal>
@@ -360,12 +347,12 @@ export default function LandingPage() {
     <div className="foot-top">
       <div className="foot-brand">
         <a className="brand" href="#top"><img src="/assets/logo.png" alt="" width="60" height="58" style={{width: "60px"}} /><span>Chaitanya Keralam<small className="brand-tag">Eco Spiritual Peace Haven / India</small></span></a>
-        <p className="foot-promise">Perhaps the only paradise on earth!<br />One with nature.<br />God's own country.</p>
-        <p className="label">Eco-Spiritual Peace Tourism · Anbu · Unmai · Patru · Pagutharivu</p>
+        <p className="foot-promise">{c.footer.promise.split('\n').map((line, i, a) => (<span key={i}>{line}{i < a.length - 1 && <br />}</span>))}</p>
+        <p className="label">{c.footer.tagline}</p>
       </div>
-      <div><h4>Explore</h4><ul><li><a href="#destinations">Places</a></li><li><a href="#nature">Our vision</a></li><li><a href="#experiences">Our values</a></li><li><a href="/values">What our values mean</a></li><li><a href="#maps">Maps</a></li><li><a href="https://www.keralatourism.org/" target="_blank" rel="noopener noreferrer">Kerala Tourism</a></li><li><a href="https://www.kochimuzirisbiennale.org/" target="_blank" rel="noopener noreferrer">Kochi-Muziris Biennale</a></li></ul></div>
+      <div><h4>Explore</h4><ul><li><a href="#destinations">Places</a></li><li><a href="#nature">Our vision</a></li><li><a href="#experiences">Our values</a></li><li><a href="/values">What our values mean</a></li><li><a href="#maps">Maps</a></li><li><a href={c.official.link1Url} target="_blank" rel="noopener noreferrer">Kerala Tourism</a></li><li><a href={c.official.link2Url} target="_blank" rel="noopener noreferrer">{c.official.link2}</a></li></ul></div>
       <div><h4>Journeys</h4><ul><li><a href="#stories">Ayurveda & rest</a></li><li><a href="#stories">Family homestays</a></li><li><a href="#stories">Youth & community</a></li><li><a href="/programmes#admissions">Apply now</a></li></ul></div>
-      <div className="foot-contact"><h4>Contact</h4><ul><li>Edex Edupark, Kochi, Kerala</li><li><a href="tel:+919037016730">+91 90370 16730</a></li><li><a href="tel:+918547818701">+91 85478 18701</a></li><li><a href="mailto:josephanil2007@gmail.com">josephanil2007@gmail.com</a></li><li><a href="mailto:akashjose369@gmail.com">akashjose369@gmail.com</a></li><li><a href="mailto:shajimilan79@gmail.com">shajimilan79@gmail.com</a></li></ul></div>
+      <div className="foot-contact"><h4>Contact</h4><ul><li>{c.footer.address}</li>{c.footer.phones.map((p, i) => (<li key={`p${i}`}><a href={tel(p.value)}>{p.value}</a></li>))}{c.footer.emails.map((e, i) => (<li key={`e${i}`}><a href={`mailto:${e.value}`}>{e.value}</a></li>))}</ul></div>
       <div><h4>Follow</h4><ul className="social"><li><a href="#plan"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg><span>Instagram</span></a></li><li><a href="#plan"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8c.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8ZM10 15V9l5.2 3Z" /></svg><span>YouTube</span></a></li><li><a href="#plan"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13.5 21v-8h2.7l.4-3.2h-3.1V7.8c0-.9.3-1.5 1.6-1.5h1.7V3.4c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.4H7.7V13h2.7v8Z" /></svg><span>Facebook</span></a></li></ul></div>
     </div>
     <p className="water" id="water" aria-hidden="true">Keralam</p>
