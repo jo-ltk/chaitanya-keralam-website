@@ -26,26 +26,25 @@ function Ph({ ratio, scene, src, alt, slot, meta, inner, reveal, className = '' 
 
 const Arrow = () => <span className="arrow" aria-hidden="true">→</span>;
 const IMG = '/images/eco-spiritual-tourism';
-const HOME = '/images/home';
 
 const FILM = [
-  { label: 'Nature', scene: 'forest' as Scene, src: `${IMG}/misty-rainforest-stream.png`, alt: 'Kerala forest hills and a misty stream' },
-  { label: 'Heritage', scene: 'culture' as Scene, src: `${IMG}/kerala-courtyard.png`, alt: 'Kerala spiritual heritage, a traditional courtyard' },
-  { label: 'Wellness', scene: 'temple' as Scene, src: `${IMG}/serene-tropical-retreat.png`, alt: 'Wellness and meditation retreat' },
-  { label: 'Hospitality', scene: 'backwater' as Scene, src: `${IMG}/golden-backwaters-village.png`, alt: 'Kerala heritage home by the backwaters' },
+  { label: 'Nature', scene: 'forest' as Scene, src: `${IMG}/film-nature.png`, alt: 'Misty hills and forest stream, Munnar' },
+  { label: 'Heritage', scene: 'culture' as Scene, src: `${IMG}/film-heritage.jpg`, alt: 'Padmanabhapuram Palace courtyard' },
+  { label: 'Wellness', scene: 'temple' as Scene, src: `${IMG}/film-wellness.png`, alt: 'Wellness and meditation retreat' },
+  { label: 'Hospitality', scene: 'backwater' as Scene, src: `${IMG}/film-hospitality.jpg`, alt: 'Kumarakom heritage homestay by the backwaters' },
 ];
 
 const THEMES = [
   { title: 'Nature and ecology', text: 'Forests, rivers, mountains, biodiversity and conservation.',
-    scene: 'forest' as Scene, src: `${HOME}/golden-trails-through-the-misty-forest.webp`, alt: 'A trail through misty Kerala forest' },
+    scene: 'forest' as Scene, src: `${IMG}/theme-nature-ecology.jpg`, alt: 'Periyar Wildlife Sanctuary, Thekkady' },
   { title: 'Spirituality and heritage', text: 'Sacred landscapes, pilgrimage traditions, cultural heritage and respectful understanding of different traditions.',
-    scene: 'culture' as Scene, src: `${HOME}/kerala-courtyard-heritage-tour.webp`, alt: 'A heritage tour in a Kerala courtyard' },
+    scene: 'culture' as Scene, src: `${IMG}/theme-spirituality-heritage.jpg`, alt: 'Guruvayur Temple heritage' },
   { title: 'Wellness and peace', text: 'Meditation, reflection, nature-based wellness and retreat experiences.',
-    scene: 'temple' as Scene, src: `${IMG}/serene-tropical-retreat.png`, alt: 'A serene tropical retreat' },
+    scene: 'temple' as Scene, alt: 'A serene tropical wellness retreat' },
   { title: 'Kerala culture and hospitality', text: 'Traditional architecture, cuisine, arts, crafts, community knowledge and hospitality.',
-    scene: 'dusk' as Scene, src: `${HOME}/tropical-veranda-table-setting.webp`, alt: 'A table set for guests on a Kerala veranda' },
+    scene: 'dusk' as Scene, src: `${IMG}/theme-culture-hospitality.jpg`, alt: 'A traditional Kerala veranda table setting' },
   { title: 'Responsible tourism', text: 'Waste reduction, water and energy conservation, cultural respect and community participation.',
-    scene: 'tea' as Scene, src: `${HOME}/joyful-gardening-together.webp`, alt: 'People gardening together' },
+    scene: 'tea' as Scene, src: `${IMG}/theme-responsible-tourism.jpg`, alt: 'Thenmala eco-tourism destination' },
 ];
 
 const PRINCIPLES = [
@@ -58,13 +57,13 @@ const PRINCIPLES = [
 
 const WORK = [
   { title: 'Guest services', text: 'Welcoming, informing and caring for visitors.',
-    scene: 'dusk' as Scene, src: `${HOME}/tropical-veranda-hospitality-scene.webp`, alt: 'Hosts welcoming guests on a veranda' },
+    scene: 'dusk' as Scene, src: `${IMG}/work-guest-services.png`, alt: 'Hosts welcoming guests on a veranda' },
   { title: 'Local guides', text: 'Sharing nature, heritage and stories with care.',
-    scene: 'forest' as Scene, src: `${HOME}/kerala-village-walk-with-friends.webp`, alt: 'A guided village walk in Kerala' },
+    scene: 'forest' as Scene, src: `${IMG}/work-local-guides.jpg`, alt: 'A guided village walk in Wayanad' },
   { title: 'Hospitality', text: 'Guest houses, resorts and retreats run sustainably.',
-    scene: 'culture' as Scene, src: `${HOME}/kerala-courtyard-heritage-iside-home.webp`, alt: 'Inside a Kerala heritage home' },
+    scene: 'culture' as Scene, src: `${IMG}/work-hospitality.jpg`, alt: 'Inside a Fort Kochi heritage home' },
   { title: 'Community enterprises', text: "Local businesses that keep tourism's benefits close to home.",
-    scene: 'tea' as Scene, src: `${HOME}/exploring-cardamom-in-the-spice-forest.webp`, alt: 'Exploring cardamom in a spice forest' },
+    scene: 'tea' as Scene, src: `${IMG}/work-community-enterprises.jpg`, alt: 'Exploring a cardamom spice plantation' },
 ];
 
 /* Client-supplied photographs (Nov 2026) */
@@ -128,7 +127,7 @@ function Themes() {
       <div className="theme-panel" id="theme-panel" role="tabpanel" aria-labelledby={`theme-tab-${cur}`}>
         <div className="ph r-3x2 theme-media">
           <div className={`bg s-${t.scene}`}>
-            <img key={t.src} className="theme-img" src={t.src} alt={t.alt} loading="lazy" decoding="async" />
+            {t.src && <img key={t.src} className="theme-img" src={t.src} alt={t.alt} loading="lazy" decoding="async" />}
           </div>
           <span className="slot">[Image — {t.alt}]<small>1500×1000 · 3:2</small></span>
         </div>
@@ -156,7 +155,7 @@ export default function TourismPage() {
         <section className="page-hero page-hero-tall" aria-labelledby="pageH">
           <div className="ph">
             <div className="bg s-backwater" data-inner="6">
-              <img src={`${IMG}/kerala-backwaters-sunrise.png`} alt="Kerala backwaters, panoramic landscape at sunrise" loading="eager" decoding="async" fetchPriority="high" />
+              <img src={`${IMG}/hero-sunrise.png`} alt="Kerala backwaters, panoramic landscape at sunrise" loading="eager" decoding="async" fetchPriority="high" />
             </div>
             <span className="slot">[Full-screen image — Kerala backwaters at sunrise]<small>2560×1440</small></span>
           </div>
@@ -214,13 +213,13 @@ export default function TourismPage() {
         <section className="dark chapter ch-2 chapter-tight" id="why-kerala" aria-labelledby="ch2">
           <div className="wrap chapter-stage">
             <span className="kicker chapter-no">Why Kerala?</span>
-            <Ph ratio="4x5" scene="backwater" src={`${HOME}/kerala-backwaters-at-golden-hour.webp`} alt="Kerala backwaters at golden hour" slot="Portrait — Kerala backwaters at golden hour" meta="1200×1500 · 4:5" inner={7} className="chapter-media" />
+            <Ph ratio="4x5" scene="backwater" src={`${IMG}/chapter-why-kerala-main.jpg`} alt="Vembanad Lake, Kerala backwaters at golden hour" slot="Portrait — Kerala backwaters at golden hour" meta="1200×1500 · 4:5" inner={7} className="chapter-media" />
             <h2 className="chapter-word" id="ch2" data-drift="6">Kerala</h2>
             <div className="chapter-copy" data-reveal>
               <p>Kerala holds remarkable natural diversity — backwaters, beaches, hill ranges and forests — alongside a deep cultural heritage and a long tradition of hospitality.</p>
               <a className="tlink" href="#heritage"><span>A land of rivers, forests and open doors</span><Arrow /></a>
             </div>
-            <Ph ratio="3x2" scene="tea" src={`${HOME}/sunrise-over-misty-tea-hills.webp`} alt="Sunrise over misty tea hills" slot="Image — Sunrise over misty tea hills" meta="1500×1000 · 3:2" reveal className="chapter-inset chapter-inset-lg" />
+            <Ph ratio="3x2" scene="tea" src={`${IMG}/chapter-why-kerala-inset.png`} alt="Sunrise over misty tea hills, Munnar" slot="Image — Sunrise over misty tea hills" meta="1500×1000 · 3:2" reveal className="chapter-inset chapter-inset-lg" />
           </div>
         </section>
 
@@ -231,7 +230,7 @@ export default function TourismPage() {
               <h2 className="h-section" id="herH" data-split>A land of rivers, forests and open doors</h2>
               <p className="lead" data-reveal>Kerala&apos;s heritage has been shaped by ancient trade and cultural exchange, Ayurveda and traditional wellness, spiritual traditions and indigenous knowledge, and hospitality and community living.</p>
             </div>
-            <Ph ratio="21x9" scene="backwater" src={`${IMG}/golden-backwaters-village.png`} alt="Kerala landscape, a village on the backwaters" slot="Panorama — Village on the backwaters" meta="2880×1234 · 21:9" inner={6} reveal />
+            <Ph ratio="21x9" scene="backwater" src={`${IMG}/heritage-panorama.jpg`} alt="Kodungallur, the Muziris heritage backwater village" slot="Panorama — Village on the backwaters" meta="2880×1234 · 21:9" inner={6} reveal />
             <div className="facts facts-words" data-reveal>
               <div className="fact"><span>Ancient trade hub</span><b>Muziris</b><span>A legendary port on the spice route and Kerala&apos;s gateway for many world religions</span></div>
               <div className="fact"><span>Ports of the Indian Ocean</span><b>Pattanam</b><span>Linked with Muziris on the project presentation&apos;s map of ancient trade ports, 100 BC – 300 AD</span></div>
@@ -298,7 +297,7 @@ export default function TourismPage() {
         <section className="banner" aria-labelledby="banH">
           <div className="ph">
             <div className="bg s-backwater" data-inner="8">
-              <img src={`${HOME}/kerala-backwaters-at-sunrise.webp`} alt="Kerala backwaters at sunrise" loading="lazy" decoding="async" />
+              <img src={`${IMG}/banner-sunrise.png`} alt="Kerala backwaters at sunrise" loading="lazy" decoding="async" />
             </div>
             <span className="slot" style={{ top: '22%' }}>[Full-screen image — Kerala backwaters at sunrise]<small>2560×1440</small></span>
           </div>
