@@ -433,6 +433,8 @@ a:hover > .arrow, button:hover > .arrow, .row:hover .arrow { transform: translat
    A tall image fills half the screen and bleeds to the edge; the giant word crosses onto it;
    the line, link and a second smaller image sit in the other column. Chapter 02 mirrors it. */
 .chapter-inset { display: none; }
+/* About chapters: keep the second image on mobile/tablet, stacked below the copy */
+.chapter .chapter-inset.chapter-inset-lg { display: block; width: 100%; margin-top: 28px; }
 @media (min-width: 1025px) {
   .chapter { padding-block: clamp(96px, 9vw, 160px); }
   .chapter-stage { grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); grid-template-rows: auto auto auto 1fr; column-gap: clamp(40px, 5vw, 96px); align-items: start; justify-items: start; text-align: left; min-height: min(88vh, 960px); }
