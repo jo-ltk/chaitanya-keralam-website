@@ -3,7 +3,7 @@
    A different composition from About and Tourism: a light (paper) opener with a level index, a panorama,
    dark vertical tabs for the learning areas, three level columns, a chapter, a format grid and the admission form. */
 import Link from 'next/link';
-import { useRef, useState, type FormEvent, type KeyboardEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react';
 import SiteNav from './SiteNav';
 import SiteFooter from './SiteFooter';
 import { useCKMotion } from './useCKMotion';
@@ -89,8 +89,13 @@ const STEPS = [
 /* Learning areas: vertical tabs. Own component so switching never re-renders the split headings elsewhere. */
 function Areas() {
   const [cur, setCur] = useState(0);
+  const [held, setHeld] = useState(false);
+  const [onScreen, setOnScreen] = useState(false);
+  const [pageHidden, setPageHidden] = useState(false);
+  const root = useRef<HTMLDivElement>(null);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
   const a = AREAS[cur];
+  const paused = held || !onScreen || pageHidden;
   const go = (i: number, focus = false) => {
     const n = (i + AREAS.length) % AREAS.length;
     setCur(n);
@@ -100,9 +105,20 @@ function Areas() {
     if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); go(i + 1, true); }
     if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); go(i - 1, true); }
   };
+  useEffect(() => {
+    const io = new IntersectionObserver(([e]) => setOnScreen(e.isIntersecting), { threshold: 0.35 });
+    if (root.current) io.observe(root.current);
+    const vis = () => setPageHidden(document.hidden);
+    document.addEventListener('visibilitychange', vis);
+    return () => { io.disconnect(); document.removeEventListener('visibilitychange', vis); };
+  }, []);
+
   return (
-    <div className="area-tabs">
-        <div className="area-tab-list" role="tablist" aria-label="Learning areas" aria-orientation="vertical">
+    <div ref={root} className="area-tabs"
+      onMouseEnter={() => setHeld(true)} onMouseLeave={() => setHeld(false)}
+      onFocus={() => setHeld(true)} onBlur={() => setHeld(false)}
+    >
+        <div className={`area-tab-list tabs-auto${paused ? ' is-paused' : ''}`} role="tablist" aria-label="Learning areas" aria-orientation="vertical">
           {AREAS.map((ar, i) => (
             <button key={ar.title} ref={(el) => { tabs.current[i] = el; }} className="area-tab" type="button" role="tab"
               id={`area-tab-${i}`} aria-selected={i === cur} aria-controls="area-panel" tabIndex={i === cur ? 0 : -1}
@@ -110,6 +126,7 @@ function Areas() {
               <span className="row-no">{String(i + 1).padStart(2, '0')}</span>
               <span className="area-tab-t">{ar.title}</span>
               <span className="arrow" aria-hidden="true">→</span>
+              {i === cur && <span className="area-bar" aria-hidden="true" onAnimationEnd={() => go(cur + 1)} />}
             </button>
           ))}
         </div>

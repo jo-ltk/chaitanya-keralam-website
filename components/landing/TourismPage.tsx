@@ -3,7 +3,7 @@
    Deliberately a different composition from About: staggered photo strip, tabbed themes, mirrored chapter,
    panorama, dark pledge list and a four-column image grid. */
 import Link from 'next/link';
-import { useRef, useState, type KeyboardEvent } from 'react';
+import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import SiteNav from './SiteNav';
 import SiteFooter from './SiteFooter';
 import { useCKMotion } from './useCKMotion';
@@ -104,8 +104,15 @@ function PhotoCards({ items }: { items: typeof PALAYAM }) {
 /* Tabbed themes: own component so switching tabs never re-renders the split headings elsewhere */
 function Themes() {
   const [cur, setCur] = useState(0);
+  const [held, setHeld] = useState(false);
+  const [onScreen, setOnScreen] = useState(false);
+  const [pageHidden, setPageHidden] = useState(false);
+  const root = useRef<HTMLDivElement>(null);
+  const list = useRef<HTMLDivElement>(null);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
   const t = THEMES[cur];
+  const next = THEMES[(cur + 1) % THEMES.length];
+  const paused = held || !onScreen || pageHidden;
   const go = (i: number, focus = false) => {
     const n = (i + THEMES.length) % THEMES.length;
     setCur(n);
@@ -115,13 +122,35 @@ function Themes() {
     if (e.key === 'ArrowRight') { e.preventDefault(); go(i + 1, true); }
     if (e.key === 'ArrowLeft') { e.preventDefault(); go(i - 1, true); }
   };
+
+  useEffect(() => {
+    const io = new IntersectionObserver(([e]) => setOnScreen(e.isIntersecting), { threshold: 0.35 });
+    if (root.current) io.observe(root.current);
+    const vis = () => setPageHidden(document.hidden);
+    document.addEventListener('visibilitychange', vis);
+    return () => { io.disconnect(); document.removeEventListener('visibilitychange', vis); };
+  }, []);
+
+  // keep the active tab visible when the tab row scrolls sideways on small screens
+  useEffect(() => {
+    const l = list.current, b = tabs.current[cur];
+    if (l && b && l.scrollWidth > l.clientWidth) l.scrollTo({ left: b.offsetLeft - l.offsetLeft, behavior: 'smooth' });
+  }, [cur]);
+
   return (
-    <>
-      <div className="tabs" role="tablist" aria-label="Core themes">
+    <div ref={root}
+      onMouseEnter={() => setHeld(true)} onMouseLeave={() => setHeld(false)}
+      onFocus={() => setHeld(true)} onBlur={() => setHeld(false)}
+    >
+      {/* the active tab's bar fills over one slide; its animationend advances the theme, so pausing freezes both */}
+      <div ref={list} className={`tabs tabs-auto${paused ? ' is-paused' : ''}`} role="tablist" aria-label="Core themes">
         {THEMES.map((th, i) => (
           <button key={th.title} ref={(el) => { tabs.current[i] = el; }} className="tab" type="button" role="tab"
             id={`theme-tab-${i}`} aria-selected={i === cur} aria-controls="theme-panel" tabIndex={i === cur ? 0 : -1}
-            onClick={() => go(i)} onKeyDown={(e) => onKey(e, i)}>{th.title}</button>
+            onClick={() => go(i)} onKeyDown={(e) => onKey(e, i)}>
+            {th.title}
+            {i === cur && <span className="tab-bar" aria-hidden="true" onAnimationEnd={() => go(cur + 1)} />}
+          </button>
         ))}
       </div>
       <div className="theme-panel" id="theme-panel" role="tabpanel" aria-labelledby={`theme-tab-${cur}`}>
@@ -135,10 +164,10 @@ function Themes() {
           <span className="theme-no">{String(cur + 1).padStart(2, '0')} <span>/ {String(THEMES.length).padStart(2, '0')}</span></span>
           <h3 className="h-section">{t.title}</h3>
           <p className="lead">{t.text}</p>
-          <button type="button" className="tlink" onClick={() => go(cur + 1)}><span>Next theme</span><Arrow /></button>
+          <button type="button" className="tlink" onClick={() => go(cur + 1)}><span>Next: {next.title}</span><Arrow /></button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
