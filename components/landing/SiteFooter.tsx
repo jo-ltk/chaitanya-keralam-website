@@ -18,6 +18,7 @@ export default function SiteFooter() {
             <li><Link href="/values">What our values mean</Link></li>
             <li><Link href="/#maps">Maps</Link></li>
             <li><a href="https://www.keralatourism.org/" target="_blank" rel="noopener noreferrer">Kerala Tourism</a></li>
+            <li><a href="https://www.kochimuzirisbiennale.org/" target="_blank" rel="noopener noreferrer">Kochi-Muziris Biennale</a></li>
           </ul></div>
           <div><h4>Journeys</h4><ul>
             <li><Link href="/#stories">Ayurveda &amp; rest</Link></li>

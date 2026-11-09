@@ -101,7 +101,7 @@ export default function LandingPage() {
   
   <section className="hero" aria-roledescription="carousel" aria-label="Kerala">
     <div className="slide is-active" data-slide="0">
-      <div className="ph"><div className="bg"><video className="hero-video" src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/kerala-aerial-landscape-1793006981218.mp4" autoPlay muted loop playsInline poster="/assets/images/gallery-hills.jpg" /></div><span className="slot">[Full-screen hero video — Kerala aerial landscape]<small>1920×1080 · muted loop · poster image</small></span></div>
+      <div className="ph"><div className="bg"><video className="hero-video" src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/kerala-aerial-landscape-1793006981218.mp4" autoPlay muted loop playsInline preload="auto" ref={(v) => { if (v && v.readyState >= 2) v.classList.add('is-ready'); }} onLoadedData={(e) => e.currentTarget.classList.add('is-ready')} /></div><span className="slot">[Full-screen hero video — Kerala aerial landscape]<small>1920×1080 · muted loop · poster image</small></span></div>
     </div>
     <div className="slide" data-slide="1">
       <div className="ph"><div className="bg s-ghats"><img src="https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads/western-ghats-mist-1793007116438.jpg" alt="Western Ghats in mist" loading="eager" decoding="async" width="2560" height="1440" /></div><span className="slot">[Full-screen image — Western Ghats in mist]<small>2560×1440</small></span></div>
@@ -310,7 +310,10 @@ export default function LandingPage() {
     <div className="wrap official-in">
       <span className="kicker">Plan with confidence</span>
       <h2 id="offH">Official Kerala Tourism</h2>
-      <a className="btn btn-white" href="https://www.keralatourism.org/" target="_blank" rel="noopener noreferrer"><span>Official Kerala Tourism website</span><span className="arrow" aria-hidden="true">→</span></a>
+      <div className="official-links">
+        <a className="btn btn-white" href="https://www.keralatourism.org/" target="_blank" rel="noopener noreferrer"><span>Official Kerala Tourism website</span><span className="arrow" aria-hidden="true">→</span></a>
+        <a className="btn btn-white" href="https://www.kochimuzirisbiennale.org/" target="_blank" rel="noopener noreferrer"><span>Kochi-Muziris Biennale</span><span className="arrow" aria-hidden="true">→</span></a>
+      </div>
     </div>
   </section>
 
@@ -360,7 +363,7 @@ export default function LandingPage() {
         <p className="foot-promise">Perhaps the only paradise on earth!<br />One with nature.<br />God's own country.</p>
         <p className="label">Eco-Spiritual Peace Tourism · Anbu · Unmai · Patru · Pagutharivu</p>
       </div>
-      <div><h4>Explore</h4><ul><li><a href="#destinations">Places</a></li><li><a href="#nature">Our vision</a></li><li><a href="#experiences">Our values</a></li><li><a href="/values">What our values mean</a></li><li><a href="#maps">Maps</a></li><li><a href="https://www.keralatourism.org/" target="_blank" rel="noopener noreferrer">Kerala Tourism</a></li></ul></div>
+      <div><h4>Explore</h4><ul><li><a href="#destinations">Places</a></li><li><a href="#nature">Our vision</a></li><li><a href="#experiences">Our values</a></li><li><a href="/values">What our values mean</a></li><li><a href="#maps">Maps</a></li><li><a href="https://www.keralatourism.org/" target="_blank" rel="noopener noreferrer">Kerala Tourism</a></li><li><a href="https://www.kochimuzirisbiennale.org/" target="_blank" rel="noopener noreferrer">Kochi-Muziris Biennale</a></li></ul></div>
       <div><h4>Journeys</h4><ul><li><a href="#stories">Ayurveda & rest</a></li><li><a href="#stories">Family homestays</a></li><li><a href="#stories">Youth & community</a></li><li><a href="/programmes#admissions">Apply now</a></li></ul></div>
       <div className="foot-contact"><h4>Contact</h4><ul><li>Edex Edupark, Kochi, Kerala</li><li><a href="tel:+919037016730">+91 90370 16730</a></li><li><a href="tel:+918547818701">+91 85478 18701</a></li><li><a href="mailto:josephanil2007@gmail.com">josephanil2007@gmail.com</a></li><li><a href="mailto:akashjose369@gmail.com">akashjose369@gmail.com</a></li><li><a href="mailto:shajimilan79@gmail.com">shajimilan79@gmail.com</a></li></ul></div>
       <div><h4>Follow</h4><ul className="social"><li><a href="#plan"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg><span>Instagram</span></a></li><li><a href="#plan"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8c.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8ZM10 15V9l5.2 3Z" /></svg><span>YouTube</span></a></li><li><a href="#plan"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13.5 21v-8h2.7l.4-3.2h-3.1V7.8c0-.9.3-1.5 1.6-1.5h1.7V3.4c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.4H7.7V13h2.7v8Z" /></svg><span>Facebook</span></a></li></ul></div>
