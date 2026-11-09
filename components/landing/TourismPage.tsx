@@ -40,7 +40,7 @@ const THEMES = [
   { title: 'Spirituality and heritage', text: 'Sacred landscapes, pilgrimage traditions, cultural heritage and respectful understanding of different traditions.',
     scene: 'culture' as Scene, src: `${IMG}/theme-spirituality-heritage.jpg`, alt: 'Guruvayur Temple heritage' },
   { title: 'Wellness and peace', text: 'Meditation, reflection, nature-based wellness and retreat experiences.',
-    scene: 'temple' as Scene, src: `${IMG}/theme-wellness-peace.png`, alt: 'A backwater boathouse retreat, calm and still' },
+    scene: 'temple' as Scene, src: `${IMG}/theme-wellness-peace.png`, alt: 'A sunlit group pranayama session in a park' },
   { title: 'Kerala culture and hospitality', text: 'Traditional architecture, cuisine, arts, crafts, community knowledge and hospitality.',
     scene: 'dusk' as Scene, src: `${IMG}/theme-culture-hospitality.jpg`, alt: 'A traditional Kerala veranda table setting' },
   { title: 'Responsible tourism', text: 'Waste reduction, water and energy conservation, cultural respect and community participation.',
