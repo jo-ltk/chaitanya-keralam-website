@@ -25,8 +25,7 @@ function Ph({ ratio, scene, src, alt, slot, meta, inner, reveal, className = '' 
 }
 
 const Arrow = () => <span className="arrow" aria-hidden="true">→</span>;
-const IMG = '/images/tesh-homes/';
-const img = (name: string) => IMG + encodeURIComponent(name);
+const IMG = '/images/tesh-homes';
 
 const DISTRICTS = ['Ernakulam', 'Kottayam', 'Alappuzha', 'Pathanamthitta', 'Idukki'];
 
@@ -134,14 +133,14 @@ export default function TeshHomesPage() {
         <section className="page-hero" aria-labelledby="pageH">
           <div className="ph">
             <div className="bg s-culture" data-inner="6">
-              <img src={img('Kerala Courtyard Villa in Morning Light.png')} alt="A Kerala courtyard villa in morning light" loading="eager" decoding="async" fetchPriority="high" />
+              <img src={`${IMG}/hero-courtyard-villa.png`} alt="A Kerala courtyard villa in morning light" loading="eager" decoding="async" fetchPriority="high" />
             </div>
             <span className="slot">[Full-screen image — Kerala courtyard villa in morning light]<small>2560×1440</small></span>
           </div>
           <div className="wrap page-hero-in">
             <p className="label crumbs"><Link href="/">Home</Link> / TESH Homes, Careers &amp; Partnerships</p>
             <span className="kicker">TESH Homes · Proposed initiative</span>
-            <h1 className="page-title wide" id="pageH" data-chars>Turning existing homes into opportunities for communities.</h1>
+            <h1 className="page-title wide" id="pageH" data-chars>Turning homes into opportunity.</h1>
             <div className="page-hero-links">
               <a className="btn btn-white" href="#partner-form"><span>Partner With Us</span><Arrow /></a>
               <a className="tlink" href="#homeowners"><span>I have a property</span><Arrow /></a>
@@ -170,7 +169,7 @@ export default function TeshHomesPage() {
             </div>
             <ul className="home-types">
               <li data-reveal>
-                <Ph ratio="4x5" scene="backwater" src={img('Kerala Backwaters Houseboat Serenity.png')} alt="A houseboat resting on calm Kerala backwaters" slot="Portrait — Guest house by the backwaters" meta="1200×1500 · 4:5" inner={5} />
+                <Ph ratio="4x5" scene="backwater" src={`${IMG}/type-01-guest-houses.png`} alt="A guest house on calm Kerala backwaters" slot="Portrait — Guest house by the backwaters" meta="1200×1500 · 4:5" inner={5} />
                 <span className="kicker">Type 01</span>
                 <h3>Guest houses</h3>
                 <p className="lead">For local, national and international travellers.</p>
@@ -178,7 +177,7 @@ export default function TeshHomesPage() {
                 <div className="type-fig"><b>5</b><span>per district in the proposed pilot</span><b>25</b><span>across five districts</span></div>
               </li>
               <li data-reveal>
-                <Ph ratio="4x5" scene="ghats" src={img('Sunrise Tree Pose Over Misty Valley.png')} alt="Tree pose at sunrise above a misty valley" slot="Portrait — Training and activity centre" meta="1200×1500 · 4:5" inner={5} />
+                <Ph ratio="4x5" scene="ghats" src={`${IMG}/type-02-training-centres.png`} alt="Training and activity centre" slot="Portrait — Training and activity centre" meta="1200×1500 · 4:5" inner={5} />
                 <span className="kicker">Type 02</span>
                 <h3>Training &amp; activity centres</h3>
                 <p className="lead">Proposed centres for:</p>
@@ -221,7 +220,7 @@ export default function TeshHomesPage() {
           <div className="wrap">
             <div className="story-grid career-grid">
               <div className="story-media career-media">
-                <Ph ratio="4x5" scene="culture" src={img('Collaborative Learning in a Sunlit Lab.png')} alt="Young people learning together in a sunlit lab" slot="Portrait — Young people learning together" meta="1200×1500 · 4:5" inner={5} reveal />
+                <Ph ratio="4x5" scene="culture" src={`${IMG}/career-pathway.png`} alt="Young people learning together in a sunlit lab" slot="Portrait — Young people learning together" meta="1200×1500 · 4:5" inner={5} reveal />
               </div>
               <div className="story-text">
                 <span className="label">Career pathway</span>
@@ -296,7 +295,7 @@ export default function TeshHomesPage() {
         <section className="banner" aria-labelledby="banH">
           <div className="ph">
             <div className="bg s-backwater" data-inner="8">
-              <img src={img('Kerala Backwaters at Golden Sunrise.png')} alt="Kerala backwaters at golden sunrise" loading="lazy" decoding="async" />
+              <img src={`${IMG}/banner-sunrise.png`} alt="Kerala backwaters at golden sunrise" loading="lazy" decoding="async" />
             </div>
             <span className="slot" style={{ top: '22%' }}>[Full-screen image — Kerala backwaters at golden sunrise]<small>2560×1440</small></span>
           </div>

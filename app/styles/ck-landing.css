@@ -869,7 +869,13 @@ button.tlink { appearance: none; background: none; border: 0; padding: 0; color:
 .dlegend span { display: inline-flex; align-items: center; gap: 10px; }
 @media (max-width: 900px) { .pilot-in { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 760px) { .pilot .fact span { color: var(--on-muted); } .pilot .fact { border-bottom-color: var(--on-faint); } }
-@media (max-width: 480px) { .drow { grid-template-columns: 28px minmax(0, 1fr); row-gap: 10px; } .dsq { grid-column: 2; grid-template-columns: repeat(10, 12px); gap: 5px; } .dsq i { width: 12px; height: 12px; } }
+@media (max-width: 560px) {
+  .drow { display: grid; grid-template-columns: auto 1fr; grid-template-areas: "no name" "sq sq"; column-gap: 12px; row-gap: 10px; }
+  .drow .row-no { grid-area: no; }
+  .drow-t { grid-area: name; }
+  .dsq { grid-area: sq; grid-template-columns: repeat(10, minmax(0, 1fr)); max-width: 220px; gap: 5px; }
+  .dsq i { width: auto; aspect-ratio: 1; }
+}
 
 /* career path */
 .path { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px clamp(20px, 2.6vw, 48px); counter-reset: none; }
