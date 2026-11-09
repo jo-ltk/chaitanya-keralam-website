@@ -34,7 +34,7 @@ export default class Footer extends React.Component<any, any> {
 <div style={css("display:flex;flex-direction:column;gap:12px")}><p className={"eyebrow"} style={css("color:#c5a15a")}>Contact</p><p className={"small"}>Edex Edupark<br />Kochi, Kerala</p><p className={"small"}><a href={"tel:+919037016730"}>+91 90370 16730</a><br /><a href={"tel:+918547818701"}>+91 85478 18701</a></p><p className={"small"}><a href={"mailto:josephanil2007@gmail.com"}>josephanil2007@gmail.com</a><br /><a href={"mailto:akashjose369@gmail.com"}>akashjose369@gmail.com</a><br /><a href={"mailto:shajimilan79@gmail.com"}>shajimilan79@gmail.com</a></p><p className={"eyebrow"} style={css("color:#c5a15a")}>Follow us</p><ul className={"foot-links"}><li><a href={"https://x.com/KERALAPEACino"} target={"_blank"} rel={"noopener noreferrer"}>X</a></li><li><a href={"https://www.instagram.com/kerala_peace_tourism?utm_source=qr&obrf=ZXo1cTZ1cG53Mmtx"} target={"_blank"} rel={"noopener noreferrer"}>Instagram</a></li></ul></div>
 </div>
 <div className={"foot-bar"}>
-<p className={"small"}>© [Year] Chaitanya Keralam. All rights reserved.</p>
+<p className={"small"}>© {new Date().getFullYear()} Chaitanya Keralam. All rights reserved.</p>
 <ul style={css("display:flex;align-items:center;gap:16px;list-style:none;margin:0;padding:0")}>
 <li><a href={"#privacy"}>Privacy Policy</a></li>
 <li><a href={"#terms"}>Terms of Use</a></li>
