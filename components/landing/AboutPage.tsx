@@ -8,18 +8,23 @@ import { useCKMotion } from './useCKMotion';
 
 type Scene = 'backwater' | 'ghats' | 'forest' | 'coast' | 'culture' | 'temple' | 'tea' | 'falls' | 'dusk';
 
-function Ph({ ratio, scene, slot, meta, inner, reveal, eager, className = '' }: {
-  ratio?: '1x1' | '4x5' | '3x2' | '16x9'; scene: Scene; slot: string; meta?: string;
+function Ph({ ratio, scene, src, alt, slot, meta, inner, reveal, eager, className = '' }: {
+  ratio?: '1x1' | '4x5' | '3x2' | '16x9'; scene: Scene; src?: string; alt?: string; slot: string; meta?: string;
   inner?: number; reveal?: boolean; eager?: boolean; className?: string;
 }) {
   return (
     <div className={`ph ${ratio ? `r-${ratio}` : ''} ${className}`.trim()} {...(reveal ? { 'data-reveal-img': '' } : {})}>
       <div className={`bg s-${scene}`} {...(inner ? { 'data-inner': String(inner) } : {})}>
+        {src && (eager
+          ? <img src={src} alt={alt || ''} loading="eager" decoding="async" fetchPriority="high" />
+          : <img src={src} alt={alt || ''} loading="lazy" decoding="async" />)}
       </div>
       <span className="slot">[{slot}]{meta && <small>{meta}</small>}</span>
     </div>
   );
 }
+
+const IMG = '/images/about';
 
 const Arrow = () => <span className="arrow" aria-hidden="true">→</span>;
 
@@ -32,26 +37,26 @@ const MISSION = [
 ];
 
 const GOALS = [
-  { label: 'Community-based centres', scene: 'culture' as Scene, alt: 'A community centre in a restored Kerala home, neighbours gathering',
+  { label: 'Community-based centres', scene: 'culture' as Scene, src: `${IMG}/banana-leaf-feast.jpg`, alt: 'A Kerala sadya laid out on a banana leaf, a community gathered to share a meal',
     text: 'Convert underutilized assets into productive community-based centres that create opportunities for youth, support tourism and generate sustainable livelihoods.' },
-  { label: 'Empowering youth', scene: 'dusk' as Scene, alt: 'Young people training and learning a skill hands-on',
+  { label: 'Empowering youth', scene: 'dusk' as Scene, src: `${IMG}/spice-shopkeeper.jpg`, alt: 'A shopkeeper at work in his spice shop, learning a trade hands-on',
     text: 'Empowering youth through skill development, practical experience, leadership and entrepreneurial opportunities.' },
-  { label: 'Responsible tourism', scene: 'forest' as Scene, alt: 'Guests walking gently through forest or village, respectful of the land',
+  { label: 'Responsible tourism', scene: 'forest' as Scene, src: `${IMG}/golden-hour-canoes.jpg`, alt: 'Canoes crossing tropical backwaters at golden hour, respectful of the land',
     text: 'Encourage responsible tourism and community participation.' },
 ];
 
 const THREADS = [
-  { label: 'Heritage', scene: 'culture' as Scene, alt: 'Oil lamps or a temple at dusk',
+  { label: 'Heritage', scene: 'culture' as Scene, src: `${IMG}/lighting-the-lamp.jpg`, alt: 'Jasmine-adorned women lighting a traditional oil lamp at dusk',
     title: 'Ancient wisdom and cultural values', text: "Kerala's heritage of spiritual traditions, cultural exchange and traditional knowledge." },
-  { label: 'Hospitality', scene: 'tea' as Scene, alt: 'A Kerala family welcoming guests with a sadya',
+  { label: 'Hospitality', scene: 'tea' as Scene, src: `${IMG}/hospitality-welcome.png`, alt: 'Guests welcomed Kerala-style with garlands and an oil lamp greeting',
     title: 'Kerala hospitality culture', text: "Kerala's traditions of hospitality and community living." },
-  { label: 'Tourism', scene: 'backwater' as Scene, alt: 'A traveller at a quiet backwater or hill viewpoint',
+  { label: 'Tourism', scene: 'backwater' as Scene, src: `${IMG}/eco-spiritual-tourism.png`, alt: 'A quiet moment of reflection by Kerala\'s backwaters, nature and spirituality entwined',
     title: 'Eco-spiritual tourism', text: 'Travel that connects nature, ecology, spirituality, peace and culture.' },
-  { label: 'Wellness', scene: 'temple' as Scene, alt: 'Meditation or yoga by still water, Ayurveda',
+  { label: 'Wellness', scene: 'temple' as Scene, src: `${IMG}/meditation-amidst-greenery.png`, alt: 'A figure meditating amidst lush greenery, calm and still',
     title: 'Peace and wellness', text: "Meditation, wellness and Kerala's Ayurvedic and spiritual traditions." },
-  { label: 'Enterprise', scene: 'dusk' as Scene, alt: 'A young entrepreneur at a laptop in a homestay',
+  { label: 'Enterprise', scene: 'dusk' as Scene, src: `${IMG}/entrepreneur-at-work.jpg`, alt: 'A young entrepreneur working at a laptop, surrounded by greenery',
     title: 'Youth entrepreneurship', text: 'Preparing young people to lead and to create their own sustainable enterprises.' },
-  { label: 'Livelihoods', scene: 'forest' as Scene, alt: 'A farmer or artisan earning a livelihood, Kerala greens',
+  { label: 'Livelihoods', scene: 'forest' as Scene, src: `${IMG}/handicraft-stall.jpg`, alt: 'A vibrant handicraft market stall, livelihoods built on traditional craft',
     title: 'Sustainable livelihoods', text: 'Livelihood opportunities that benefit youth and communities.' },
 ];
 
@@ -76,6 +81,7 @@ export default function AboutPage() {
         <section className="page-hero" aria-labelledby="pageH">
           <div className="ph">
             <div className="bg s-backwater" data-inner="6">
+              <img src={`${IMG}/sunset-boat.jpg`} alt="A boat crossing Kerala's backwaters, golden water under a glowing sky" loading="eager" decoding="async" fetchPriority="high" />
             </div>
             <span className="slot">[Hero, full-screen — Misty Kerala backwaters at dawn, a lone boat, calm and wide]<small>2560×1440</small></span>
           </div>
@@ -101,8 +107,8 @@ export default function AboutPage() {
               <Link className="btn btn-ink" href="/programmes" data-reveal><span>Explore our programmes</span><Arrow /></Link>
             </div>
             <div className="story-media">
-              <Ph ratio="4x5" scene="culture" slot="Image — Kerala village market in the morning, warm light, real people" meta="1200×1500 · 4:5" inner={5} reveal />
-              <Ph ratio="1x1" scene="tea" slot="Image — Young artisan being mentored in a craft workshop" meta="1000×1000" inner={5} reveal />
+              <Ph ratio="4x5" scene="culture" src={`${IMG}/market-stall-elders.jpg`} alt="Elders gathered at a Kerala market stall, hung with ripening bananas" slot="Image — Kerala village market in the morning, warm light, real people" meta="1200×1500 · 4:5" inner={5} reveal />
+              <Ph ratio="1x1" scene="tea" src={`${IMG}/artisan-mentorship.png`} alt="A young artisan being mentored in a craft workshop" slot="Image — Young artisan being mentored in a craft workshop" meta="1000×1000" inner={5} reveal />
             </div>
           </div>
         </section>
@@ -137,13 +143,13 @@ export default function AboutPage() {
         <section className="dark chapter ch-1 chapter-tight" aria-labelledby="ch1">
           <div className="wrap chapter-stage">
             <span className="kicker chapter-no">01 · Project target</span>
-            <Ph ratio="4x5" scene="backwater" slot="Portrait — Young Keralites at work by the water at sunset, hopeful and forward-looking" meta="1200×1500 · 4:5" inner={7} className="chapter-media" />
+            <Ph ratio="4x5" scene="backwater" src={`${IMG}/youth-at-work-sunset.jpg`} alt="Young Keralites at work by the water at sunset, hopeful and forward-looking" slot="Portrait — Young Keralites at work by the water at sunset, hopeful and forward-looking" meta="1200×1500 · 4:5" inner={7} className="chapter-media" />
             <h2 className="chapter-word" id="ch1" data-drift="-6">1,000</h2>
             <div className="chapter-copy" data-reveal>
               <p>To create a team of 1,000 Independent Global Youth Entrepreneurs in the Eco-Spiritual Peace Tourism Industry in Kerala.</p>
               <a className="tlink" href="#goals"><span>See our goals</span><Arrow /></a>
             </div>
-            <Ph ratio="3x2" scene="dusk" slot="Image — Young team planning together over models and maps" meta="1500×1000 · 3:2" reveal className="chapter-inset chapter-inset-lg" />
+            <Ph ratio="3x2" scene="dusk" src={`${IMG}/team-planning-maps.png`} alt="A young team planning together over models and maps" slot="Image — Young team planning together over models and maps" meta="1500×1000 · 3:2" reveal className="chapter-inset chapter-inset-lg" />
           </div>
         </section>
 
@@ -158,7 +164,7 @@ export default function AboutPage() {
               {GOALS.map((g) => (
                 <li key={g.label} className="story-item" data-reveal>
                   <div>
-                    <Ph ratio="3x2" scene={g.scene} slot={`Image — ${g.alt}`} meta="1500×1000" />
+                    <Ph ratio="3x2" scene={g.scene} src={g.src} alt={g.alt} slot={`Image — ${g.alt}`} meta="1500×1000" />
                     <div className="story-body"><span className="label">{g.label}</span><h3>{g.text}</h3></div>
                   </div>
                 </li>
@@ -188,7 +194,7 @@ export default function AboutPage() {
               {THREADS.map((t) => (
                 <li key={t.title} data-reveal>
                   <div className="card">
-                    <Ph ratio="1x1" scene={t.scene} slot={`Image — ${t.alt}`} meta="1600×1600 · 1:1" />
+                    <Ph ratio="1x1" scene={t.scene} src={t.src} alt={t.alt} slot={`Image — ${t.alt}`} meta="1600×1600 · 1:1" />
                     <span className="label">{t.title}</span>
                     <h3>{t.text}</h3>
                   </div>
@@ -220,6 +226,7 @@ export default function AboutPage() {
         <section className="banner" aria-labelledby="banH">
           <div className="ph">
             <div className="bg s-culture" data-inner="8">
+              <img src={`${IMG}/village-life-banner.jpg`} alt="Welcoming Kerala village life at sunset" loading="lazy" decoding="async" />
             </div>
             <span className="slot" style={{ top: '22%' }}>[Banner, full-screen — Welcoming Kerala village life or a sunset over the backwaters]<small>2560×1440</small></span>
           </div>
