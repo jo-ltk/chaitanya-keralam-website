@@ -730,6 +730,12 @@ button.tlink { appearance: none; background: none; border: 0; padding: 0; color:
 .cards-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 @media (max-width: 900px) { .cards-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 600px) { .cards-4 { grid-template-columns: minmax(0, 1fr); } }
+/* Phone: show each photo whole at its own ratio (cuisine cards) */
+@media (max-width: 600px) {
+  .cards-natural .ph { aspect-ratio: auto; }
+  .cards-natural .ph .bg { position: relative; inset: auto; }
+  .cards-natural .ph .bg > img { position: static; height: auto; }
+}
 
 /* ---------- Programmes page ---------- */
 /* paper opener (design system 6.4.3) */

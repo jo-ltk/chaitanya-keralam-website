@@ -298,7 +298,7 @@ export default function TourismPage() {
               <h2 className="h-section" id="cuisH" data-split>Eaten slowly, on a banana leaf</h2>
               <p className="lead" data-reveal>Coconut, rice, spices and curry leaves shape every Kerala meal, from a quiet breakfast to a festive sadya.</p>
             </div>
-            <ul className="cards cards-4 cards-all">
+            <ul className="cards cards-4 cards-all cards-natural">
               {CUISINE.map((c) => (
                 <li key={c.label} data-reveal>
                   <div className="card">
