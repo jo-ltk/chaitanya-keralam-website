@@ -85,6 +85,17 @@ const KOCHI = [
     scene: 'culture' as Scene, src: `${IMG}/kochi-paradesi-synagogue.jpg`, alt: 'Inside the Paradesi Synagogue, Kochi: blue tiled floor, wooden benches and hanging glass lamps' },
 ];
 
+const CUISINE = [
+  { label: 'Appam', text: 'Lacy, soft-centred rice pancakes served warm on a banana leaf.',
+    scene: 'culture' as Scene, src: `${IMG}/cuisine-appam.jpg`, alt: 'Three appam, Kerala rice pancakes with lacy edges, on a banana leaf in a woven basket' },
+  { label: 'Sadya', text: 'The festive feast: rice, curries and pickles laid out on one leaf.',
+    scene: 'tea' as Scene, src: `${IMG}/cuisine-sadya.jpg`, alt: 'A Kerala sadya on a banana leaf with rice, papadam, banana chips and an array of curries' },
+  { label: 'Puttu and kadala', text: 'Steamed rice and coconut cylinders with a spiced black chickpea curry.',
+    scene: 'culture' as Scene, src: `${IMG}/cuisine-puttu-kadala.jpg`, alt: 'Puttu with kadala curry, papadam and a ripe banana on a banana leaf' },
+  { label: 'Clay-pot curry', text: 'Slow-cooked in a clay pot with curry leaves, cinnamon and star anise.',
+    scene: 'dusk' as Scene, src: `${IMG}/cuisine-meat-curry.jpg`, alt: 'A Kerala meat curry in a black clay pot with curry leaves, star anise and green chillies' },
+];
+
 function PhotoCards({ items }: { items: typeof PALAYAM }) {
   return (
     <ul className="cards">
@@ -276,6 +287,28 @@ export default function TourismPage() {
               <p className="lead" data-reveal>Centuries of trade brought Dutch and Jewish communities to Kochi. The palaces and places of worship they left behind are still part of the city.</p>
             </div>
             <PhotoCards items={KOCHI} />
+          </div>
+        </section>
+
+        {/* 5c · Kerala cuisine (client-supplied photographs) */}
+        <section className="section" id="cuisine" aria-labelledby="cuisH" style={{ paddingTop: 0 }}>
+          <div className="wrap">
+            <span className="label">Kerala cuisine</span>
+            <div className="head-row">
+              <h2 className="h-section" id="cuisH" data-split>Eaten slowly, on a banana leaf</h2>
+              <p className="lead" data-reveal>Coconut, rice, spices and curry leaves shape every Kerala meal, from a quiet breakfast to a festive sadya.</p>
+            </div>
+            <ul className="cards cards-4 cards-all">
+              {CUISINE.map((c) => (
+                <li key={c.label} data-reveal>
+                  <div className="card">
+                    <Ph ratio="4x5" scene={c.scene} src={c.src} alt={c.alt} slot={`Portrait — ${c.alt}`} meta="1200×1500 · 4:5" />
+                    <span className="label">{c.label}</span>
+                    <h3>{c.text}</h3>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
 
