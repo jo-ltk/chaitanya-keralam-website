@@ -3,7 +3,7 @@
 import crypto from 'crypto';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { sendInviteEmail } from '@/lib/email';
+import { sendInviteEmail, siteUrl } from '@/lib/email';
 import type { AdminRole } from '@/lib/supabase/types';
 
 export async function loginAction(data: { email: string; pw: string }) {
@@ -110,7 +110,7 @@ export async function confirmMfaSetupAction(data: { factorId: string; code: stri
 export async function forgotPasswordAction(email: string) {
   try {
     const supabase = await createClient();
-    const origin = process.env.NEXT_PUBLIC_SITE_URL || 'https://chaitanyakeralam.org';
+    const origin = siteUrl;
     const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
       redirectTo: `${origin}/admin/reset-password`,
     });
@@ -203,7 +203,7 @@ export async function inviteUserAction(data: { email: string; role: AdminRole })
       return { success: false, error: invErr.message };
     }
 
-    const origin = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    const origin = siteUrl;
     const inviteUrl = `${origin}/admin/invite?token=${token}`;
 
     await sendInviteEmail({

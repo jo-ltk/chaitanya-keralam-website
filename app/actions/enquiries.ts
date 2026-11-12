@@ -103,12 +103,14 @@ export async function submitEnquiryAction(input: EnquiryInput) {
 
   if (error) return { success: false, error: 'We could not record your enquiry. Please try again.' };
 
-  // Notify admin via email (non-blocking)
-  sendEnquiryNotification({
+  // Notify admin via email. Awaited so serverless doesn't drop it; failures don't fail the enquiry.
+  await sendEnquiryNotification({
     type: data.type,
+    subType: data.sub_type,
     name: data.name,
     email: data.email,
     phone: data.phone,
+    district: 'district' in data ? data.district : undefined,
     message: data.message || '',
   }).catch(() => {});
 
