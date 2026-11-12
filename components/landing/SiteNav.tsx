@@ -4,20 +4,13 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-
-const LINKS = [
-  { href: '/about', label: 'About' },
-  { href: '/eco-spiritual-tourism', label: 'Tourism' },
-  { href: '/programmes', label: 'Programmes' },
-  { href: '/tesh-homes', label: 'TESH Homes' },
-  { href: '/values', label: 'Our values' },
-  { href: '/#contact', label: 'Contact' },
-];
+import { useSiteSettings } from '@/components/SiteSettingsProvider';
 
 export default function SiteNav({ overDarkHero = true }: { overDarkHero?: boolean }) {
   const [solid, setSolid] = useState(!overDarkHero);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const { menu } = useSiteSettings();
   const btn = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -51,19 +44,19 @@ export default function SiteNav({ overDarkHero = true }: { overDarkHero?: boolea
           </Link>
           <nav aria-label="Primary" style={{ display: 'contents' }}>
             <ul className="nav-links">
-              {LINKS.map((l) => <li key={l.href}><Link href={l.href} aria-current={l.href === pathname ? 'page' : undefined}>{l.label}</Link></li>)}
+              {menu.links.map((l, i) => <li key={i}><Link href={l.url} aria-current={l.url === pathname ? 'page' : undefined}>{l.label}</Link></li>)}
             </ul>
           </nav>
           <div className="nav-end">
-            <Link className="btn nav-cta" href="/programmes#admissions">Apply now</Link>
+            <Link className="btn nav-cta" href={menu.buttonUrl}>{menu.button}</Link>
             <button ref={btn} className="nav-menu" id="menuBtn" type="button" aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open} aria-controls="menu" onClick={() => setOpen(!open)}><i /></button>
           </div>
         </div>
       </header>
       <div className="menu" id="menu" hidden={!open} onClick={(e) => { if ((e.target as HTMLElement).closest('a')) setOpen(false); }}>
-        <ul>{LINKS.map((l) => <li key={l.href}><Link href={l.href}>{l.label}</Link></li>)}</ul>
-        <p className="label">Perhaps the only paradise on earth! Come, stay a while.</p>
+        <ul>{menu.links.map((l, i) => <li key={i}><Link href={l.url}>{l.label}</Link></li>)}</ul>
+        <p className="label">{menu.mobileTagline}</p>
       </div>
     </>
   );

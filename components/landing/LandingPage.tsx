@@ -3,6 +3,8 @@
 import { useEffect, useRef } from 'react';
 import FindKerala from './maps/FindKerala';
 import type { LandingContent } from '@/lib/landing-content';
+import { useSiteSettings } from '@/components/SiteSettingsProvider';
+import { isExternal } from '@/lib/site-settings';
 
 declare global {
   interface Window {
@@ -38,6 +40,8 @@ function loadScript(src: string, fallback?: string): Promise<void> {
 }
 
 export default function LandingPage({ content }: { content: LandingContent }) {
+  const s = useSiteSettings();
+  const ext = (url: string) => (isExternal(url) ? { target: '_blank', rel: 'noopener noreferrer' } : {});
   const cleanupRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
@@ -104,30 +108,20 @@ export default function LandingPage({ content }: { content: LandingContent }) {
     <a className="brand" href="#top" aria-label="Chaitanya Keralam, home"><img src="/assets/logo.png" alt="" width="46" height="44" /><span>Chaitanya Keralam<small className="brand-tag">Eco Spiritual Peace Haven / India</small></span></a>
     <nav aria-label="Primary" style={{display: "contents"}}>
       <ul className="nav-links">
-        <li><a href="/about">About</a></li>
-        <li><a href="/eco-spiritual-tourism">Tourism</a></li>
-        <li><a href="/programmes">Programmes</a></li>
-        <li><a href="/tesh-homes">TESH Homes</a></li>
-        <li><a href="/values">Our values</a></li>
-<li><a href="#contact">Contact</a></li>
+        {s.menu.links.map((l, i) => <li key={i}><a href={l.url}>{l.label}</a></li>)}
       </ul>
     </nav>
     <div className="nav-end">
-      <a className="btn nav-cta" href="/programmes#admissions">Apply now</a>
+      <a className="btn nav-cta" href={s.menu.buttonUrl}>{s.menu.button}</a>
       <button className="nav-menu" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><i></i></button>
     </div>
   </div>
 </header>
 <div className="menu" id="menu" hidden>
   <ul>
-    <li><a href="/about">About</a></li>
-    <li><a href="/eco-spiritual-tourism">Tourism</a></li>
-    <li><a href="/programmes">Programmes</a></li>
-    <li><a href="/tesh-homes">TESH Homes</a></li>
-    <li><a href="/values">Our values</a></li>
-<li><a href="#contact">Contact</a></li>
+    {s.menu.links.map((l, i) => <li key={i}><a href={l.url}>{l.label}</a></li>)}
   </ul>
-  <p className="label">Perhaps the only paradise on earth! Come, stay a while.</p>
+  <p className="label">{s.menu.mobileTagline}</p>
 </div>
 
 <main id="top">
@@ -347,16 +341,16 @@ export default function LandingPage({ content }: { content: LandingContent }) {
     <div className="foot-top">
       <div className="foot-brand">
         <a className="brand" href="#top"><img src="/assets/logo.png" alt="" width="60" height="58" style={{width: "60px"}} /><span>Chaitanya Keralam<small className="brand-tag">Eco Spiritual Peace Haven / India</small></span></a>
-        <p className="foot-promise">{c.footer.promise.split('\n').map((line, i, a) => (<span key={i}>{line}{i < a.length - 1 && <br />}</span>))}</p>
-        <p className="label">{c.footer.tagline}</p>
+        <p className="foot-promise">{s.footer.promise.split('\n').map((line, i, a) => (<span key={i}>{line}{i < a.length - 1 && <br />}</span>))}</p>
+        <p className="label">{s.footer.tagline}</p>
       </div>
       <div><h4>Explore</h4><ul><li><a href="#destinations">Places</a></li><li><a href="#nature">Our vision</a></li><li><a href="#experiences">Our values</a></li><li><a href="/values">What our values mean</a></li><li><a href="#maps">Maps</a></li><li><a href={c.official.link1Url} target="_blank" rel="noopener noreferrer">Kerala Tourism</a></li><li><a href={c.official.link2Url} target="_blank" rel="noopener noreferrer">{c.official.link2}</a></li></ul></div>
       <div><h4>Journeys</h4><ul><li><a href="#stories">Ayurveda & rest</a></li><li><a href="#stories">Family homestays</a></li><li><a href="#stories">Youth & community</a></li><li><a href="/programmes#admissions">Apply now</a></li></ul></div>
-      <div className="foot-contact"><h4>Contact</h4><ul><li>{c.footer.address}</li>{c.footer.phones.map((p, i) => (<li key={`p${i}`}><a href={tel(p.value)}>{p.value}</a></li>))}{c.footer.emails.map((e, i) => (<li key={`e${i}`}><a href={`mailto:${e.value}`}>{e.value}</a></li>))}</ul></div>
-      <div><h4>Follow</h4><ul className="social"><li><a href="#plan"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg><span>Instagram</span></a></li><li><a href="#plan"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8c.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8ZM10 15V9l5.2 3Z" /></svg><span>YouTube</span></a></li><li><a href="#plan"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13.5 21v-8h2.7l.4-3.2h-3.1V7.8c0-.9.3-1.5 1.6-1.5h1.7V3.4c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.4H7.7V13h2.7v8Z" /></svg><span>Facebook</span></a></li></ul></div>
+      <div className="foot-contact"><h4>Contact</h4><ul><li>{s.footer.address}</li>{s.footer.phones.map((p, i) => (<li key={`p${i}`}><a href={tel(p.value)}>{p.value}</a></li>))}{s.footer.emails.map((e, i) => (<li key={`e${i}`}><a href={`mailto:${e.value}`}>{e.value}</a></li>))}</ul></div>
+      <div><h4>Follow</h4><ul className="social"><li><a href={s.social.instagramUrl} {...ext(s.social.instagramUrl)}><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg><span>Instagram</span></a></li><li><a href={s.social.youtubeUrl} {...ext(s.social.youtubeUrl)}><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8c.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8ZM10 15V9l5.2 3Z" /></svg><span>YouTube</span></a></li><li><a href={s.social.facebookUrl} {...ext(s.social.facebookUrl)}><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13.5 21v-8h2.7l.4-3.2h-3.1V7.8c0-.9.3-1.5 1.6-1.5h1.7V3.4c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.4H7.7V13h2.7v8Z" /></svg><span>Facebook</span></a></li></ul></div>
     </div>
     <p className="water" id="water" aria-hidden="true">Keralam</p>
-    <div className="legal"><span>© {new Date().getFullYear()} Chaitanya Keralam</span><span>Privacy · Terms</span></div>
+    <div className="legal"><span>© {new Date().getFullYear()} Chaitanya Keralam</span><span>Privacy · Terms · <a href="/cms/login">Admin login</a></span></div>
   </div>
 </footer>
 

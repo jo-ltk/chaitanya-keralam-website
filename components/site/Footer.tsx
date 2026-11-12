@@ -3,16 +3,21 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { css, str } from '@/lib/dc';
+import { SiteSettingsContext } from '@/components/SiteSettingsProvider';
+import { telHref } from '@/lib/site-settings';
 
 const Map = dynamic(() => import('@/components/site/Map'), { ssr: false });
 
 export default class Footer extends React.Component<any, any> {
   [key: string]: any;
 
+  static contextType = SiteSettingsContext;
   renderVals() { return {}; }
 
   render() {
     const $v: any = this.renderVals();
+    const { footer, social } = this.context as React.ContextType<typeof SiteSettingsContext>;
+    const join = (items: React.ReactNode[]) => items.map((it, i) => <React.Fragment key={i}>{i > 0 && <br />}{it}</React.Fragment>);
     return (
 <>
 
@@ -31,7 +36,7 @@ export default class Footer extends React.Component<any, any> {
 </div>
 <div style={css("display:flex;flex-direction:column;gap:12px")}><p className={"eyebrow"} style={css("color:#c5a15a")}>Programmes</p><ul className={"foot-links"}><li><a href={"/programmes"}>All programmes</a></li><li><a href={"/programmes/3-month-foundation"}>3-Month Foundation</a></li><li><a href={"/programmes/6-month-professional"}>6-Month Professional</a></li><li><a href={"/programmes/1-year-advanced"}>1-Year Advanced</a></li><li><a href={"/programmes#admissions"}>Admissions</a></li></ul></div>
 <div style={css("display:flex;flex-direction:column;gap:12px")}><p className={"eyebrow"} style={css("color:#c5a15a")}>TESH Homes &amp; partnerships</p><ul className={"foot-links"}><li><a href={"/tesh-homes"}>TESH Homes</a></li><li><a href={"/tesh-homes#careers"}>Career pathways</a></li><li><a href={"/tesh-homes#homeowners"}>For homeowners</a></li><li><a href={"/tesh-homes#partner"}>Partner with us</a></li></ul></div>
-<div style={css("display:flex;flex-direction:column;gap:12px")}><p className={"eyebrow"} style={css("color:#c5a15a")}>Contact</p><p className={"small"}>Edex Edupark<br />Kochi, Kerala</p><p className={"small"}><a href={"tel:+919037016730"}>+91 90370 16730</a><br /><a href={"tel:+918547818701"}>+91 85478 18701</a></p><p className={"small"}><a href={"mailto:josephanil2007@gmail.com"}>josephanil2007@gmail.com</a><br /><a href={"mailto:akashjose369@gmail.com"}>akashjose369@gmail.com</a><br /><a href={"mailto:shajimilan79@gmail.com"}>shajimilan79@gmail.com</a></p><p className={"eyebrow"} style={css("color:#c5a15a")}>Follow us</p><ul className={"foot-links"}><li><a href={"https://x.com/KERALAPEACino"} target={"_blank"} rel={"noopener noreferrer"}>X</a></li><li><a href={"https://www.instagram.com/kerala_peace_tourism?utm_source=qr&obrf=ZXo1cTZ1cG53Mmtx"} target={"_blank"} rel={"noopener noreferrer"}>Instagram</a></li></ul></div>
+<div style={css("display:flex;flex-direction:column;gap:12px")}><p className={"eyebrow"} style={css("color:#c5a15a")}>Contact</p><p className={"small"}>{footer.address}</p><p className={"small"}>{join(footer.phones.map((p) => <a href={telHref(p.value)}>{p.value}</a>))}</p><p className={"small"}>{join(footer.emails.map((e) => <a href={`mailto:${e.value}`}>{e.value}</a>))}</p><p className={"eyebrow"} style={css("color:#c5a15a")}>Follow us</p><ul className={"foot-links"}><li><a href={social.xUrl} target={"_blank"} rel={"noopener noreferrer"}>X</a></li><li><a href={social.instagramUrl} target={"_blank"} rel={"noopener noreferrer"}>Instagram</a></li></ul></div>
 </div>
 <div className={"foot-bar"}>
 <p className={"small"}>© {new Date().getFullYear()} Chaitanya Keralam. All rights reserved.</p>

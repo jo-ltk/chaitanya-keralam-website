@@ -5,12 +5,12 @@ import { LANDING_DEFAULTS } from '../lib/landing-content';
 // The editor form is generated from LANDING_DEFAULTS, so the CMS always shows the
 // current live text/images and the schema can't drift from the defaults.
 
-const label = (k: string) =>
+export const label = (k: string) =>
   k.replace(/([A-Z])/g, ' $1').replace(/^./, (c) => c.toUpperCase()).replace(/\bUrl\b/, 'URL');
 
 const isImg = (d: any) => d && typeof d === 'object' && 'url' in d && 'alt' in d && Object.keys(d).length === 2;
 
-function build(name: string, def: any): Field {
+export function build(name: string, def: any): Field {
   if (Array.isArray(def)) {
     const item = def[0];
     return {
@@ -50,10 +50,13 @@ export const Landing: GlobalConfig = {
   fields: [
     {
       type: 'tabs',
-      tabs: Object.keys(LANDING_DEFAULTS).map((k) => ({
+      tabs: Object.keys(LANDING_DEFAULTS).filter((k) => k !== 'footer').map((k) => ({
         label: label(k),
         fields: [build(k, (LANDING_DEFAULTS as any)[k])],
       })),
     },
+    // The footer is now edited in "Site settings". The old field stays (hidden) so the DB schema is
+    // unchanged and anything saved here earlier is still used as the fallback.
+    { ...(build('footer', LANDING_DEFAULTS.footer) as any), admin: { hidden: true } },
   ],
 };

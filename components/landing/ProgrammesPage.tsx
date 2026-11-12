@@ -1,12 +1,14 @@
 'use client';
 /* TESH Skill Development Programmes, in the landing-page design language (docs/LANDING-PAGE-DESIGN-SYSTEM.md).
    A different composition from About and Tourism: a light (paper) opener with a level index, a panorama,
-   dark vertical tabs for the learning areas, three level columns, a chapter, a format grid and the admission form. */
+   dark vertical tabs for the learning areas, three level columns, a chapter, a format grid and the admission form.
+   Copy and images come from the Payload "Programmes page" global (lib/programmes-content.ts). */
 import Link from 'next/link';
 import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react';
 import SiteNav from './SiteNav';
 import SiteFooter from './SiteFooter';
 import { useCKMotion } from './useCKMotion';
+import type { ProgrammesContent } from '@/lib/programmes-content';
 
 type Scene = 'backwater' | 'ghats' | 'forest' | 'coast' | 'culture' | 'temple' | 'tea' | 'falls' | 'dusk';
 
@@ -25,79 +27,25 @@ function Ph({ ratio, scene, src, alt, slot, meta, inner, reveal, className = '' 
 }
 
 const Arrow = () => <span className="arrow" aria-hidden="true">→</span>;
-const HOME = '/images/home';
-const PROG = '/images/programmes';
-
-const GLANCE = [
-  { code: '3M', title: '3-Month Foundation', meta: '240 training hours · Offline', href: '/programmes/3-month-foundation' },
-  { code: '6M', title: '6-Month Professional', meta: '480 training hours · Offline', href: '/programmes/6-month-professional' },
-  { code: '1Y', title: '1-Year Advanced', meta: '960 training hours · Offline', href: '/programmes/1-year-advanced' },
-];
-
-const AREAS = [
-  { title: 'Eco-Spiritual Peace Tourism & Travel',
-    text: 'Knowledge and practical skills related to tourism experiences — exploring the connection between nature, ecology, spirituality, peace, wellness, culture and responsible travel.',
-    topics: ['Tourism experiences', 'Travel planning', 'Destination development', 'Interpretation', 'Responsible tourism'],
-    scene: 'backwater' as Scene, src: `${PROG}/tourism-area.png`, alt: 'Travellers listening to stories by the backwaters' },
-  { title: 'Eco-Spiritual Hospitality',
-    text: 'Practical hospitality skills for eco-friendly and wellness-oriented tourism environments.',
-    topics: ['Guest relations', 'Front office', 'Housekeeping', 'Food & beverage service', 'Guest experience', 'Wellness hospitality', 'Retreat hospitality', 'Eco-hospitality'],
-    scene: 'dusk' as Scene, src: `${PROG}/hospitality-area.jpg`, alt: 'A table set for guests on a Kerala veranda' },
-  { title: 'International Caregiving',
-    text: 'Foundational and progressive caregiving skills that can support opportunities in care-related services. Caregiving is integrated as a specialised skill area within the broader eco-spiritual tourism and hospitality programme.',
-    topics: ['Personal care', 'Daily living support', 'Elderly care', 'Vulnerable person care', 'Mobility support', 'Nutrition and safe assistance', 'Emotional and social wellbeing', 'Communication', 'Basic first aid and emergency awareness', 'Care documentation'],
-    scene: 'temple' as Scene, src: `${PROG}/caregiving-area.png`, alt: 'Gentle wellness exercise in a sunlit garden room' },
-  { title: 'Global Entrepreneurship & Leadership',
-    text: 'The mindset and practical abilities required to become an entrepreneur and responsible leader.',
-    topics: ['Entrepreneurial mindset', 'Opportunity identification', 'Market research', 'Business models', 'Business planning', 'Costing and pricing', 'Digital marketing', 'Team management', 'Communication', 'Leadership', 'Project development'],
-    scene: 'culture' as Scene, src: `${PROG}/entrepreneurship-area.png`, alt: 'Young people planning a project in a Kerala heritage home' },
-];
-
-const LEVELS = [
-  { code: '3M', level: 'Foundation level', title: '3-Month Foundation', duration: '3 months', hours: '240 training hours', eligibility: 'Plus Two / Higher Secondary or equivalent',
-    focus: 'Introduces the basic concepts and practical skills of tourism & travel, eco-spiritual peace tourism, hospitality, basic caregiving, eco-hospitality, entrepreneurship, personal leadership and digital skills.',
-    progression: 'Learn · Practise · Assist', href: '/programmes/3-month-foundation',
-    scene: 'tea' as Scene, src: `${PROG}/level-3-month.png`, alt: 'Students learning together on a tropical veranda' },
-  { code: '6M', level: 'Professional level', title: '6-Month Professional', duration: '6 months', hours: '480 training hours', eligibility: 'Plus Two / Higher Secondary or equivalent',
-    focus: 'Develops stronger operational skills in eco-spiritual tourism, destination development, tour and itinerary planning, sustainable tourism, hospitality operations, international caregiving, entrepreneurship, business development, team leadership and TESH Home practical training.',
-    progression: 'Learn · Practise · Operate · Take responsibility', href: '/programmes/6-month-professional',
-    scene: 'dusk' as Scene, src: `${PROG}/level-6-month.png`, alt: 'A warm welcome on a Kerala veranda' },
-  { code: '1Y', level: 'Advanced level', title: '1-Year Advanced', duration: '12 months', hours: '960 training hours', eligibility: null,
-    focus: 'Develops higher-level capabilities in tourism and destination management, tour operations, tourism experience design, advanced hospitality management, eco-resort and wellness management, advanced caregiving, entrepreneurship, business management, financial skills, digital marketing, leadership and supervision, TESH Home management, and business and management projects.',
-    progression: 'Supervise · Lead · Manage · Create', href: '/programmes/1-year-advanced',
-    scene: 'culture' as Scene, src: `${PROG}/level-1-year.png`, alt: 'Collaborative learning in a sunlit lab' },
-];
-
-const FORMATS = [
-  { t: 'Classroom learning', d: 'Understanding concepts, principles and professional knowledge.' },
-  { t: 'Practical training', d: 'Hands-on skills through demonstrations and supervised practice.' },
-  { t: 'Role play & simulation', d: 'Practising guest service, communication, caregiving and workplace situations.' },
-  { t: 'Field & experience-based learning', d: 'Destinations, hospitality environments, communities and nature-based experiences.' },
-  { t: 'TESH Home practical exposure', d: 'According to level and programme requirements, where available.' },
-  { t: 'Project-based learning', d: 'Tourism, hospitality, caregiving or entrepreneurship-related projects.' },
-  { t: 'Leadership practice', d: 'Progressively taking responsibility for activities, teams and projects.' },
-  { t: 'Assessment & certification', d: 'Assessment of learning, and a TESH Skill Development Experience Certificate on completion.' },
-];
-
-const STEPS = [
-  { t: 'Credentials', d: 'Academic and extracurricular credentials.' },
-  { t: 'Aptitude test', d: 'An assessment of aptitude for the programme.' },
-  { t: 'Interview', d: 'A conversation with the programme team.' },
-  { t: 'Group discussion', d: 'Teamwork and communication in a group setting.' },
-];
+// Placeholder tint behind each image while it loads (design only, not CMS content).
+const SCENES = {
+  areas: ['backwater', 'dusk', 'temple', 'culture'] as Scene[],
+  levels: ['tea', 'dusk', 'culture'] as Scene[],
+};
+const sceneAt = (list: Scene[], i: number) => list[i % list.length];
 
 /* Learning areas: vertical tabs. Own component so switching never re-renders the split headings elsewhere. */
-function Areas() {
+function Areas({ items, topicsLabel }: { items: ProgrammesContent['areas']['items']; topicsLabel: string }) {
   const [cur, setCur] = useState(0);
   const [held, setHeld] = useState(false);
   const [onScreen, setOnScreen] = useState(false);
   const [pageHidden, setPageHidden] = useState(false);
   const root = useRef<HTMLDivElement>(null);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
-  const a = AREAS[cur];
+  const a = items[cur] ?? items[0];
   const paused = held || !onScreen || pageHidden;
   const go = (i: number, focus = false) => {
-    const n = (i + AREAS.length) % AREAS.length;
+    const n = (i + items.length) % items.length;
     setCur(n);
     if (focus) tabs.current[n]?.focus();
   };
@@ -119,8 +67,8 @@ function Areas() {
       onFocus={() => setHeld(true)} onBlur={() => setHeld(false)}
     >
         <div className={`area-tab-list tabs-auto${paused ? ' is-paused' : ''}`} role="tablist" aria-label="Learning areas" aria-orientation="vertical">
-          {AREAS.map((ar, i) => (
-            <button key={ar.title} ref={(el) => { tabs.current[i] = el; }} className="area-tab" type="button" role="tab"
+          {items.map((ar, i) => (
+            <button key={i} ref={(el) => { tabs.current[i] = el; }} className="area-tab" type="button" role="tab"
               id={`area-tab-${i}`} aria-selected={i === cur} aria-controls="area-panel" tabIndex={i === cur ? 0 : -1}
               onClick={() => go(i)} onKeyDown={(e) => onKey(e, i)}>
               <span className="row-no">{String(i + 1).padStart(2, '0')}</span>
@@ -130,16 +78,16 @@ function Areas() {
             </button>
           ))}
         </div>
-      <div className="area-panel" id="area-panel" role="tabpanel" aria-labelledby={`area-tab-${cur}`} key={a.title}>
+      <div className="area-panel" id="area-panel" role="tabpanel" aria-labelledby={`area-tab-${cur}`} key={cur}>
     <div className="ph r-16x9 area-img">
-      <div className={`bg s-${a.scene}`}>{a.src && <img className="theme-img" src={a.src} alt={a.alt} loading="lazy" decoding="async" />}</div>
-      <span className="slot">[Image — {a.alt}]<small>1600×900 · 16:9</small></span>
+      <div className={`bg s-${sceneAt(SCENES.areas, cur)}`}>{a.image.url && <img className="theme-img" src={a.image.url} alt={a.image.alt} loading="lazy" decoding="async" />}</div>
+      <span className="slot">[Image — {a.image.alt}]<small>1600×900 · 16:9</small></span>
     </div>
         <div className="theme-copy">
           <h3 className="area-panel-t">{a.title}</h3>
           <p className="lead">{a.text}</p>
-          <span className="kicker">Key areas include</span>
-          <ul className="topics">{a.topics.map((t) => <li key={t}>{t}</li>)}</ul>
+          <span className="kicker">{topicsLabel}</span>
+          <ul className="topics">{a.topics.map((t, i) => <li key={i}>{t.value}</li>)}</ul>
         </div>
       </div>
     </div>
@@ -147,29 +95,29 @@ function Areas() {
 }
 
 /* Admission enquiry. Same behaviour as before the redesign: confirms on screen, nothing is sent yet. */
-function AdmissionForm() {
+function AdmissionForm({ f }: { f: ProgrammesContent['form'] }) {
   const [sent, setSent] = useState(false);
   const onSubmit = (e: FormEvent<HTMLFormElement>) => { e.preventDefault(); setSent(true); };
   return (
     <form className="form" id="admission-form" onSubmit={onSubmit} aria-labelledby="formH">
-      <h3 className="form-t field full" id="formH">Admission enquiry</h3>
-      <div className="field"><label htmlFor="a-name">Full name</label><input id="a-name" name="fullName" autoComplete="name" placeholder="Your name" /></div>
-      <div className="field"><label htmlFor="a-age">Age</label><input id="a-age" name="age" type="number" min={18} max={29} inputMode="numeric" placeholder="18–29" /></div>
-      <div className="field"><label htmlFor="a-email">Email</label><input id="a-email" name="email" type="email" autoComplete="email" placeholder="you@example.com" /></div>
-      <div className="field"><label htmlFor="a-phone">Phone</label><input id="a-phone" name="phone" type="tel" autoComplete="tel" placeholder="+91" /></div>
-      <div className="field full"><label htmlFor="prog">Programme</label>
-        <select id="prog" name="programme"><option>3-Month Foundation</option><option>6-Month Professional</option><option>1-Year Advanced</option><option>Not sure yet</option></select>
+      <h3 className="form-t field full" id="formH">{f.heading}</h3>
+      <div className="field"><label htmlFor="a-name">{f.nameLabel}</label><input id="a-name" name="fullName" autoComplete="name" placeholder={f.namePlaceholder} /></div>
+      <div className="field"><label htmlFor="a-age">{f.ageLabel}</label><input id="a-age" name="age" type="number" min={18} max={29} inputMode="numeric" placeholder={f.agePlaceholder} /></div>
+      <div className="field"><label htmlFor="a-email">{f.emailLabel}</label><input id="a-email" name="email" type="email" autoComplete="email" placeholder={f.emailPlaceholder} /></div>
+      <div className="field"><label htmlFor="a-phone">{f.phoneLabel}</label><input id="a-phone" name="phone" type="tel" autoComplete="tel" placeholder={f.phonePlaceholder} /></div>
+      <div className="field full"><label htmlFor="prog">{f.programmeLabel}</label>
+        <select id="prog" name="programme">{f.programmeOptions.map((o, i) => <option key={i}>{o.value}</option>)}</select>
       </div>
       <div className="form-foot">
-        <p className="consent">We use your details only to respond to your enquiry.</p>
-        <button className="btn btn-ink" type="submit"><span>Enquire About Admission</span><Arrow /></button>
+        <p className="consent">{f.consent}</p>
+        <button className="btn btn-ink" type="submit"><span>{f.button}</span><Arrow /></button>
       </div>
-      {sent && <p className="form-note" role="status">Thank you — our admissions team will be in touch soon.</p>}
+      {sent && <p className="form-note" role="status">{f.thanks}</p>}
     </form>
   );
 }
 
-export default function ProgrammesPage() {
+export default function ProgrammesPage({ content: c }: { content: ProgrammesContent }) {
   const main = useRef<HTMLElement>(null);
   useCKMotion(main);
 
@@ -182,21 +130,21 @@ export default function ProgrammesPage() {
         <section className="section paper-hero prog-hero" aria-labelledby="pageH">
           <div className="wrap prog-hero-in">
             <div className="prog-hero-text">
-              <p className="label crumbs"><Link href="/">Home</Link> / Programmes</p>
-              <span className="kicker">TESH Skill Development Programmes</span>
-              <h1 className="paper-title" id="pageH" data-split>Build practical skills. Create opportunities. Lead with purpose.</h1>
-              <p className="prog-sub" data-reveal>Entrepreneurship &amp; Leadership in Eco-Spiritual Peace Tourism &amp; Hospitality</p>
-              <p className="lead" data-reveal>The TESH Skill Development Programmes are designed for young people who want to develop practical skills and explore career and entrepreneurial opportunities in eco-spiritual tourism, trading, technology, hospitality, caregiving and related services.</p>
+              <p className="label crumbs"><Link href="/">{c.hero.crumbHome}</Link> / {c.hero.crumbCurrent}</p>
+              <span className="kicker">{c.hero.kicker}</span>
+              <h1 className="paper-title" id="pageH" data-split>{c.hero.title}</h1>
+              <p className="prog-sub" data-reveal>{c.hero.subtitle}</p>
+              <p className="lead" data-reveal>{c.hero.lead}</p>
               <div className="prog-actions" data-reveal>
-                <a className="btn btn-ink" href="#compare"><span>Compare programmes</span><Arrow /></a>
-                <a className="tlink" href="#admissions"><span>Eligibility &amp; selection</span><Arrow /></a>
+                <a className="btn btn-ink" href="#compare"><span>{c.hero.button}</span><Arrow /></a>
+                <a className="tlink" href="#admissions"><span>{c.hero.link}</span><Arrow /></a>
               </div>
             </div>
             <nav className="glance" aria-label="Programmes at a glance" data-reveal>
-              <span className="kicker">At a glance</span>
+              <span className="kicker">{c.hero.glanceKicker}</span>
               <ul>
-                {GLANCE.map((g) => (
-                  <li key={g.code}><Link href={g.href}>
+                {c.hero.glance.map((g, i) => (
+                  <li key={i}><Link href={g.href}>
                     <span className="glance-code">{g.code}</span>
                     <span className="glance-t"><b>{g.title}</b><span>{g.meta}</span></span>
                     <Arrow />
@@ -210,13 +158,13 @@ export default function ProgrammesPage() {
         {/* 2 · Panorama + on-page index */}
         <section className="section" aria-label="On this page" style={{ paddingTop: 0 }}>
           <div className="wrap">
-            <Ph ratio="21x9" scene="tea" src={`${PROG}/panorama-study-circle.png`} alt="A study circle on a tropical veranda" slot="Panorama — Study circle on a veranda" meta="2880×1234 · 21:9" inner={6} reveal />
+            <Ph ratio="21x9" scene="tea" src={c.panorama.image.url} alt={c.panorama.image.alt} slot={`Panorama — ${c.panorama.image.alt}`} meta="2880×1234 · 21:9" inner={6} reveal />
             <nav className="page-index" aria-label="On this page">
               <ul>
-                <li><a className="tlink" href="#areas"><span>Learning areas</span><Arrow /></a></li>
-                <li><a className="tlink" href="#compare"><span>Compare programmes</span><Arrow /></a></li>
-                <li><a className="tlink" href="#format"><span>Learning format</span><Arrow /></a></li>
-                <li><a className="tlink" href="#admissions"><span>Eligibility &amp; admissions</span><Arrow /></a></li>
+                <li><a className="tlink" href="#areas"><span>{c.panorama.linkAreas}</span><Arrow /></a></li>
+                <li><a className="tlink" href="#compare"><span>{c.panorama.linkCompare}</span><Arrow /></a></li>
+                <li><a className="tlink" href="#format"><span>{c.panorama.linkFormat}</span><Arrow /></a></li>
+                <li><a className="tlink" href="#admissions"><span>{c.panorama.linkAdmissions}</span><Arrow /></a></li>
               </ul>
             </nav>
           </div>
@@ -225,24 +173,24 @@ export default function ProgrammesPage() {
         {/* 3 · Learning areas (dark vertical tabs) */}
         <section className="dark section areas" id="areas" aria-labelledby="areasH">
           <div className="wrap">
-            <span className="kicker areas-k">Four learning areas</span>
-            <div className="head-row"><h2 className="h-section" id="areasH" data-split>What you will study</h2></div>
-            <div data-reveal><Areas /></div>
+            <span className="kicker areas-k">{c.areas.kicker}</span>
+            <div className="head-row"><h2 className="h-section" id="areasH" data-split>{c.areas.heading}</h2></div>
+            <div data-reveal><Areas items={c.areas.items} topicsLabel={c.areas.topicsLabel} /></div>
           </div>
         </section>
 
         {/* 4 · Three levels */}
         <section className="section" id="compare" aria-labelledby="compareH">
           <div className="wrap">
-            <span className="label">Programme comparison</span>
+            <span className="label">{c.compare.label}</span>
             <div className="head-row">
-              <h2 className="h-section" id="compareH" data-split>Three levels, one pathway</h2>
-              <p className="lead" data-reveal>All levels: 4 hours a day, 5 days a week.</p>
+              <h2 className="h-section" id="compareH" data-split>{c.compare.heading}</h2>
+              <p className="lead" data-reveal>{c.compare.lead}</p>
             </div>
             <ul className="levels">
-              {LEVELS.map((l) => (
-                <li key={l.code} className="level" data-reveal>
-                  <Ph ratio="4x5" scene={l.scene} src={l.src} alt={l.alt} slot={`Portrait — ${l.alt}`} meta="1200×1500 · 4:5" />
+              {c.compare.levels.map((l, i) => (
+                <li key={i} className="level" data-reveal>
+                  <Ph ratio="4x5" scene={sceneAt(SCENES.levels, i)} src={l.image.url} alt={l.image.alt} slot={`Portrait — ${l.image.alt}`} meta="1200×1500 · 4:5" />
                   <div className="level-head">
                     <span className="level-code" aria-hidden="true">{l.code}</span>
                     <span className="label">{l.level}</span>
@@ -251,12 +199,12 @@ export default function ProgrammesPage() {
                   <ul className="level-facts" aria-label={`${l.title} details`}>
                     <li><b>{l.duration}</b></li>
                     <li><b>{l.hours}</b></li>
-                    <li><b>Offline</b></li>
+                    <li><b>{l.mode}</b></li>
                   </ul>
-                  <p className="level-elig"><span>Eligibility</span>{l.eligibility ?? <span className="tbc" style={{ marginLeft: 0 }}>To be confirmed</span>}</p>
+                  <p className="level-elig"><span>{c.compare.eligibilityLabel}</span>{l.eligibility || <span className="tbc" style={{ marginLeft: 0 }}>{c.compare.eligibilityTbc}</span>}</p>
                   <p className="level-focus">{l.focus}</p>
-                  <p className="level-prog"><span className="kicker">Progression</span>{l.progression}</p>
-                  <Link className="btn btn-line" href={l.href}><span>View Programme</span><Arrow /></Link>
+                  <p className="level-prog"><span className="kicker">{c.compare.progressionLabel}</span>{l.progression}</p>
+                  <Link className="btn btn-line" href={l.href}><span>{c.compare.button}</span><Arrow /></Link>
                 </li>
               ))}
             </ul>
@@ -266,14 +214,14 @@ export default function ProgrammesPage() {
         {/* 5 · Learning format (chapter) */}
         <section className="dark chapter ch-3 chapter-tight" aria-labelledby="ch3">
           <div className="wrap chapter-stage">
-            <span className="kicker chapter-no">Learning format</span>
-            <Ph ratio="4x5" scene="culture" src={`${PROG}/doing-chapter-main.png`} alt="Guidance in a sunlit Kerala computer lab" slot="Portrait — Guidance in a sunlit computer lab" meta="1200×1500 · 4:5" inner={7} className="chapter-media" />
-            <h2 className="chapter-word" id="ch3" data-drift="-6">Doing</h2>
+            <span className="kicker chapter-no">{c.chapter.kicker}</span>
+            <Ph ratio="4x5" scene="culture" src={c.chapter.image.url} alt={c.chapter.image.alt} slot={`Portrait — ${c.chapter.image.alt}`} meta="1200×1500 · 4:5" inner={7} className="chapter-media" />
+            <h2 className="chapter-word" id="ch3" data-drift="-6">{c.chapter.word}</h2>
             <div className="chapter-copy" data-reveal>
-              <p>Learn by doing. TESH programmes are designed around practical and experiential learning. Training may include the formats below.</p>
-              <a className="tlink" href="#format"><span>See the formats</span><Arrow /></a>
+              <p>{c.chapter.text}</p>
+              <a className="tlink" href="#format"><span>{c.chapter.link}</span><Arrow /></a>
             </div>
-            <Ph ratio="3x2" scene="tea" src={`${PROG}/doing-chapter-tea.jpg`} alt="Warm tea on a tropical veranda" slot="Image — Tea on a veranda" meta="1500×1000 · 3:2" reveal className="chapter-inset chapter-inset-lg" />
+            <Ph ratio="3x2" scene="tea" src={c.chapter.inset.url} alt={c.chapter.inset.alt} slot={`Image — ${c.chapter.inset.alt}`} meta="1500×1000 · 3:2" reveal className="chapter-inset chapter-inset-lg" />
           </div>
         </section>
 
@@ -281,20 +229,20 @@ export default function ProgrammesPage() {
         <section className="section" id="format" aria-labelledby="formatH">
           <div className="wrap">
             <div className="head-row">
-              <h2 className="h-section" id="formatH" data-split>How training works</h2>
-              <p className="lead" data-reveal>Training schedule: 4 hours a day, 5 days a week.</p>
+              <h2 className="h-section" id="formatH" data-split>{c.formats.heading}</h2>
+              <p className="lead" data-reveal>{c.formats.lead}</p>
             </div>
             <div className="facts hours" data-reveal>
-              <div className="fact"><b>240</b><span>Training hours · 3 months</span></div>
-              <div className="fact"><b>480</b><span>Training hours · 6 months</span></div>
-              <div className="fact"><b>960</b><span>Training hours · 1 year</span></div>
+              {c.formats.hours.map((h, i) => (
+                <div key={i} className="fact"><b>{h.value}</b><span>{h.label}</span></div>
+              ))}
             </div>
             <ol className="formats">
-              {FORMATS.map((f, i) => (
-                <li key={f.t} data-reveal>
+              {c.formats.items.map((f, i) => (
+                <li key={i} data-reveal>
                   <span className="row-no">{String(i + 1).padStart(2, '0')}</span>
-                  <h3>{f.t}</h3>
-                  <p>{f.d}</p>
+                  <h3>{f.title}</h3>
+                  <p>{f.text}</p>
                 </li>
               ))}
             </ol>
@@ -304,23 +252,23 @@ export default function ProgrammesPage() {
         {/* 7 · Eligibility, selection and admission enquiry */}
         <section className="section admissions" id="admissions" aria-labelledby="admH">
           <div className="wrap">
-            <span className="label">Eligibility &amp; selection</span>
-            <div className="head-row"><h2 className="h-section" id="admH" data-split>Who can apply, and how</h2></div>
+            <span className="label">{c.admissions.label}</span>
+            <div className="head-row"><h2 className="h-section" id="admH" data-split>{c.admissions.heading}</h2></div>
             <ol className="steps" aria-label="Selection criteria">
-              {STEPS.map((s, i) => (
-                <li key={s.t} data-reveal><b>{i + 1}</b><h3>{s.t}</h3><p>{s.d}</p></li>
+              {c.admissions.steps.map((s, i) => (
+                <li key={i} data-reveal><b>{i + 1}</b><h3>{s.title}</h3><p>{s.text}</p></li>
               ))}
             </ol>
             <div className="contact-grid admit-grid">
               <div className="admit-info">
                 <div className="facts facts-words" data-reveal>
-                  <div className="fact"><span>Target age group</span><b>18–29</b><span>18 to 29 years — for visionary young leaders who want to develop practical skills and explore income-generating opportunities.</span></div>
-                  <div className="fact"><span>Eligibility</span><b>Plus Two</b><span>The 3-month and 6-month curriculum documents state Plus Two / Higher Secondary or equivalent eligibility.</span></div>
-                  <div className="fact"><span>Planned commencement</span><b>Dec 2026</b><span>Programmes begin December 2026.</span></div>
+                  {c.admissions.facts.map((f, i) => (
+                    <div key={i} className="fact"><span>{f.label}</span><b>{f.value}</b><span>{f.text}</span></div>
+                  ))}
                 </div>
-                <p className="form-note cert" data-reveal><b>Experience certificate.</b> Participants who successfully complete the applicable training requirements receive a TESH Skill Development Experience Certificate, subject to programme completion and assessment requirements.</p>
+                <p className="form-note cert" data-reveal><b>{c.admissions.certificateTitle}</b> {c.admissions.certificateText}</p>
               </div>
-              <div data-reveal><AdmissionForm /></div>
+              <div data-reveal><AdmissionForm f={c.form} /></div>
             </div>
           </div>
         </section>

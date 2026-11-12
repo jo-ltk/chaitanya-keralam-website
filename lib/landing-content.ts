@@ -1,11 +1,12 @@
 // Landing page content: defaults (the current live copy) + a resolver that overlays
 // whatever editors saved in the Payload "Landing page" global (/cms).
 // Anything left empty in the CMS falls back to these defaults, so the page never breaks.
+import { img, merge } from './cms-merge';
+import { SITE_FOOTER_DEFAULTS } from './site-settings';
+export { img, merge, type Img } from './cms-merge';
 
 const SB = 'https://uwhatknkdcffxpezkage.supabase.co/storage/v1/object/public/site-media/uploads';
 
-export type Img = { url: string; alt: string };
-const img = (url: string, alt: string): Img => ({ url, alt });
 
 export const LANDING_DEFAULTS = {
   hero: {
@@ -131,38 +132,12 @@ export const LANDING_DEFAULTS = {
     guideTitle: 'Download our Kerala family travel guide',
     guideUrl: `${SB}/chaitanya-keralam-guide.pdf`,
   },
-  footer: {
-    promise: "Perhaps the only paradise on earth!\nOne with nature.\nGod's own country.",
-    tagline: 'Eco-Spiritual Peace Tourism · Anbu · Unmai · Patru · Pagutharivu',
-    address: 'Edex Edupark, Kochi, Kerala',
-    phones: [{ value: '+91 90370 16730' }, { value: '+91 85478 18701' }],
-    emails: [{ value: 'josephanil2007@gmail.com' }, { value: 'akashjose369@gmail.com' }, { value: 'shajimilan79@gmail.com' }],
-  },
+  footer: SITE_FOOTER_DEFAULTS,
 };
 
 export type LandingContent = typeof LANDING_DEFAULTS;
 
-const isImg = (d: any) => d && typeof d === 'object' && 'url' in d && 'alt' in d && Object.keys(d).length === 2;
 
-function merge(def: any, stored: any): any {
-  if (Array.isArray(def)) {
-    if (!Array.isArray(stored) || stored.length === 0) return def;
-    return stored.map((s, i) => merge(def[i] ?? def[0], s));
-  }
-  if (isImg(def)) {
-    const uploaded = stored?.image && typeof stored.image === 'object' ? stored.image.url : '';
-    return {
-      url: uploaded || (typeof stored?.url === 'string' && stored.url) || def.url,
-      alt: typeof stored?.alt === 'string' && stored.alt !== '' ? stored.alt : def.alt,
-    };
-  }
-  if (def && typeof def === 'object') {
-    const out: any = {};
-    for (const k of Object.keys(def)) out[k] = merge(def[k], stored?.[k]);
-    return out;
-  }
-  return typeof stored === 'string' && stored !== '' ? stored : def;
-}
 
 export function resolveLandingContent(stored: unknown): LandingContent {
   return merge(LANDING_DEFAULTS, stored) as LandingContent;

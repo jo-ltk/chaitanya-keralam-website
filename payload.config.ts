@@ -9,6 +9,13 @@ import sharp from 'sharp';
 import { Users } from './collections/Users';
 import { Media } from './collections/Media';
 import { Landing } from './globals/Landing';
+import { About } from './globals/About';
+import { Tourism } from './globals/Tourism';
+import { Values } from './globals/Values';
+import { TeshHomes } from './globals/TeshHomes';
+import { Programmes } from './globals/Programmes';
+import { Site } from './globals/Site';
+import { Programme3M, Programme6M, Programme1Y } from './globals/ProgrammeDetails';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -35,7 +42,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media],
-  globals: [Landing],
+  globals: [Site, Landing, About, Tourism, Values, TeshHomes, Programmes, Programme3M, Programme6M, Programme1Y],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
