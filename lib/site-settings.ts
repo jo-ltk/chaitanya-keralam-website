@@ -27,8 +27,9 @@ export const SITE_DEFAULTS = {
   social: {
     instagramUrl: 'https://www.instagram.com/kerala_peace_tourism?utm_source=qr&obrf=ZXo1cTZ1cG53Mmtx',
     youtubeUrl: '/#plan',
-    facebookUrl: '/#plan',
+    facebookUrl: 'https://www.facebook.com/p/Chaitanya-Keralam-61596133671951/',
     xUrl: 'https://x.com/KERALAPEACino',
+    linkedinUrl: 'https://www.linkedin.com/in/kerala-peace-tourism-281408448/',
   },
 };
 

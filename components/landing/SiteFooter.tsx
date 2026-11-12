@@ -44,8 +44,10 @@ export default function SiteFooter() {
           </ul></div>
           <div><h4>Follow</h4><ul className="social">
             <li><Social url={social.instagramUrl}><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg><span>Instagram</span></Social></li>
-            <li><Social url={social.youtubeUrl}><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8c.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8ZM10 15V9l5.2 3Z" /></svg><span>YouTube</span></Social></li>
+            {isExternal(social.youtubeUrl) && <li><Social url={social.youtubeUrl}><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8c.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8ZM10 15V9l5.2 3Z" /></svg><span>YouTube</span></Social></li>}
             <li><Social url={social.facebookUrl}><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13.5 21v-8h2.7l.4-3.2h-3.1V7.8c0-.9.3-1.5 1.6-1.5h1.7V3.4c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.4H7.7V13h2.7v8Z" /></svg><span>Facebook</span></Social></li>
+            <li><Social url={social.xUrl}><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.2 2.3h3.3l-7.2 8.2 8.5 11.2h-6.7l-5.2-6.8-6 6.8H1.7l7.7-8.8L1.3 2.3h6.8l4.7 6.2Zm-1.2 17.5h1.8L7.1 4.1h-2Z" /></svg><span>X</span></Social></li>
+            <li><Social url={social.linkedinUrl}><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.9 8.7H3.5V20.5h3.4ZM5.2 3.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4ZM20.5 13.8c0-3.2-1.7-5.3-4.6-5.3a3.9 3.9 0 0 0-3.5 1.9V8.7H9.1V20.5h3.4v-6.1c0-1.7.7-2.9 2.2-2.9s2.1 1.2 2.1 2.9v6.1h3.4Z" /></svg><span>LinkedIn</span></Social></li>
           </ul></div>
         </div>
         <p className="water" id="water" aria-hidden="true">Keralam</p>
