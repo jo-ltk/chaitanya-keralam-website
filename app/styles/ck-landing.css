@@ -746,6 +746,21 @@ button.tlink { appearance: none; background: none; border: 0; padding: 0; color:
 @media (max-width: 760px) { .paper-hero { padding-top: calc(64px + 48px); } .paper-title { font-size: clamp(32px, 9vw, 44px); line-height: 1.1; } }
 @media (max-width: 340px) { .paper-title { font-size: 30px; } }
 
+/* ---------- Legal pages: Privacy, Terms (design system 12.9: paper hero + prose 6.17) ---------- */
+.legal-page .paper-hero .wrap { display: grid; gap: 20px; justify-items: start; }
+.legal-page .paper-hero .lead { max-width: 46ch; text-wrap: pretty; }
+.legal-body { padding-top: 0; }
+.prose { max-width: 68ch; }
+.prose > * + * { margin-top: 20px; }
+.prose p, .prose li { font: 400 18px/1.65 var(--font); color: var(--ink); text-wrap: pretty; }
+.prose h2 { font: 400 clamp(32px, 3.4vw, 44px)/1.1 var(--font); letter-spacing: -0.015em; margin-top: 56px; }
+.prose > h2:first-child { margin-top: 0; }
+.prose h3 { font: 300 clamp(22px, 1.75vw, 30px)/1.32 var(--font); margin-top: 40px; }
+.prose a { color: var(--accent); text-underline-offset: 3px; overflow-wrap: anywhere; }
+.prose ul, .prose ol { margin-bottom: 0; padding-left: 1.2em; }
+.prose li + li { margin-top: 10px; }
+@media (max-width: 760px) { .prose p, .prose li { font-size: 16px; } }
+
 .prog-hero-in { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); gap: clamp(40px, 6vw, 120px); align-items: end; }
 .prog-hero-text { display: grid; gap: 20px; justify-items: start; }
 .prog-hero-text .kicker { color: var(--ink-muted); }

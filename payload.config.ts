@@ -16,6 +16,7 @@ import { TeshHomes } from './globals/TeshHomes';
 import { Programmes } from './globals/Programmes';
 import { Site } from './globals/Site';
 import { Programme3M, Programme6M, Programme1Y } from './globals/ProgrammeDetails';
+import { Privacy, Terms } from './globals/Legal';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -42,7 +43,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media],
-  globals: [Site, Landing, About, Tourism, Values, TeshHomes, Programmes, Programme3M, Programme6M, Programme1Y],
+  globals: [Site, Landing, About, Tourism, Values, TeshHomes, Programmes, Programme3M, Programme6M, Programme1Y, Privacy, Terms],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },

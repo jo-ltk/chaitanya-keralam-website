@@ -51,7 +51,7 @@ export default function SiteFooter() {
           </ul></div>
         </div>
         <p className="water" id="water" aria-hidden="true">Keralam</p>
-        <div className="legal"><span>© {new Date().getFullYear()} Chaitanya Keralam</span><span>Privacy · Terms · <a href="/cms/login">Admin login</a></span></div>
+        <div className="legal"><span>© {new Date().getFullYear()} Chaitanya Keralam</span><span><Link href="/privacy">Privacy</Link> · <Link href="/terms">Terms</Link> · <a href="/cms/login">Admin login</a></span></div>
       </div>
     </footer>
   );
