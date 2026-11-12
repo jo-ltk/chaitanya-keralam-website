@@ -29,9 +29,10 @@ export const SITE_DEFAULTS = {
     youtubeUrl: '/#plan',
     facebookUrl: 'https://www.facebook.com/p/Chaitanya-Keralam-61596133671951/',
     xUrl: 'https://x.com/KERALAPEACino',
-    linkedinUrl: 'https://www.linkedin.com/in/kerala-peace-tourism-281408448/',
   },
 };
+
+export const LINKEDIN_URL = 'https://www.linkedin.com/in/kerala-peace-tourism-281408448/';
 
 export type SiteSettings = typeof SITE_DEFAULTS;
 
